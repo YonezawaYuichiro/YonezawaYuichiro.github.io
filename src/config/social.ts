@@ -3,13 +3,13 @@ import type { SocialLink } from "../types";
 export const SOCIALS: SocialLink[] = [
     {
         name: "Github",
-        href: "https://github.com/shannon",
+        href: "https://github.com/YonezawaYuichiro",
         linkTitle: `Follow Claude Shannon on Github`,
         isActive: true,
     },
     {
         name: "Mail",
-        href: "mailto:shannon@bell-labs.com",
+        href: "uuitiro@gmail.com",
         linkTitle: `Send an email to Claude`,
         isActive: true,
     },

@@ -15,51 +15,53 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 ### Typography Classes
 | Class | Description |
 |-------|-------------|
-| `title-xl` | Page title (1.5rem, 800) |
-| `title-lg` | Section title (1.25rem, 700) |
-| `title-md` | Subsection (1.1rem, 700) |
-| `body` | Body text (0.95rem, 1.65 line-height) |
-| `body-sm` | Small text (0.85rem) |
-| `body-xs` | Tiny text (0.75rem) |
+| `title-xl` | Page title (clamp 1.5–1.9rem, 800) |
+| `title-lg` | Section title (clamp 1.35–1.6rem, 700) |
+| `title-md` | Subsection (1.05rem, 700) |
+| `body` | Body text (1rem, 1.95 line-height) |
+| `body-sm` | Small text (0.875rem, muted) |
+| `body-xs` | Tiny text (0.78rem, muted) |
+| `label` | Uppercase mono label (metadata headings) |
 | `mono` | Code/text (JetBrains Mono) |
+| `measure` | Caps a text block at `--measure` (34em) |
 
 ### Layout Classes
 | Class | Description |
 |-------|-------------|
-| `container-narrow` | Max-width 800px |
-| `space-y-1` to `space-y-4` | Margin bottom scale (0.5-2rem) |
+| `container-narrow` | Max-width 780px (reading columns) |
+| `container-wide` | Max-width 980px (grids, hero) |
 | `gap-1` to `gap-4` | Gap scale |
 
 ### Component Classes
 | Class | Description |
 |-------|-------------|
-| `card` | List item container with border-bottom |
-| `card-title` | Title link with hover effect |
-| `card-meta` | Metadata row with opacity |
-| `card-desc` | Description with 2-line clamp |
-| `card-link` | External link button |
-| `tag` | Minimal accent-colored badge |
-| `btn` | Standard button |
-| `btn-sm` | Small button |
-| `btn-icon` | Icon-only circular button |
-| `icon-btn` | Social/share buttons |
-| `social-link` | Social icon links |
+| `section-block` | Section wrapper (5.5rem vertical padding) |
+| `section-block--tinted` | Sunken-surface variant, used to alternate sections |
+| `section-head` | Eyebrow + title + lead grouping |
+| `section-eyebrow` | Mono accent label with leading rule |
+| `section-lead` | Muted intro sentence under a section title |
+| `block-head` / `block-title` / `block-rule` | Sub-block heading with trailing hairline |
+| `timeline` / `timeline-item` | Vertical rule + dot chronology list |
+| `cert-timeline-*` | Date / label / note grid rows |
+| `skill-chip` + `skill-lv1`–`skill-lv4` | Skill badge with level bar |
+| `skill-legend` | Level key above the skill lists |
+| `note-box` | Accent-edged callout |
+| `project-card` + `project-card-arrow` | Clickable project summary card |
+| `contact-row` | Channel row with hover arrow |
+| `about-fact` | Pill for short profile facts |
+| `tag` | Pill-shaped neutral badge |
+| `btn` / `btn-primary` / `btn-icon` | Buttons |
 | `link` | Text link with underline |
 
 ### Layout Section Classes
 | Class | Description |
 |-------|-------------|
-| `sidebar` | 280px sticky profile sidebar |
-| `sidebar-avatar` | 112px circular avatar |
-| `sidebar-name` | Name heading |
-| `sidebar-info` | Institution/info text |
-| `sidebar-bio` | Short bio text |
-| `navbar` | Top navigation bar |
+| `navbar` | Sticky top navigation (`is-scrolled` adds the border) |
 | `nav-links` | Nav link list |
-| `nav-link` | Nav link with active indicator |
-| `main-content` | Right content area wrapper |
-| `main-body` | Content padding container |
-| `footer` | Site footer |
+| `nav-link` | Nav link (`is-active` set by scroll-spy) |
+| `hero` / `hero-inner` / `hero-portrait` | Landing block |
+| `page-shell` / `page-main` | Page skeleton |
+| `footer` / `footer-inner` | Site footer |
 
 ### Prose Classes
 | Class | Description |
@@ -78,15 +80,21 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 
 ## Layout
 
-### 2-Column Structure (Primary)
-- **Left Sidebar:** Sticky profile with name, institution, social links, short bio. Width 280px desktop.
-- **Right Main:** Scrollable content area. Max-width 800px for optimal reading line length.
-- **Responsive:** Sidebar collapses to top header + border on mobile.
+### Single-Page Structure (Primary)
+- **Sticky navbar** with scroll-spy; the bottom border only appears once scrolled.
+- **Hero** — full-width, two columns (text + portrait), collapses to stacked on mobile.
+- **Sections** alternate between plain background and `--surface-sunken`. Rhythm comes from
+  the change of surface, not from stacking more 1px rules.
+- Reading sections use `container-narrow` (780px); grids use `container-wide` (980px).
 
-### Spacing (Compact)
-- Vertical whitespace between sections: 2rem
-- Items in lists separated by 2rem gaps
-- Paragraphs use tighter line-height (1.65-1.7)
+### Spacing (Generous)
+- Section vertical padding: 5.5rem desktop / 4rem mobile
+- Section head to content: 2.75rem
+- Sub-block head to content: 1.1rem
+
+### Reading measure (Japanese)
+- Body copy is capped at `--measure` (34em). Japanese text at 780px full width is too long
+  a line to scan comfortably — always wrap prose in `.measure` or `.section-lead`.
 
 ---
 
@@ -100,8 +108,17 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 ### Theme System
 - Themes configured in `src/config/themes.ts` - unified THEMES object with `isDark` flag
 - Each theme defines 6 tokens: `background`, `foreground`, `accent`, `muted`, `border`, `surface`
-- All CSS variables injected into `src/styles/global.css`
+- **`surface` must differ from `background`.** If they are equal, every card dissolves into the
+  page and the whole design reads as flat.
+- Derived tokens are computed in `global.css` via `color-mix`, so new themes need no extra setup:
+  `--surface-sunken` (section tint), `--accent-soft` (accent wash), `--accent-line` (hairline
+  accent), `--border-subtle` (faint divider)
 - Users select active light/dark themes via `src/config/site.ts` (`THEME_CONFIG.themeLight`, `THEME_CONFIG.themeDark`)
+
+### Skill level colors (the only multi-hue exception)
+Skill proficiency is the one place with four hues. They are kept low-saturation and applied as a
+3px bar + 7% tint — never as a saturated fill, which would out-shout every other element.
+Defined per theme as `--lv-color` on `.skill-lv1`–`.skill-lv4`.
 
 ### Contrast (non-negotiable)
 - Text must pass WCAG AAA contrast in both light and dark modes.
@@ -112,14 +129,20 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 ## Typography
 
 ### Font Stack
-- **Body/Headings:** Inter (via @fontsource/inter)
+- **Body/Headings:** Inter (via @fontsource/inter), followed by an explicit Japanese stack
+  (Hiragino Kaku Gothic ProN → Hiragino Sans → Noto Sans JP → Yu Gothic → Meiryo).
+  Inter carries no Japanese glyphs; without this the browser silently falls back and the
+  kana/kanji stop matching the Latin text.
 - **Code/Tags/Metadata:** JetBrains Mono (via @fontsource/jetbrains-mono)
+- `font-feature-settings: "palt"` on body for Japanese proportional kerning; disabled on
+  mono/label classes where tabular alignment matters.
 - No external web fonts—self-host via fontsource packages
 
 ### Hierarchy
-- **Page title:** 1.5rem, font-weight 800, letter-spacing -0.02em, line-height 1.2
-- **Section heading (h2):** 1.25rem, font-weight 700, border-bottom 1px solid border
-- **Body text:** 0.95rem, line-height 1.65, opacity 0.92
+- **Hero name:** clamp 2.1–3.1rem, weight 800
+- **Section heading (h2):** clamp 1.35–1.6rem, weight 700, paired with a mono eyebrow
+- **Body text:** 1rem, line-height 1.95 (Japanese needs more leading than Latin)
+- **Never dim text with `opacity`.** Use `var(--text-muted)` so contrast stays predictable.
 
 ---
 
@@ -127,10 +150,12 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 
 ### Flat Design
 - **NO drop shadows.** Ever.
-- **NO glassmorphism.**
-- NO heavy gradients.
+- NO heavy gradients. The only gradient is the hero's accent wash at ~10% alpha.
 - Separation = 1px solid border OR subtle background variation.
-- **Subtle border-radius:** 0.25rem on cards and code blocks
+- Depth comes from **layered surfaces** (`--surface-sunken` < `--background` < `--surface`),
+  not from elevation.
+- **Border-radius:** 0.5rem buttons/chips, 0.65rem cards, 100px pills.
+- Backdrop blur is allowed on exactly two elements: the sticky navbar and the modal backdrop.
 
 ### Links
 - Underline with 4px offset.
@@ -151,7 +176,7 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 
 ## Accessibility
 
-- **Focus rings:** Visible dashed outline for keyboard navigation.
+- **Focus rings:** Visible 2px solid accent outline for keyboard navigation.
 - **Reduced motion:** Respect `prefers-reduced-motion` media query.
 - **Alt text:** Required for all images.
 
@@ -172,23 +197,20 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 src/
 ├── components/
 │   ├── layout/
-│   │   ├── LeftSidebar.astro   (uses .sidebar, .sidebar-avatar, .sidebar-name, .social-link)
-│   │   ├── Navbar.astro        (uses .navbar, .nav-links, .nav-link, .btn-icon)
-│   │   ├── RightMain.astro     (uses .main-content, .main-body)
-│   │   └── Footer.astro        (uses .footer)
-│   ├── content/
-│   │   └── ContentLinks.astro
+│   │   ├── Navbar.astro           (.navbar, .nav-link, scroll-state + scroll-spy)
+│   │   └── Footer.astro           (.footer, .footer-inner)
+│   ├── sections/
+│   │   ├── Hero.astro             (.hero, .hero-portrait)
+│   │   ├── About.astro            (.timeline, .cert-timeline-*, .about-fact)
+│   │   ├── SkillsSection.astro    (.skill-chip, .skill-legend, .note-box)
+│   │   ├── ProjectsSection.astro  (.project-grid, .project-dialog)
+│   │   └── ContactSection.astro   (.contact-row)
 │   └── ui/
-│       ├── BaseItemCard.astro  (uses .card, .card-title, .card-meta, .card-desc)
-│       ├── Tag.astro          (uses .tag)
-│       ├── BackLink.astro    (uses .back-link)
-│       ├── ShareButtons.astro (uses .icon-btn)
+│       ├── ProjectCard.astro      (.project-card)
+│       ├── Tag.astro              (.tag)
 │       └── Icon.astro
 ├── layouts/
-│   ├── BaseLayout.astro
-│   ├── BaseDetail.astro       (uses .prose, .page-title, .card-meta)
-│   ├── BaseListing.astro      (uses .item-list, .page-header)
-│   └── DevToolsLayout.astro
+│   └── BaseLayout.astro           (injects the 6 theme tokens as CSS variables)
 └── styles/
-    └── global.css             (all unified classes)
+    └── global.css                 (all unified classes + derived tokens)
 ```

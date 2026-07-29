@@ -4,52 +4,55 @@ import { SKILL_CATEGORIES, SKILL_LEVELS, AI_STANCE_NOTE } from "../../data/skill
 
 <section id="skills" class="section-block">
     <div class="container-narrow">
-        <p class="section-eyebrow">Skills</p>
-        <h2 class="title-lg">スキル</h2>
-        <p class="body mt-4">
-            数値の自己採点ではなく、実際にできることを基準にした4段階の申告です。
-        </p>
+        <header class="section-head">
+            <p class="section-eyebrow">Skills</p>
+            <h2 class="title-lg">スキル</h2>
+            <p class="section-lead">
+                数値の自己採点ではなく、実際にできることを基準にした4段階の申告です。
+            </p>
+        </header>
 
         <ul class="skill-legend">
             {
                 SKILL_LEVELS.map((level, i) => (
                     <li class={`skill-legend-item skill-lv${i + 1}`}>
-                        <span class="skill-legend-dot" />
+                        <span class="skill-legend-bar" />
                         {level}
                     </li>
                 ))
             }
         </ul>
 
-        <div class="mt-4">
-            {
-                SKILL_CATEGORIES.map((category) => {
-                    // 書ける→使える→使い方がわかる→使ったことがある の順に並べる
-                    const sortedItems = [...category.items].sort(
-                        (a, b) => SKILL_LEVELS.indexOf(b.level) - SKILL_LEVELS.indexOf(a.level)
-                    );
-                    return (
-                        <div class="skill-category">
-                            <p class="skill-category-title">{category.category}</p>
-                            <ul class="badge-list">
-                                {sortedItems.map((item) => {
-                                    const levelIndex = SKILL_LEVELS.indexOf(item.level) + 1;
-                                    return (
-                                        <li class={`badge-item skill-lv${levelIndex}`}>
-                                            <span class="badge-item-name">{item.name}</span>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
+        {
+            SKILL_CATEGORIES.map((category) => {
+                // 書ける→使える→使い方がわかる→使ったことがある の順に並べる
+                const sortedItems = [...category.items].sort(
+                    (a, b) => SKILL_LEVELS.indexOf(b.level) - SKILL_LEVELS.indexOf(a.level)
+                );
+                return (
+                    <div class="skill-category">
+                        <div class="block-head">
+                            <h3 class="block-title">{category.category}</h3>
+                            <span class="block-rule" />
                         </div>
-                    );
-                })
-            }
-        </div>
+                        <ul class="skill-list">
+                            {sortedItems.map((item) => {
+                                const levelIndex = SKILL_LEVELS.indexOf(item.level) + 1;
+                                return (
+                                    <li class={`skill-chip skill-lv${levelIndex}`} title={item.level}>
+                                        {item.name}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                );
+            })
+        }
 
-        <div class="ai-stance-box">
-            <p class="ai-stance-title">{AI_STANCE_NOTE.title}</p>
-            <p class="ai-stance-body">{AI_STANCE_NOTE.body}</p>
+        <div class="note-box">
+            <p class="note-box-title">{AI_STANCE_NOTE.title}</p>
+            <p class="note-box-body">{AI_STANCE_NOTE.body}</p>
         </div>
     </div>
 </section>

@@ -17,15 +17,44 @@
     --color-surface: var(--surface);
 }
 
+/* --- 派生トークン（6つの基本トークンから算出。テーマ追加時の設定は不要） --- */
+:root {
+    /* 背景より一段沈んだ面。セクションの塗り分けに使う */
+    --surface-sunken: color-mix(in srgb, var(--foreground) 3%, var(--background));
+    /* アクセントの薄塗り（タグ・ハイライトの背景） */
+    --accent-soft: color-mix(in srgb, var(--accent) 10%, transparent);
+    --accent-line: color-mix(in srgb, var(--accent) 35%, transparent);
+    /* 罫線より更に淡い区切り */
+    --border-subtle: color-mix(in srgb, var(--border) 55%, var(--background));
+
+    /* 本文の折返し幅。日本語は 34em 前後が読みやすい */
+    --measure: 34em;
+    --content-width: 780px;
+    --wide-width: 980px;
+}
+
+[data-theme="dark"] {
+    --surface-sunken: color-mix(in srgb, var(--foreground) 4%, var(--background));
+    --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
 html {
-    font-family: "Inter", system-ui, sans-serif;
+    /* Inter は日本語グリフを持たないため、和文フォントを明示的に continue させる */
+    font-family: "Inter", "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+        "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
     margin: 0;
+    background: var(--background);
+    color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* 和欧混植のカーニング・約物詰め */
+    font-feature-settings: "palt" 1;
+    letter-spacing: 0.01em;
 }
 
 
@@ -34,74 +63,95 @@ body {
    =========================================== */
 
 h1,
-.title-xl {
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+h2,
+h3,
+h4 {
+    margin: 0;
     color: var(--foreground);
+    letter-spacing: -0.005em;
+}
+
+h1,
+.title-xl {
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 1.9rem);
+    font-weight: 800;
+    line-height: 1.3;
 }
 
 h2,
 .title-lg {
-    font-size: 1.25rem;
+    font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.6rem);
     font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.3;
-    color: var(--foreground);
+    line-height: 1.35;
 }
 
 h3,
 .title-md {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    line-height: 1.4;
-    color: var(--foreground);
+    line-height: 1.45;
 }
 
 p,
 .body {
-    font-size: 0.95rem;
-    line-height: 1.65;
+    margin: 0;
+    font-size: 1rem;
+    /* 日本語は行間を広めに取らないと詰まって見える */
+    line-height: 1.95;
     color: var(--foreground);
-    opacity: 0.92;
 }
 
 .body-sm {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: var(--foreground);
-    opacity: 0.85;
+    font-size: 0.875rem;
+    line-height: 1.8;
+    color: var(--text-muted);
 }
 
 .body-xs {
-    font-size: 0.75rem;
-    line-height: 1.4;
-    color: var(--foreground);
-    opacity: 0.75;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* 本文の折返し幅を抑えて視線移動を短くする */
+.measure {
+    max-width: var(--measure);
 }
 
 code,
 .mono {
-    font-family: "JetBrains Mono", monospace;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 0.85rem;
     font-weight: 500;
     line-height: 1.5;
+    font-feature-settings: normal;
+}
+
+.label {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-feature-settings: normal;
 }
 
 a,
 .link {
     color: inherit;
     text-decoration: underline;
+    text-decoration-thickness: 1px;
     text-underline-offset: 4px;
+    text-decoration-color: var(--accent-line);
     font-weight: 600;
-    transition: color 0.2s ease, opacity 0.2s ease;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
 a:hover,
 .link:hover {
     color: var(--accent);
-    opacity: 1;
+    text-decoration-color: var(--accent);
 }
 
 
@@ -110,7 +160,12 @@ a:hover,
    =========================================== */
 
 .container-narrow {
-    max-width: 860px;
+    max-width: var(--content-width);
+    margin: 0 auto;
+}
+
+.container-wide {
+    max-width: var(--wide-width);
     margin: 0 auto;
 }
 
@@ -128,14 +183,15 @@ a:hover,
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.6rem 1.25rem;
+    gap: 0.4rem;
+    padding: 0.7rem 1.35rem;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     border: 1px solid var(--border);
-    border-radius: 0.25rem;
-    background: transparent;
+    border-radius: 0.5rem;
+    background: var(--surface);
     color: var(--foreground);
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
     text-decoration: none;
 }
 
@@ -151,7 +207,8 @@ a:hover,
 }
 
 .btn-primary:hover {
-    opacity: 0.85;
+    background: color-mix(in srgb, var(--accent) 85%, var(--foreground));
+    border-color: transparent;
     color: var(--background);
 }
 
@@ -159,20 +216,19 @@ a:hover,
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: 1px solid var(--border);
     background: var(--surface);
-    color: var(--foreground);
-    transition: all 0.2s ease;
+    color: var(--text-muted);
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
 
 .btn-icon:hover {
-    background: var(--accent);
     border-color: var(--accent);
-    color: var(--background);
-    transform: translateY(-2px);
+    color: var(--accent);
+    background: var(--accent-soft);
 }
 
 
@@ -180,14 +236,16 @@ a:hover,
 .tag {
     display: inline-flex;
     align-items: center;
-    color: var(--accent);
-    font-family: "JetBrains Mono", monospace;
+    color: var(--text-muted);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1;
-    padding: 0.3rem 0.5rem;
+    padding: 0.32rem 0.55rem;
     border: 1px solid var(--border);
-    border-radius: 0.25rem;
+    border-radius: 100px;
+    background: var(--background);
+    font-feature-settings: normal;
 }
 
 
@@ -202,24 +260,35 @@ a:hover,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
-    background: color-mix(in srgb, var(--background) 92%, transparent);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+    padding: 0.85rem 2rem;
+    background: color-mix(in srgb, var(--background) 80%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+/* スクロール後だけ罫線を出す（最上部ではヘッダーを消して見せる） */
+.navbar.is-scrolled {
+    border-bottom-color: var(--border);
 }
 
 .navbar-brand {
     font-size: 0.95rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     text-decoration: none;
     color: var(--foreground);
+}
+
+.navbar-brand:hover {
+    color: var(--accent);
 }
 
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.75rem;
 }
 
 .nav-links {
@@ -231,31 +300,34 @@ a:hover,
 }
 
 .nav-link {
-    font-size: 0.9rem;
+    display: inline-block;
+    padding: 0.3rem 0;
+    font-size: 0.85rem;
     font-weight: 600;
     text-decoration: none;
-    color: var(--foreground);
-    opacity: 0.75;
+    color: var(--text-muted);
     position: relative;
-    transition: color 0.2s ease, opacity 0.2s ease;
+    transition: color 0.2s ease;
 }
 
-.nav-link:hover {
-    color: var(--accent);
-    opacity: 1;
+.nav-link:hover,
+.nav-link.is-active {
+    color: var(--foreground);
 }
 
 .nav-link-line {
     position: absolute;
-    bottom: -0.4rem;
+    bottom: 0;
     left: 0;
     width: 0;
     height: 2px;
+    border-radius: 2px;
     background-color: var(--accent);
-    transition: width 0.3s ease;
+    transition: width 0.25s ease;
 }
 
-.nav-link:hover .nav-link-line {
+.nav-link:hover .nav-link-line,
+.nav-link.is-active .nav-link-line {
     width: 100%;
 }
 
@@ -267,9 +339,10 @@ a:hover,
 .nav-menu-icon::before,
 .nav-menu-icon::after {
     display: block;
-    width: 16px;
-    height: 2px;
-    background: var(--foreground);
+    width: 15px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: currentColor;
     position: relative;
     transition: transform 0.2s ease;
 }
@@ -301,21 +374,71 @@ a:hover,
 
 .section-block {
     scroll-margin-top: 4.5rem;
-    padding: 4rem 1.5rem;
-    border-bottom: 1px solid var(--border);
+    padding: 5.5rem 2rem;
 }
 
-.section-block:last-of-type {
-    border-bottom: none;
+/* 罫線ではなく面の濃淡でセクションを区切る（線が増えるとうるさくなるため） */
+.section-block--tinted {
+    background: var(--surface-sunken);
+    border-block: 1px solid var(--border-subtle);
+}
+
+/* セクション見出し：ラベル + 見出し + 補足を1ブロックにまとめる */
+.section-head {
+    margin-bottom: 2.75rem;
 }
 
 .section-eyebrow {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--accent);
-    letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+    font-feature-settings: normal;
+}
+
+.section-eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+}
+
+.section-lead {
+    margin-top: 0.9rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    max-width: var(--measure);
+}
+
+/* セクション内の小ブロック見出し */
+.block-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.1rem;
+}
+
+.block-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+/* 見出し右に伸びるヘアライン */
+.block-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
 }
 
 
@@ -324,51 +447,115 @@ a:hover,
    =========================================== */
 
 .hero {
-    padding: 6rem 1.5rem 4rem;
+    position: relative;
+    padding: 7rem 2rem 6rem;
     scroll-margin-top: 4.5rem;
+    overflow: hidden;
+}
+
+/* 上部にごく薄いアクセントの光。フラットさを保ったまま奥行きを出す */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: -40% 0 auto;
+    height: 90%;
+    background: radial-gradient(
+        60% 60% at 15% 40%,
+        var(--accent-soft) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
 }
 
 .hero-inner {
-    max-width: 860px;
+    position: relative;
+    max-width: var(--wide-width);
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 3.5rem;
+}
+
+.hero-text {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    align-items: flex-start;
+}
+
+.hero-reading {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-feature-settings: normal;
 }
 
 .hero-name {
-    font-size: 2.25rem;
+    margin-top: 0.9rem;
+    font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.1rem);
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.01em;
     line-height: 1.2;
     color: var(--foreground);
 }
 
-.hero-reading {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
 .hero-tagline {
-    font-size: 1.15rem;
-    font-weight: 600;
+    margin-top: 1.1rem;
+    font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
+    font-weight: 700;
+    line-height: 1.7;
     color: var(--foreground);
+    max-width: 27em;
 }
 
 .hero-lead {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--foreground);
-    opacity: 0.85;
-    max-width: 640px;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.95;
+    color: var(--text-muted);
+    max-width: var(--measure);
 }
 
 .hero-actions {
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
-    margin-top: 0.5rem;
+    margin-top: 2.25rem;
+}
+
+.hero-portrait {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+/* 下にスクロールできることを示す小さな手掛かり */
+.hero-scroll {
+    position: relative;
+    max-width: var(--wide-width);
+    margin: 3.5rem auto 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-feature-settings: normal;
+}
+
+.hero-scroll::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
 }
 
 
@@ -376,77 +563,112 @@ a:hover,
    ABOUT
    =========================================== */
 
-.about-lead p {
-    margin-bottom: 1rem;
+.about-lead p + p {
+    margin-top: 1.15rem;
 }
 
-.about-lead p:last-child {
-    margin-bottom: 0;
+.about-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    margin-top: 1.75rem;
+    list-style: none;
+    padding: 0;
 }
 
-.about-meta {
-    margin-top: 0.75rem;
+.about-fact {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface);
+    font-size: 0.82rem;
+    color: var(--foreground);
+}
+
+.about-fact-label {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-feature-settings: normal;
 }
 
 .timeline-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
-.timeline-block-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    font-family: "JetBrains Mono", monospace;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.75rem;
-}
-
-.timeline-item {
-    border-left: 2px solid var(--border);
-    padding-left: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-.timeline-label {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--foreground);
-}
-
-.timeline-detail {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 0.15rem;
+    gap: 2.5rem 3rem;
+    margin-top: 3.25rem;
 }
 
 .timeline-full {
     grid-column: 1 / -1;
 }
 
+/* 縦線 + 起点のドットで経歴を時系列として読ませる */
+.timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    padding-left: 1.1rem;
+    border-left: 1px solid var(--border);
+}
+
+.timeline-item + .timeline-item {
+    margin-top: 1.35rem;
+}
+
+.timeline-item {
+    position: relative;
+}
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.1rem - 3.5px);
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--background);
+    border: 1.5px solid var(--accent);
+}
+
+.timeline-label {
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.6;
+    color: var(--foreground);
+}
+
+.timeline-detail {
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+/* 資格：年月を等幅で左に固定して、縦のラインを揃える */
 .cert-block {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
+    margin-top: 3.25rem;
 }
 
 .cert-timeline {
     list-style: none;
     padding: 0;
-    margin: 1rem 0 0;
-    display: flex;
-    flex-direction: column;
+    margin: 0;
 }
 
 .cert-timeline-item {
-    display: flex;
+    display: grid;
+    grid-template-columns: 4.75rem 1fr auto;
     align-items: baseline;
-    gap: 1rem;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--border);
+    gap: 0.5rem 1rem;
+    padding: 0.7rem 0.25rem;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .cert-timeline-item:last-child {
@@ -454,72 +676,22 @@ a:hover,
 }
 
 .cert-timeline-date {
-    flex-shrink: 0;
-    width: 4.5rem;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.78rem;
-    color: var(--accent);
-    font-weight: 600;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: normal;
 }
 
 .cert-timeline-label {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--foreground);
 }
 
 .cert-timeline-note {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-}
-
-
-/* ===========================================
-   BADGE LIST (資格・スキルなど、名前+一言の一覧に共通利用)
-   =========================================== */
-
-.badge-list {
-    list-style: none;
-    padding: 0;
-    margin: 0.75rem 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
-
-.skill-category .badge-list {
-    gap: 0.9rem;
-}
-
-.badge-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 0.25rem;
-    background: var(--surface);
-    margin-bottom: 0;
-}
-
-.skill-category .badge-item {
-    padding: 0.9rem 1.4rem;
-    border-radius: 0.4rem;
-}
-
-.skill-category .badge-item-name {
-    font-size: 1rem;
-}
-
-.badge-item-name {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--foreground);
-}
-
-.badge-item-meta {
-    font-size: 0.72rem;
-    font-family: "JetBrains Mono", monospace;
+    font-size: 0.76rem;
     color: var(--text-muted);
 }
 
@@ -528,99 +700,107 @@ a:hover,
    SKILLS
    =========================================== */
 
-.skill-category {
-    margin-bottom: 1.75rem;
+.skill-category + .skill-category {
+    margin-top: 2.25rem;
 }
 
-.skill-category:last-child {
-    margin-bottom: 0;
+.skill-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
 }
 
-.skill-category-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+/* 習熟度は「左の細いバー + 淡い塗り」で表す。
+   面をベタ塗りすると彩度が勝ちすぎて他の要素が沈むため。 */
+.skill-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.5rem 0.85rem 0.5rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--lv-color) 30%, var(--border));
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, var(--lv-color) 7%, var(--surface));
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--foreground);
+    line-height: 1.4;
 }
 
-/* Legend + level color-coding (single accent color, intensity scale) */
+.skill-chip::before {
+    content: "";
+    width: 3px;
+    align-self: stretch;
+    border-radius: 2px;
+    background: var(--lv-color);
+    flex-shrink: 0;
+}
+
+/* 習熟度の色。使ったことがある=ニュートラル / わかる=緑 / 使える=青 / 書ける=赤 */
+.skill-lv1 { --lv-color: #9aa2b1; }
+.skill-lv2 { --lv-color: #2f9e63; }
+.skill-lv3 { --lv-color: #3358d4; }
+.skill-lv4 { --lv-color: #cf4436; }
+
+[data-theme="dark"] .skill-lv1 { --lv-color: #79818f; }
+[data-theme="dark"] .skill-lv2 { --lv-color: #52c98a; }
+[data-theme="dark"] .skill-lv3 { --lv-color: #7fa3ff; }
+[data-theme="dark"] .skill-lv4 { --lv-color: #f0776a; }
+
 .skill-legend {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.5rem 1.25rem;
     padding: 0;
-    margin: 1rem 0 0;
+    margin: 1.75rem 0 2.75rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .skill-legend-item {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.78rem;
+    gap: 0.5rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
-.skill-legend-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--skill-lv-color);
+.skill-legend-bar {
+    width: 3px;
+    height: 0.85rem;
+    border-radius: 2px;
+    background: var(--lv-color);
     flex-shrink: 0;
 }
 
-/* レベル別の色分け: 使ったことがある=白 / 使い方がわかる=緑 / 使える=青 / 書ける=赤 */
-.skill-lv1 { --skill-lv-color: #ffffff; }
-.skill-lv2 { --skill-lv-color: #16a34a; }
-.skill-lv3 { --skill-lv-color: #2563eb; }
-.skill-lv4 { --skill-lv-color: #dc2626; }
-
-.skill-legend-dot {
-    border: 1px solid color-mix(in srgb, var(--skill-lv-color) 60%, var(--border));
+/* 補足コラム（AIとの付き合い方など） */
+.note-box {
+    margin-top: 3.25rem;
+    padding: 1.5rem 1.6rem;
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
+    border-radius: 0.5rem;
+    background: var(--surface);
 }
 
-.skill-category .badge-item.skill-lv2,
-.skill-category .badge-item.skill-lv3,
-.skill-category .badge-item.skill-lv4 {
-    background: var(--skill-lv-color);
-    border-color: var(--skill-lv-color);
-}
-
-.skill-category .badge-item.skill-lv2 .badge-item-name,
-.skill-category .badge-item.skill-lv3 .badge-item-name,
-.skill-category .badge-item.skill-lv4 .badge-item-name {
-    color: #ffffff;
-}
-
-.skill-category .badge-item.skill-lv1 {
-    background: var(--skill-lv-color);
-    border-color: var(--border);
-}
-
-.skill-category .badge-item.skill-lv1 .badge-item-name {
-    color: #111827;
-}
-
-.ai-stance-box {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-}
-
-.ai-stance-title {
-    font-size: 0.75rem;
-    font-weight: 700;
-    font-family: "JetBrains Mono", monospace;
-    color: var(--text-muted);
+.note-box-title {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.7rem;
+    font-feature-settings: normal;
 }
 
-.ai-stance-body {
-    font-size: 0.88rem;
-    line-height: 1.6;
+.note-box-body {
+    font-size: 0.9rem;
+    line-height: 1.95;
     color: var(--foreground);
-    opacity: 0.9;
 }
 
 
@@ -631,54 +811,59 @@ a:hover,
 .project-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
-    margin-top: 1rem;
+    gap: 1rem;
 }
 
 .project-card {
+    position: relative;
     text-align: left;
-    padding: 1.25rem;
+    padding: 1.5rem 1.6rem;
     border: 1px solid var(--border);
-    border-radius: 0.25rem;
+    border-radius: 0.65rem;
     background: var(--surface);
     cursor: pointer;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
     font: inherit;
     color: inherit;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.45rem;
 }
 
 .project-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
+    border-color: var(--accent-line);
+    background: color-mix(in srgb, var(--accent) 3%, var(--surface));
 }
 
 .project-card-category {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.7rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
     font-weight: 600;
     color: var(--accent);
-    letter-spacing: 0.03em;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-feature-settings: normal;
 }
 
 .project-card-title {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
+    line-height: 1.45;
     color: var(--foreground);
+    padding-right: 1.5rem;
 }
 
 .project-card-org {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
+    line-height: 1.6;
     color: var(--text-muted);
 }
 
 .project-card-summary {
-    font-size: 0.85rem;
-    color: var(--foreground);
-    opacity: 0.85;
-    line-height: 1.55;
+    margin-top: 0.35rem;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.8;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -688,75 +873,100 @@ a:hover,
 .project-card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.35rem;
     margin-top: auto;
-    padding-top: 0.5rem;
+    padding-top: 1.1rem;
+}
+
+/* 「押せる」ことを示す右上の矢印 */
+.project-card-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.project-card:hover .project-card-arrow {
+    color: var(--accent);
+    transform: translate(2px, -2px);
 }
 
 /* Modal */
 .project-dialog {
-    max-width: 560px;
+    max-width: 580px;
     width: calc(100% - 2rem);
     max-height: calc(100% - 4rem);
     margin: auto;
     border: 1px solid var(--border);
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     padding: 0;
-    background: var(--background);
+    background: var(--surface);
     color: var(--foreground);
 }
 
 .project-dialog::backdrop {
-    background: color-mix(in srgb, black 55%, transparent);
-    backdrop-filter: blur(2px);
+    background: color-mix(in srgb, black 45%, transparent);
+    backdrop-filter: blur(3px);
 }
 
 .project-dialog-inner {
-    padding: 1.75rem;
+    padding: 2rem;
     position: relative;
 }
 
 .project-dialog-close {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 1.1rem;
+    right: 1.1rem;
+    font-size: 1.1rem;
+    line-height: 1;
 }
 
 .project-dialog-category {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.75rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
     font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
     color: var(--accent);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.6rem;
+    font-feature-settings: normal;
 }
 
 .project-dialog-title {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
     font-weight: 800;
-    margin-bottom: 0.25rem;
-    padding-right: 2rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    padding-right: 2.5rem;
 }
 
 .project-dialog-meta {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    line-height: 1.8;
     color: var(--text-muted);
-    margin-bottom: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .project-dialog-summary {
+    margin-top: 1.25rem;
     font-size: 0.92rem;
-    line-height: 1.7;
-    margin-bottom: 1rem;
+    line-height: 1.95;
 }
 
 .project-dialog-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
+    gap: 0.35rem;
+    margin-top: 1.5rem;
 }
 
 .project-dialog-link {
+    display: inline-block;
+    margin-top: 1.75rem;
     font-size: 0.85rem;
 }
 
@@ -768,35 +978,57 @@ a:hover,
 .contact-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+    gap: 0.6rem;
+    max-width: 520px;
 }
 
 .contact-row {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: space-between;
+    gap: 1rem;
     text-decoration: none;
-    padding: 0.85rem 1rem;
+    padding: 1rem 1.25rem;
     border: 1px solid var(--border);
-    border-radius: 0.25rem;
-    transition: border-color 0.2s ease;
+    border-radius: 0.65rem;
+    background: var(--surface);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .contact-row:hover {
-    border-color: var(--accent);
+    border-color: var(--accent-line);
+    background: color-mix(in srgb, var(--accent) 3%, var(--surface));
+    color: inherit;
 }
 
 .contact-row-label {
-    font-size: 0.75rem;
+    display: block;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--text-muted);
-    font-family: "JetBrains Mono", monospace;
+    margin-bottom: 0.25rem;
+    font-feature-settings: normal;
 }
 
 .contact-row-value {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 600;
     color: var(--foreground);
+    word-break: break-all;
+}
+
+.contact-row-arrow {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.contact-row:hover .contact-row-arrow {
+    color: var(--accent);
+    transform: translateX(3px);
 }
 
 
@@ -805,13 +1037,18 @@ a:hover,
    =========================================== */
 
 .footer {
-    padding: 1.5rem;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+    max-width: var(--wide-width);
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
-    color: var(--foreground);
-    border-top: 1px solid var(--border);
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 
@@ -820,11 +1057,16 @@ a:hover,
    =========================================== */
 
 *:focus-visible {
-    outline: 2px dashed var(--accent);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
+    border-radius: 0.25rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
     *,
     *::before,
     *::after {
@@ -839,21 +1081,51 @@ a:hover,
    RESPONSIVE
    =========================================== */
 
-@media (max-width: 768px) {
-    .hero-name {
-        font-size: 1.75rem;
-    }
-
-    .timeline-grid {
+@media (max-width: 900px) {
+    .hero-inner {
         grid-template-columns: 1fr;
+        gap: 2.5rem;
     }
 
-    .skill-row {
-        grid-template-columns: 6.5rem 1fr 2rem;
+    .hero-portrait {
+        width: 130px;
+        height: 130px;
+        order: -1;
     }
 
     .project-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 4.5rem 1.5rem 4rem;
+    }
+
+    .section-block {
+        padding: 4rem 1.5rem;
+    }
+
+    .navbar {
+        padding: 0.85rem 1.5rem;
+    }
+
+    .footer {
+        padding: 1.75rem 1.5rem;
+    }
+
+    .timeline-grid {
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
+    }
+
+    .cert-timeline-item {
+        grid-template-columns: 4.5rem 1fr;
+    }
+
+    .cert-timeline-note {
+        grid-column: 2;
     }
 
     .nav-menu-toggle {
@@ -867,7 +1139,7 @@ a:hover,
         left: 0;
         flex-direction: column;
         align-items: flex-start;
-        gap: 1.25rem;
+        gap: 1rem;
         padding: 1.25rem 1.5rem;
         background: var(--background);
         border-bottom: 1px solid var(--border);
@@ -880,6 +1152,6 @@ a:hover,
 
     .nav-links {
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.85rem;
     }
 }

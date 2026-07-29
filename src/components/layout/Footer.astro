@@ -7,21 +7,23 @@ const activeSocials = SOCIALS.filter((s) => s.isActive);
 ---
 
 <footer class="footer">
-    <div class="flex items-center gap-2 flex-wrap">
-        {
-            activeSocials.map((social) => (
-                <a
-                    href={social.href}
-                    aria-label={social.linkTitle}
-                    title={social.linkTitle}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="btn-icon"
-                >
-                    <Icon name={SOCIAL_ICONS[social.name] || social.name} size={18} />
-                </a>
-            ))
-        }
+    <div class="footer-inner">
+        <div class="flex items-center gap-2 flex-wrap">
+            {
+                activeSocials.map((social) => (
+                    <a
+                        href={social.href}
+                        aria-label={social.linkTitle}
+                        title={social.linkTitle}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="btn-icon"
+                    >
+                        <Icon name={SOCIAL_ICONS[social.name] || social.name} size={18} />
+                    </a>
+                ))
+            }
+        </div>
+        <span class="body-xs">&copy; {currentYear} {SITE.author}</span>
     </div>
-    <span class="body-xs">&copy; {currentYear} {SITE.author}</span>
 </footer>

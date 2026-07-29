@@ -15,6 +15,7 @@ const { project } = Astro.props;
     data-project={JSON.stringify(project)}
     aria-haspopup="dialog"
 >
+    <span class="project-card-arrow" aria-hidden="true">↗</span>
     <span class="project-card-category">{project.category}</span>
     <span class="project-card-title">{project.title}</span>
     <span class="project-card-org">{project.org}</span>

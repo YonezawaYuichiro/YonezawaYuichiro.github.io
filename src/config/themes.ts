@@ -2,41 +2,43 @@ import type { Theme, ThemeColors, ThemeName } from "../types/themes";
 
 export { type Theme, type ThemeName, type ThemeColors };
 
+// 各テーマは6トークン。surface は background と必ず差を付ける
+// （同色にするとカードが背景に溶けて階層が消えるため）。
 export const THEMES: Record<string, Theme> = {
     light_default: {
-        background: "#f9fafb",
-        foreground: "#111827",
-        accent: "#3b82f6",
-        muted: "#6b7280",
-        border: "#e5e7eb",
-        surface: "#f9fafb",
         isDark: false,
+        background: "#fbfbfd",
+        surface: "#ffffff",
+        foreground: "#14161c",
+        muted: "#5b6170",
+        border: "#e4e7ee",
+        accent: "#3358d4",
     },
     dark_default: {
-        background: "#212737",
-        foreground: "#eaedf3",
-        accent: "#ff6b01",
-        muted: "#343f60",
-        border: "#ab4b08",
-        surface: "#212737",
         isDark: true,
+        background: "#0e1116",
+        surface: "#161a22",
+        foreground: "#e7eaf0",
+        muted: "#8d95a5",
+        border: "#242a35",
+        accent: "#83a8ff",
     },
     light_notepad: {
         isDark: false,
-        background: '#fdf8e9',
-        surface: '#fdf8e9',
-        foreground: '#29231c',
-        muted: '#736658',
-        border: '#eaddc6',
-        accent: '#b84c30',
+        background: "#fbf6e9",
+        surface: "#fffdf6",
+        foreground: "#26211a",
+        muted: "#6f6355",
+        border: "#e8dcc4",
+        accent: "#b3492c",
     },
     dark_notepad: {
         isDark: true,
-        background: '#241f1c',
-        surface: '#241f1c',
-        foreground: '#e6dfd3',
-        muted: '#8a7d71',
-        border: '#3d342d',
-        accent: '#d97757',
-    }
+        background: "#1e1a17",
+        surface: "#272220",
+        foreground: "#e8e1d5",
+        muted: "#a29587",
+        border: "#3a322b",
+        accent: "#e08b6b",
+    },
 };

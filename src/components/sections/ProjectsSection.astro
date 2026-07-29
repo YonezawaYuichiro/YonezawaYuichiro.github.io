@@ -3,13 +3,15 @@ import { PROJECTS } from "../../data/projects";
 import ProjectCard from "../ui/ProjectCard.astro";
 ---
 
-<section id="projects" class="section-block">
-    <div class="container-narrow">
-        <p class="section-eyebrow">Projects</p>
-        <h2 class="title-lg">プロジェクト</h2>
-        <p class="body mt-4">
-            カードをクリックすると詳細を表示します。
-        </p>
+<section id="projects" class="section-block section-block--tinted">
+    <div class="container-wide">
+        <header class="section-head">
+            <p class="section-eyebrow">Projects</p>
+            <h2 class="title-lg">プロジェクト</h2>
+            <p class="section-lead">
+                カードを選ぶと、担当範囲・使用技術・リポジトリを表示します。
+            </p>
+        </header>
 
         <div class="project-grid">
             {PROJECTS.map((project) => <ProjectCard project={project} />)}

@@ -1,80 +1,71 @@
 ---
 import { PROFILE } from "../../data/profile";
+
+// 経歴ブロックは定義をまとめて回す（マークアップの重複を避ける）
+const timelineBlocks = [
+    { title: "学歴", items: PROFILE.education, full: false },
+    { title: "インターン", items: PROFILE.internships, full: false },
+    { title: "職歴", items: PROFILE.workHistory, full: false },
+    { title: "受賞", items: PROFILE.awards, full: false },
+    { title: "直近の学習", items: PROFILE.recentLearning, full: true },
+];
+
+const facts = [
+    { label: "生年月日", value: PROFILE.birthDate },
+    { label: "出身", value: PROFILE.birthPlace },
+    { label: "拠点", value: PROFILE.base },
+];
 ---
 
-<section id="about" class="section-block">
+<section id="about" class="section-block section-block--tinted">
     <div class="container-narrow">
-        <p class="section-eyebrow">About</p>
-        <h2 class="title-lg">自己紹介</h2>
+        <header class="section-head">
+            <p class="section-eyebrow">About</p>
+            <h2 class="title-lg">自己紹介</h2>
+        </header>
 
-        <div class="about-lead mt-4">
+        <div class="about-lead measure">
             {PROFILE.intro.map((paragraph) => <p>{paragraph}</p>)}
         </div>
 
-        <p class="body-sm about-meta">
-            {PROFILE.birthDate}生まれ（{PROFILE.birthPlace}出身）／拠点：{PROFILE.base}
-        </p>
+        <ul class="about-facts">
+            {
+                facts.map((fact) => (
+                    <li class="about-fact">
+                        <span class="about-fact-label">{fact.label}</span>
+                        <span>{fact.value}</span>
+                    </li>
+                ))
+            }
+        </ul>
 
         <div class="timeline-grid">
-            <div>
-                <p class="timeline-block-title">学歴</p>
-                {
-                    PROFILE.education.map((item) => (
-                        <div class="timeline-item">
-                            <p class="timeline-label">{item.label}</p>
-                            <p class="timeline-detail">{item.detail}</p>
+            {
+                timelineBlocks.map((block) => (
+                    <div class={block.full ? "timeline-full" : undefined}>
+                        <div class="block-head">
+                            <h3 class="block-title">{block.title}</h3>
+                            <span class="block-rule" />
                         </div>
-                    ))
-                }
-            </div>
-            <div>
-                <p class="timeline-block-title">インターン</p>
-                {
-                    PROFILE.internships.map((item) => (
-                        <div class="timeline-item">
-                            <p class="timeline-label">{item.label}</p>
-                            <p class="timeline-detail">{item.detail}</p>
-                        </div>
-                    ))
-                }
-            </div>
-            <div>
-                <p class="timeline-block-title">職歴</p>
-                {
-                    PROFILE.workHistory.map((item) => (
-                        <div class="timeline-item">
-                            <p class="timeline-label">{item.label}</p>
-                            <p class="timeline-detail">{item.detail}</p>
-                        </div>
-                    ))
-                }
-            </div>
-            <div>
-                <p class="timeline-block-title">受賞</p>
-                {
-                    PROFILE.awards.map((item) => (
-                        <div class="timeline-item">
-                            <p class="timeline-label">{item.label}</p>
-                            <p class="timeline-detail">{item.detail}</p>
-                        </div>
-                    ))
-                }
-            </div>
-            <div class="timeline-full">
-                <p class="timeline-block-title">直近の学習</p>
-                {
-                    PROFILE.recentLearning.map((item) => (
-                        <div class="timeline-item">
-                            <p class="timeline-label">{item.label}</p>
-                            <p class="timeline-detail">{item.detail}</p>
-                        </div>
-                    ))
-                }
-            </div>
+                        <ul class="timeline">
+                            {block.items.map((item) => (
+                                <li class="timeline-item">
+                                    <p class="timeline-label">{item.label}</p>
+                                    <p class="timeline-detail">{item.detail}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))
+            }
         </div>
 
         <div class="cert-block">
-            <p class="timeline-block-title">保有資格・免許（時系列順）</p>
+            <div class="block-head">
+                <h3 class="block-title">保有資格・免許</h3>
+                <span class="block-rule"></span>
+                <span class="body-xs">{PROFILE.certifications.length}件／取得順</span>
+            </div>
             <ul class="cert-timeline">
                 {
                     PROFILE.certifications.map((item) => (

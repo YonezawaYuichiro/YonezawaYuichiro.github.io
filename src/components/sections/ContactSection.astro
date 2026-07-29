@@ -1,40 +1,40 @@
 ---
 import { PROFILE } from "../../data/profile";
+
+// 表示するのは値のあるものだけ（x は未設定のことがある）
+const channels = [
+    { label: "Email", value: PROFILE.contact.email, href: `mailto:${PROFILE.contact.email}`, external: false },
+    { label: "GitHub", value: PROFILE.contact.github.replace("https://", ""), href: PROFILE.contact.github, external: true },
+    { label: "X", value: PROFILE.contact.x.replace("https://", ""), href: PROFILE.contact.x, external: true },
+].filter((channel) => channel.href);
 ---
 
 <section id="contact" class="section-block">
     <div class="container-narrow">
-        <p class="section-eyebrow">Contact</p>
-        <h2 class="title-lg">お問い合わせ</h2>
-        <p class="body mt-4">ご興味を持っていただけましたら、お気軽にご連絡ください。</p>
+        <header class="section-head">
+            <p class="section-eyebrow">Contact</p>
+            <h2 class="title-lg">お問い合わせ</h2>
+            <p class="section-lead">
+                ご興味を持っていただけましたら、お気軽にご連絡ください。
+            </p>
+        </header>
 
         <div class="contact-list">
-            <a class="contact-row" href={`mailto:${PROFILE.contact.email}`}>
-                <span>
-                    <span class="contact-row-label">Email</span><br />
-                    <span class="contact-row-value">{PROFILE.contact.email}</span>
-                </span>
-            </a>
-            <a
-                class="contact-row"
-                href={PROFILE.contact.github}
-                target="_blank"
-                rel="noreferrer"
-            >
-                <span>
-                    <span class="contact-row-label">GitHub</span><br />
-                    <span class="contact-row-value">{PROFILE.contact.github.replace("https://", "")}</span>
-                </span>
-            </a>
             {
-                PROFILE.contact.x && (
-                    <a class="contact-row" href={PROFILE.contact.x} target="_blank" rel="noreferrer">
+                channels.map((channel) => (
+                    <a
+                        class="contact-row"
+                        href={channel.href}
+                        target={channel.external ? "_blank" : undefined}
+                        rel={channel.external ? "noreferrer" : undefined}
+                    >
                         <span>
-                            <span class="contact-row-label">X</span><br />
-                            <span class="contact-row-value">{PROFILE.contact.x.replace("https://", "")}</span>
+                            <span class="contact-row-label">{channel.label}</span>
+                            <span class="contact-row-value">{channel.value}</span>
                         </span>
+                        <span class="contact-row-arrow" aria-hidden="true">→</span>
                     </a>
-                )
+                ))
             }
         </div>
     </div>

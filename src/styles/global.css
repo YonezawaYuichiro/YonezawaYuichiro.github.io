@@ -487,6 +487,10 @@ a:hover,
     gap: 0.6rem;
 }
 
+.skill-category .badge-list {
+    gap: 0.9rem;
+}
+
 .badge-item {
     display: flex;
     flex-direction: column;
@@ -496,6 +500,15 @@ a:hover,
     border-radius: 0.25rem;
     background: var(--surface);
     margin-bottom: 0;
+}
+
+.skill-category .badge-item {
+    padding: 0.9rem 1.4rem;
+    border-radius: 0.4rem;
+}
+
+.skill-category .badge-item-name {
+    font-size: 1rem;
 }
 
 .badge-item-name {
@@ -555,34 +568,36 @@ a:hover,
     flex-shrink: 0;
 }
 
-.skill-lv1 { --skill-lv-color: var(--border); }
-.skill-lv2 { --skill-lv-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
-.skill-lv3 { --skill-lv-color: color-mix(in srgb, var(--accent) 70%, var(--border)); }
-.skill-lv4 { --skill-lv-color: var(--accent); }
+/* レベル別の色分け: 使ったことがある=赤 / 使い方がわかる=青 / 使える=緑 / 書ける=白 */
+.skill-lv1 { --skill-lv-color: #dc2626; }
+.skill-lv2 { --skill-lv-color: #2563eb; }
+.skill-lv3 { --skill-lv-color: #16a34a; }
+.skill-lv4 { --skill-lv-color: #ffffff; }
 
-.skill-category .badge-item.skill-lv1 {
-    border-color: var(--border);
+.skill-legend-dot {
+    border: 1px solid color-mix(in srgb, var(--skill-lv-color) 60%, var(--border));
 }
 
-.skill-category .badge-item.skill-lv2 {
-    border-color: var(--skill-lv-color);
-}
-
+.skill-category .badge-item.skill-lv1,
+.skill-category .badge-item.skill-lv2,
 .skill-category .badge-item.skill-lv3 {
+    background: var(--skill-lv-color);
     border-color: var(--skill-lv-color);
-    background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.skill-category .badge-item.skill-lv1 .badge-item-name,
+.skill-category .badge-item.skill-lv2 .badge-item-name,
+.skill-category .badge-item.skill-lv3 .badge-item-name {
+    color: #ffffff;
 }
 
 .skill-category .badge-item.skill-lv4 {
-    border-color: var(--skill-lv-color);
-    background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+    background: var(--skill-lv-color);
+    border-color: var(--border);
 }
 
-.skill-category .badge-item.skill-lv2 .badge-item-meta,
-.skill-category .badge-item.skill-lv3 .badge-item-meta,
-.skill-category .badge-item.skill-lv4 .badge-item-meta {
-    color: var(--skill-lv-color);
-    font-weight: 600;
+.skill-category .badge-item.skill-lv4 .badge-item-name {
+    color: #111827;
 }
 
 .ai-stance-box {

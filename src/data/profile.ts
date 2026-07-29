@@ -81,13 +81,13 @@ export const PROFILE: ProfileData = {
     awards: [
         {
             label: "テックシーカーハッカソン",
-            detail: "デナリパム フィジカル ブルーエンジニア賞",
+            detail: "デナリパム フィジカル ブルー エンジニア賞",
         },
     ],
     internships: [
         {
             label: "信濃ロボティクスイノベーションズ合同会社",
-            detail: "5ヶ月間のインターンでDaily-Briefの開発等を担当",
+            detail: "5ヶ月間のインターンでDaily-Briefの開発を担当",
         },
         {
             label: "Hutzper（大阪／製造業向け検査AIスタートアップ）",

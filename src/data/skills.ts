@@ -29,7 +29,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
         items: [
             { name: "HTML", level: "書ける" },
             { name: "CSS", level: "使える" },
-            { name: "Python", level: "使える" },
+            { name: "Python", level: "書ける" },
             { name: "JavaScript", level: "使える" },
             { name: "TypeScript", level: "使い方がわかる" },
             { name: "C++ (Arduino)", level: "使い方がわかる" },

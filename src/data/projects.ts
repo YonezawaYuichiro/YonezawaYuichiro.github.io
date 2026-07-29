@@ -4,7 +4,13 @@
 //   取り組み … 課題に対して何をしたか（3件）
 //   成果     … 結果どうなったか（1〜2文）
 // リンクの種別。ラベルをここで固定し、プロジェクトごとに表記がぶれないようにする
-export type ProjectLinkKind = "repo" | "slide" | "article" | "demo" | "site";
+export type ProjectLinkKind =
+    | "repo"
+    | "slide"
+    | "article"
+    | "demo"
+    | "site"
+    | "gallery";
 
 export const PROJECT_LINK_LABELS: Record<ProjectLinkKind, string> = {
     repo: "リポジトリ",
@@ -12,7 +18,16 @@ export const PROJECT_LINK_LABELS: Record<ProjectLinkKind, string> = {
     article: "記事",
     demo: "デモ",
     site: "関連サイト",
+    gallery: "画像・動画",
 };
+
+export interface ProjectMedia {
+    type: "image" | "video";
+    /** public/ 配下からの絶対パス（例: "/images/xxx/yyy.png"） */
+    src: string;
+    /** 何を写しているかの説明 */
+    caption: string;
+}
 
 export interface ProjectLink {
     kind: ProjectLinkKind;
@@ -49,8 +64,11 @@ export interface ProjectData {
     tech: string[];
     /** リポジトリ・発表資料・記事などへのリンク（無い場合は空配列） */
     links: ProjectLink[];
-    /** 画像URL（public/ 配下からの絶対パス。未設定の場合は空文字） */
-    imageUrl?: string;
+    /**
+     * 画像・動画。先頭がモーダルに表示する代表メディアで、
+     * 2件以上ある場合は一覧ページ /projects/<id> へのリンクが自動で付く。
+     */
+    media: ProjectMedia[];
 }
 
 export const PROJECTS: ProjectData[] = [
@@ -95,7 +113,20 @@ export const PROJECTS: ProjectData[] = [
                 url: "/files/Daily-Brief.pdf",
             },
         ],
-        imageUrl: "",
+        media: [
+            { type: "image", src: "/images/Daily-Brief/D-DailyBrief.png", caption: "生成されたデイリーブリーフの画面" },
+            { type: "video", src: "/video/Daily-Brief.mp4", caption: "デモ動画：ブリーフィングの生成から音声再生まで" },
+            { type: "image", src: "/images/Daily-Brief/A-Login.png", caption: "ログイン画面" },
+            { type: "image", src: "/images/Daily-Brief/B-Cognito.png", caption: "AWS Cognito による認証" },
+            { type: "image", src: "/images/Daily-Brief/C-OAuth.png", caption: "Google アカウントの連携" },
+            { type: "image", src: "/images/Daily-Brief/E-TTS.png", caption: "音声ブリーフィングの再生" },
+            { type: "image", src: "/images/Daily-Brief/F-Annotation.png", caption: "メールへの KEEP / SKIP アノテーション" },
+            { type: "image", src: "/images/Daily-Brief/G-Rule.png", caption: "フィルタリング条件の設定" },
+            { type: "image", src: "/images/Daily-Brief/H-profile.png", caption: "プロフィール設定" },
+            { type: "image", src: "/images/Daily-Brief/I-Privacy.png", caption: "プライバシーポリシー" },
+            { type: "image", src: "/images/Daily-Brief/J-Terms.png", caption: "利用規約" },
+            { type: "image", src: "/images/Daily-Brief/K-GDPR.png", caption: "アカウント・データの削除（GDPR対応）" },
+        ],
     },
     {
         id: "3d-photogrammetry",
@@ -123,7 +154,12 @@ export const PROJECTS: ProjectData[] = [
                 url: "/files/３D化パイプライン.pdf",
             },
         ],
-        imageUrl: "",
+        media: [
+            { type: "image", src: "/images/３Dパイプライン/メッシュ1.png", caption: "生成したテクスチャ付きメッシュ" },
+            { type: "image", src: "/images/３Dパイプライン/メッシュ2.png", caption: "メッシュの別アングル" },
+            { type: "image", src: "/images/３Dパイプライン/点群.png", caption: "OpenMVS で生成した密点群" },
+            { type: "image", src: "/images/３Dパイプライン/カメラ姿勢.png", caption: "COLMAP が推定したカメラ位置" },
+        ],
     },
     {
         id: "dialogue-preference-learning",
@@ -156,7 +192,10 @@ export const PROJECTS: ProjectData[] = [
                 url: "/files/対話式選好学習.pdf",
             },
         ],
-        imageUrl: "",
+        media: [
+            { type: "image", src: "/images/対話式選好学習/問題.png", caption: "取り組んでいる課題の整理" },
+            { type: "image", src: "/images/対話式選好学習/リザルト.png", caption: "価値観抽出の実行結果" },
+        ],
     },
     {
         id: "face-tracker",
@@ -189,7 +228,11 @@ export const PROJECTS: ProjectData[] = [
                 url: "https://protopedia.net/prototype/private/4fa1857e-525a-4dc3-b826-8d57e2958cde",
             },
         ],
-        imageUrl: "",
+        media: [
+            { type: "image", src: "/images/face-tracker/IMG_5992.JPEG", caption: "2軸のサーボに載せたUSBカメラ" },
+            { type: "image", src: "/images/face-tracker/IMG_5995.JPEG", caption: "実機（別アングル）" },
+            { type: "video", src: "/video/face-tracker.mp4", caption: "デモ動画：顔への追従動作" },
+        ],
     },
     {
         id: "signate-flood-prediction",
@@ -218,7 +261,7 @@ export const PROJECTS: ProjectData[] = [
                 url: "https://user.competition.signate.jp/ja/competition/detail/?competition=37308d147238487c96551300b8e4cb76&task=8940dcfa70434a6aaaa28d661652d536&tab=leaderboard&leaderboard=private",
             },
         ],
-        imageUrl: "",
+        media: [],
     },
     {
         id: "handon-power-device",
@@ -246,12 +289,26 @@ export const PROJECTS: ProjectData[] = [
                 url: "https://github.com/sousci/decopin-project",
             },
             {
+                kind: "slide",
+                title: "PDF",
+                url: "files/デコピンマシーン紹介スライド.pdf",
+            },
+            {
                 kind: "article",
                 title: "Protopedia",
                 url: "https://protopedia.net/prototype/9061",
             },
         ],
-        imageUrl: "",
+        media: [
+            { type: "image", src: "/images/Dekopin/デコピン強化装置.JPEG", caption: "完成したデバイス。手に装着して使う" },
+            { type: "image", src: "/images/Dekopin/初期設計.JPEG", caption: "初期の設計" },
+            { type: "image", src: "/images/Dekopin/設計.png", caption: "設計図" },
+            { type: "image", src: "/images/Dekopin/機構モデル.png", caption: "巻き上げ機構のモデル" },
+            { type: "image", src: "/images/Dekopin/構造解説.png", caption: "装置の構造" },
+            { type: "image", src: "/images/Dekopin/イメージ図.png", caption: "全体のイメージ図" },
+            { type: "image", src: "/images/Dekopin/尻尾.JPEG", caption: "3Dプリントしたセグメント構造の尻尾機構" },
+            { type: "image", src: "/images/Dekopin/バックエンド.png", caption: "ランキングAPIの構成" },
+        ],
     },
     {
         id: "tango-de-go",
@@ -279,6 +336,6 @@ export const PROJECTS: ProjectData[] = [
                 url: "https://github.com/YonezawaYuichiro/tango_table",
             },
         ],
-        imageUrl: "",
+        media: [],
     },
 ];

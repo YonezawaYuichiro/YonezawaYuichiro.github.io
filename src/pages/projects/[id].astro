@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { PROJECTS } from "../../data/projects";
+
+// メディアを持つプロジェクトだけ一覧ページを生成する
+export function getStaticPaths() {
+    return PROJECTS.filter((project) => project.media.length > 0).map((project) => ({
+        params: { id: project.id },
+        props: { project },
+    }));
+}
+
+const { project } = Astro.props;
+---
+
+<BaseLayout
+    title={`${project.title} の画像・動画`}
+    description={project.summary}
+>
+    <section class="section-block gallery-page">
+        <div class="container-narrow">
+            <a href="/#projects" class="gallery-back">← プロジェクト一覧へ戻る</a>
+
+            <header class="section-head">
+                <p class="section-eyebrow">{project.category}</p>
+                <h1 class="title-xl">{project.title}</h1>
+                <p class="section-lead">{project.summary}</p>
+            </header>
+
+            <ul class="gallery-list">
+                {
+                    project.media.map((item) => (
+                        <li class="gallery-item">
+                            {item.type === "video" ? (
+                                <video
+                                    class="gallery-media"
+                                    src={item.src}
+                                    controls
+                                    playsinline
+                                    preload="none"
+                                />
+                            ) : (
+                                <img
+                                    class="gallery-media"
+                                    src={item.src}
+                                    alt={item.caption}
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            )}
+                            <p class="gallery-caption">{item.caption}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+
+            <a href="/#projects" class="btn gallery-bottom-back">
+                プロジェクト一覧へ戻る
+            </a>
+        </div>
+    </section>
+</BaseLayout>

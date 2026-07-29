@@ -993,7 +993,30 @@ a:hover,
     color: var(--foreground);
 }
 
-/* 固定項目（概要・課題・取り組み・成果・使用技術・リポジトリ） */
+/* モーダルの代表画像。1枚だけ出し、残りは一覧ページへ送る */
+.project-dialog-cover {
+    margin: 1.75rem 0 0;
+}
+
+.project-dialog-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 320px;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface-sunken);
+}
+
+.project-dialog-cover figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* 固定項目（概要・課題・取り組み・成果・使用技術・リンク） */
 .project-dialog-section {
     margin-top: 1.75rem;
 }
@@ -1119,6 +1142,56 @@ a:hover,
 .project-dialog-link:hover .project-dialog-link-arrow {
     color: var(--accent);
     transform: translateX(3px);
+}
+
+
+/* ===========================================
+   GALLERY PAGE (/projects/<id>)
+   =========================================== */
+
+.gallery-page {
+    padding-top: 3rem;
+}
+
+.gallery-back {
+    display: inline-block;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--text-muted);
+}
+
+.gallery-back:hover {
+    color: var(--accent);
+}
+
+.gallery-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.gallery-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 0.65rem;
+    background: var(--surface-sunken);
+}
+
+.gallery-caption {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+}
+
+.gallery-bottom-back {
+    margin-top: 3.5rem;
 }
 
 

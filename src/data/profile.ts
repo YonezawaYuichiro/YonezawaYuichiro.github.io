@@ -99,7 +99,7 @@ export const PROFILE: ProfileData = {
     recentLearning: [
         { label: "JDLA Deep Learning for ENGINEER（E資格）", detail: "受験予定" },
     ],
-    avatar: "IMG_1215_A.JPEG",
+    avatar: "IMG_1215.JPEG",
     contact: {
         email: "uuitiro@gmail.com",
         github: "https://github.com/YonezawaYuichiro",

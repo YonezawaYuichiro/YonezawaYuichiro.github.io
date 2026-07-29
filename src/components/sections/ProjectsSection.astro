@@ -48,6 +48,11 @@ import ProjectCard from "../ui/ProjectCard.astro";
                 </div>
             </dl>
 
+            <figure class="project-dialog-cover" id="project-dialog-cover">
+                <img id="project-dialog-cover-img" src="" alt="" />
+                <figcaption id="project-dialog-cover-caption"></figcaption>
+            </figure>
+
             <section class="project-dialog-section">
                 <h4 class="project-dialog-subhead">概要</h4>
                 <p class="project-dialog-text" id="project-dialog-summary"></p>
@@ -103,14 +108,20 @@ import ProjectCard from "../ui/ProjectCard.astro";
         const linksEl = el("links");
         const noLinkEl = el("no-link");
         const closeBtn = el("close");
+        const coverEl = el("cover");
+        const coverImgEl = el("cover-img");
+        const coverCaptionEl = el("cover-caption");
 
         // リンク1件分の行を組み立てる（種別ラベル + 内容 + 矢印）
         const buildLink = (link) => {
             const anchor = document.createElement("a");
             anchor.href = link.url;
             anchor.className = "project-dialog-link";
-            anchor.target = "_blank";
-            anchor.rel = "noreferrer";
+            // サイト内の一覧ページは同じタブ、外部リンクとPDFは別タブで開く
+            if (!link.url.startsWith("/projects/")) {
+                anchor.target = "_blank";
+                anchor.rel = "noreferrer";
+            }
 
             const kind = document.createElement("span");
             kind.className = "project-dialog-link-kind";
@@ -162,9 +173,27 @@ import ProjectCard from "../ui/ProjectCard.astro";
                     tagsEl.appendChild(span);
                 });
 
+                // 代表メディアは画像のみ。動画しかない場合は枠ごと隠す
+                const media = project.media || [];
+                const cover = media.find((item) => item.type === "image");
+                if (cover) {
+                    coverImgEl.src = cover.src;
+                    coverImgEl.alt = cover.caption;
+                    coverCaptionEl.textContent = cover.caption;
+                }
+                coverEl.style.display = cover ? "" : "none";
+
                 // リンクの件数だけは可変。項目自体は常に出す
                 linksEl.innerHTML = "";
-                const links = project.links || [];
+                const links = [...(project.links || [])];
+                // 2件以上メディアがあるときだけ一覧ページへの導線を足す
+                if (media.length > 1) {
+                    links.push({
+                        kind: "gallery",
+                        title: `すべて見る（${media.length}件）`,
+                        url: `/projects/${project.id}`,
+                    });
+                }
                 links.forEach((link) => linksEl.appendChild(buildLink(link)));
                 noLinkEl.style.display = links.length ? "none" : "";
 

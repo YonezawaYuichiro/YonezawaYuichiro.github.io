@@ -48,11 +48,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
             { name: "Fusion360", level: 3 },
             { name: "電気回路", level: 3 },
             { name: "BLE", level: 2 },
-            {
-                name: "Unity",
-                level: 1,
-                note: "シリアル通信を使った機器連携の実装経験はあり。ゲームロジックの設計はまだこれから。",
-            },
+            { name: "Unity", level: 1 },
         ],
     },
     {

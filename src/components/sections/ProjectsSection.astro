@@ -1,5 +1,5 @@
 ---
-import { PROJECTS } from "../../data/projects";
+import { PROJECTS, PROJECT_LINK_LABELS } from "../../data/projects";
 import ProjectCard from "../ui/ProjectCard.astro";
 ---
 
@@ -74,25 +74,17 @@ import ProjectCard from "../ui/ProjectCard.astro";
             </section>
 
             <section class="project-dialog-section">
-                <h4 class="project-dialog-subhead">リポジトリ</h4>
-                <a
-                    href="#"
-                    id="project-dialog-link"
-                    class="link project-dialog-link"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    GitHubで見る →
-                </a>
+                <h4 class="project-dialog-subhead">リンク・資料</h4>
+                <ul class="project-dialog-links" id="project-dialog-links"></ul>
                 <p class="project-dialog-text" id="project-dialog-no-link">
-                    公開していません。
+                    公開している資料はありません。
                 </p>
             </section>
         </div>
     </dialog>
 </section>
 
-<script is:inline>
+<script is:inline define:vars={{ LINK_LABELS: PROJECT_LINK_LABELS }}>
     function initProjectModal() {
         const dialog = document.getElementById("project-dialog");
         if (!(dialog instanceof HTMLDialogElement)) return;
@@ -108,9 +100,37 @@ import ProjectCard from "../ui/ProjectCard.astro";
         const approachEl = el("approach");
         const resultEl = el("result");
         const tagsEl = el("tags");
-        const linkEl = el("link");
+        const linksEl = el("links");
         const noLinkEl = el("no-link");
         const closeBtn = el("close");
+
+        // リンク1件分の行を組み立てる（種別ラベル + 内容 + 矢印）
+        const buildLink = (link) => {
+            const anchor = document.createElement("a");
+            anchor.href = link.url;
+            anchor.className = "project-dialog-link";
+            anchor.target = "_blank";
+            anchor.rel = "noreferrer";
+
+            const kind = document.createElement("span");
+            kind.className = "project-dialog-link-kind";
+            kind.textContent = LINK_LABELS[link.kind] || link.kind;
+
+            const title = document.createElement("span");
+            title.className = "project-dialog-link-title";
+            title.textContent = link.title;
+
+            const arrow = document.createElement("span");
+            arrow.className = "project-dialog-link-arrow";
+            arrow.setAttribute("aria-hidden", "true");
+            arrow.textContent = "→";
+
+            anchor.append(kind, title, arrow);
+
+            const li = document.createElement("li");
+            li.appendChild(anchor);
+            return li;
+        };
 
         document.querySelectorAll(".project-card").forEach((card) => {
             card.addEventListener("click", () => {
@@ -142,11 +162,11 @@ import ProjectCard from "../ui/ProjectCard.astro";
                     tagsEl.appendChild(span);
                 });
 
-                // リポジトリの有無だけは可変。項目自体は常に出す
-                const hasRepo = Boolean(project.repoUrl);
-                if (hasRepo) linkEl.href = project.repoUrl;
-                linkEl.style.display = hasRepo ? "" : "none";
-                noLinkEl.style.display = hasRepo ? "none" : "";
+                // リンクの件数だけは可変。項目自体は常に出す
+                linksEl.innerHTML = "";
+                const links = project.links || [];
+                links.forEach((link) => linksEl.appendChild(buildLink(link)));
+                noLinkEl.style.display = links.length ? "none" : "";
 
                 // 前回開いた位置が残らないよう先頭へ戻す
                 dialog.scrollTop = 0;

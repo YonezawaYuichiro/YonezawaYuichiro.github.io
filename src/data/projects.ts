@@ -3,6 +3,24 @@
 //   課題     … 何が問題だったか（1〜2文）
 //   取り組み … 課題に対して何をしたか（3件）
 //   成果     … 結果どうなったか（1〜2文）
+// リンクの種別。ラベルをここで固定し、プロジェクトごとに表記がぶれないようにする
+export type ProjectLinkKind = "repo" | "slide" | "article" | "demo";
+
+export const PROJECT_LINK_LABELS: Record<ProjectLinkKind, string> = {
+    repo: "リポジトリ",
+    slide: "発表資料",
+    article: "記事",
+    demo: "デモ",
+};
+
+export interface ProjectLink {
+    kind: ProjectLinkKind;
+    /** リンク先の内容（例: "GitHub", "ハッカソン発表スライド（PPTX）"） */
+    title: string;
+    /** URL。public/ 配下のファイルは "/files/xxx.pptx" のように書く */
+    url: string;
+}
+
 export interface ProjectData {
     id: string;
     title: string;
@@ -24,8 +42,8 @@ export interface ProjectData {
     result: string;
     /** 関連技術タグ（カードは先頭4件まで表示） */
     tech: string[];
-    /** リポジトリURL（未公開の場合は空文字） */
-    repoUrl?: string;
+    /** リポジトリ・発表資料・記事などへのリンク（無い場合は空配列） */
+    links: ProjectLink[];
     /** 画像URL（public/ 配下からの絶対パス。未設定の場合は空文字） */
     imageUrl?: string;
 }
@@ -60,7 +78,13 @@ export const PROJECTS: ProjectData[] = [
             "OpenAI API",
             "Google OAuth 2.0",
         ],
-        repoUrl: "https://github.com/YonezawaYuichiro/Daily-Brief",
+        links: [
+            {
+                kind: "repo",
+                title: "GitHub",
+                url: "https://github.com/YonezawaYuichiro/Daily-Brief",
+            },
+        ],
         imageUrl: "",
     },
     {
@@ -82,7 +106,8 @@ export const PROJECTS: ProjectData[] = [
         result:
             "撮影から点群・メッシュ・テクスチャ生成までを一連のコマンドで実行できる状態にしました。被覆率・法線・UV・空面を検査するスクリプトも用意し、出力の妥当性を目視以外でも確認できるようにしています。",
         tech: ["COLMAP", "OpenMVS", "Python", "rembg", "ステッピングモーター制御"],
-        repoUrl: "",
+        // TODO: 選考課題の報告資料があれば { kind: "slide", ... } を追加する
+        links: [],
         imageUrl: "",
     },
     {
@@ -104,7 +129,13 @@ export const PROJECTS: ProjectData[] = [
         result:
             "実装途中のため成果はまだ出ていません。手法の提案と、価値観抽出部分の実装までが現時点の到達点です。",
         tech: ["Claude Skills", "LLM", "Python"],
-        repoUrl: "https://github.com/YonezawaYuichiro/kigyou",
+        links: [
+            {
+                kind: "repo",
+                title: "GitHub",
+                url: "https://github.com/YonezawaYuichiro/kigyou",
+            },
+        ],
         imageUrl: "",
     },
     {
@@ -126,7 +157,15 @@ export const PROJECTS: ProjectData[] = [
         result:
             "パン±90°・チルト-90〜0°の範囲で、震えずに顔を追従できる状態になりました。顔検出はHaar-Cascade版とMediaPipe版を分けて実装し、検出方式を差し替えて比較できる構成にしています。",
         tech: ["Python", "OpenCV", "Raspberry Pi 4", "gpiozero / pigpio", "MG90S サーボ"],
-        repoUrl: "https://github.com/YonezawaYuichiro/face-tracker",
+        links: [
+            {
+                kind: "repo",
+                title: "GitHub",
+                url: "https://github.com/YonezawaYuichiro/face-tracker",
+            },
+            // TODO: ProtoPedia の記事URLが分かったら
+            // { kind: "article", title: "ProtoPedia", url: "..." } を追加する
+        ],
         imageUrl: "",
     },
     {
@@ -148,7 +187,8 @@ export const PROJECTS: ProjectData[] = [
         result:
             "最終スコアは RMSE 11.103 でした。入賞には届きませんでしたが、18回の試行それぞれで何を変えて何が起きたかと、精度が落ちたため棄却したモデルの経緯をドキュメントとして残しています。",
         tech: ["LightGBM", "PyTorch", "Optuna", "Wavelet変換", "スタッキング"],
-        repoUrl: "",
+        // TODO: 授業の発表資料があれば { kind: "slide", ... } を追加する
+        links: [],
         imageUrl: "",
     },
     {
@@ -170,7 +210,15 @@ export const PROJECTS: ProjectData[] = [
         result:
             "短い衝撃の取りこぼしを抑えたうえ、ハードを触らずに感度を追い込める状態にしました。リズムゲームのレベル設計、タップテンポによるタイミング調整画面、WebGLビルドとランキングAPI連携まで実装しています。",
         tech: ["Unity / C#", "Arduino UNO Q", "MPU9250（9軸IMU）", "BLE", "UDP通信"],
-        repoUrl: "https://github.com/sousci/decopin-project",
+        links: [
+            {
+                kind: "repo",
+                title: "GitHub",
+                url: "https://github.com/sousci/decopin-project",
+            },
+            // TODO: ハッカソンの発表資料を public/files/ に置いて
+            // { kind: "slide", title: "発表スライド（PPTX）", url: "/files/decopin.pptx" } を追加する
+        ],
         imageUrl: "",
     },
     {
@@ -192,7 +240,13 @@ export const PROJECTS: ProjectData[] = [
         result:
             "自分で使える単語帳として動く状態まで完成させました。リクエストとレスポンス、APIとフロントの分担といったWebアプリの基本構造を、この開発で一通り理解しています。",
         tech: ["Python", "Flask", "Jinja2", "JavaScript", "OpenAI API"],
-        repoUrl: "https://github.com/YonezawaYuichiro/tango_table",
+        links: [
+            {
+                kind: "repo",
+                title: "GitHub",
+                url: "https://github.com/YonezawaYuichiro/tango_table",
+            },
+        ],
         imageUrl: "",
     },
 ];

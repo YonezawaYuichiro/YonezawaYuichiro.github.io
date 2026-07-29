@@ -151,15 +151,4 @@ export const PROJECTS: ProjectData[] = [
         repoUrl: "https://github.com/YonezawaYuichiro/tango_table",
         imageUrl: "",
     },
-    {
-        id: "robot-simulation",
-        title: "ロボットシミュレーション",
-        org: "学校（期末課題）",
-        category: "期末課題",
-        role: "セオリーに沿ってUnityを操作",
-        summary: "ロボットのシミュレーションを学ぶための課題。",
-        tech: ["Unity"],
-        repoUrl: "https://github.com/YonezawaYuichiro/robocon-cleaner-sim",
-        imageUrl: "",
-    },
 ];

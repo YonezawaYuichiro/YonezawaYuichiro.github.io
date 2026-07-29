@@ -1,6 +1,11 @@
 // 数値の自己採点ではなく、実際にできることを基準にした4段階の申告制。
-// 低い順：使ったことがある → 使い方がわかる → 使える → 書ける
-export type SkillLevel = "使ったことがある" | "使い方がわかる" | "使える" | "書ける";
+// 低い順：使ったことがある → 使い方がわかる → 使える → 書ける／使いこなせる
+export type SkillLevel =
+    | "使ったことがある"
+    | "使い方がわかる"
+    | "使える"
+    | "書ける"
+    | "使いこなせる";
 
 export interface SkillItem {
     /** スキル名 */
@@ -15,12 +20,24 @@ export interface SkillCategory {
     items: SkillItem[];
 }
 
-// 低い順に並んだ4段階。バッジの色分け（濃淡）にもこの並び順を使う。
-export const SKILL_LEVELS: SkillLevel[] = [
-    "使ったことがある",
-    "使い方がわかる",
-    "使える",
-    "書ける",
+// 申告のランク（1が最低、4が最高）。バッジの色分けと並び順に使う。
+// 最高ランクは対象によって言い方を変える:
+//   書ける     … 言語・フレームワークなど、自分でコードを書けるもの
+//   使いこなせる … ツールなど、そもそも「書く」対象ではないもの
+export const SKILL_LEVEL_RANK: Record<SkillLevel, number> = {
+    使ったことがある: 1,
+    使い方がわかる: 2,
+    使える: 3,
+    書ける: 4,
+    使いこなせる: 4,
+};
+
+// 凡例の表示内容（高い順）
+export const SKILL_LEGEND: { label: string; rank: number }[] = [
+    { label: "書ける／使いこなせる", rank: 4 },
+    { label: "使える", rank: 3 },
+    { label: "使い方がわかる", rank: 2 },
+    { label: "使ったことがある", rank: 1 },
 ];
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
@@ -99,7 +116,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
         category: "AI・API・外部連携",
         items: [
             { name: "Claude Skills", level: "書ける" },
-            { name: "Claude Code", level: "書ける" },
+            { name: "Claude Code", level: "使いこなせる" },
             { name: "OpenAI API (GPT-4o, TTSなど)", level: "使える" },
             { name: "LLM (プロンプトエンジニアリング)", level: "使える" },
             { name: "Google Workspace API", level: "使い方がわかる" },

@@ -11,6 +11,10 @@ import { PROFILE } from "../../data/profile";
             {PROFILE.intro.map((paragraph) => <p>{paragraph}</p>)}
         </div>
 
+        <p class="body-sm about-meta">
+            {PROFILE.birthDate}生まれ（{PROFILE.birthPlace}出身）／拠点：{PROFILE.base}
+        </p>
+
         <div class="timeline-grid">
             <div>
                 <p class="timeline-block-title">学歴</p>

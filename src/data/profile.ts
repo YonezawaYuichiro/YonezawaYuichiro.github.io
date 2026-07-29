@@ -10,6 +10,8 @@ export interface ProfileData {
     reading: string;
     tagline: string;
     intro: string[];
+    birthDate: string;
+    birthPlace: string;
     base: string;
     aspiration: string;
     education: TimelineItem[];
@@ -35,13 +37,15 @@ export const PROFILE: ProfileData = {
         "フィジカルAI分野でのエンジニアを志望しています。前職で物流倉庫の搬送業務を担当した経験から、自動搬送機のような未普及の最新技術への憧れを感じ、自分もこうした現場を助けるシステムを作って普及させたいと考えています。",
         "学校ではAIやプログラミングの勉強だけでなく、Raspberry PiやArduino、ESP32などのマイコンを活用した学習も行っています。また、AI時代において信用されるエンジニアになりたいと考え、応用情報技術者やE資格などの難関資格取得へ挑戦しています。",
     ],
+    birthDate: "2004年12月14日",
+    birthPlace: "香川県高松市",
     base: "大阪府",
     aspiration:
         "製造・ロボティクス・物流など、物理世界へのAI実装（Forward Deployed Engineer, FDE）を志向したキャリアを歩みたいと考えています。",
     education: [
         {
             label: "大阪ハイテクノロジー専門学校 人工知能学科",
-            detail: "3年制・現在2年生／28歳／2028年3月卒業見込み",
+            detail: "3年制・現在2年生／21歳／2028年3月卒業見込み",
         },
     ],
     certifications: [

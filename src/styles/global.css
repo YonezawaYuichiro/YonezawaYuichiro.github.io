@@ -567,33 +567,42 @@ a:hover,
     margin-top: 1.15rem;
 }
 
-.about-facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 0.75rem;
-    margin-top: 1.75rem;
-    list-style: none;
-    padding: 0;
-}
-
-.about-fact {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    padding: 0.4rem 0.8rem;
+/* 基本情報。ラベルと値を縦に揃えた2カラムの定義リストで面として見せる */
+.profile-facts {
+    margin-top: 2.5rem;
+    padding: 1.5rem 1.75rem 1.75rem;
     border: 1px solid var(--border);
-    border-radius: 100px;
+    border-radius: 0.65rem;
     background: var(--surface);
-    font-size: 0.82rem;
-    color: var(--foreground);
 }
 
-.about-fact-label {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.05em;
+.profile-facts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.15rem 2rem;
+    margin: 0;
+}
+
+.profile-fact {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+}
+
+.profile-fact dt {
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
     color: var(--text-muted);
-    font-feature-settings: normal;
+}
+
+.profile-fact dd {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.7;
+    color: var(--foreground);
 }
 
 .timeline-grid {
@@ -738,7 +747,7 @@ a:hover,
     flex-shrink: 0;
 }
 
-/* 習熟度の色。使ったことがある=ニュートラル / わかる=緑 / 使える=青 / 書ける=赤 */
+/* 習熟度の色。使ったことがある=ニュートラル / わかる=緑 / 使える=青 / 実践的=赤 */
 .skill-lv1 { --lv-color: #9aa2b1; }
 .skill-lv2 { --lv-color: #2f9e63; }
 .skill-lv3 { --lv-color: #3358d4; }
@@ -919,12 +928,17 @@ a:hover,
     position: relative;
 }
 
+/* モーダル自体がスクロールするため、閉じるボタンは sticky で上端に留める。
+   float でテキストの右上に置き、負のマージンで後続の位置を元に戻している。 */
 .project-dialog-close {
-    position: absolute;
-    top: 1.1rem;
-    right: 1.1rem;
+    position: sticky;
+    top: 0;
+    float: right;
+    margin-bottom: -34px;
+    z-index: 2;
     font-size: 1.1rem;
     line-height: 1;
+    background: var(--surface);
 }
 
 .project-dialog-category {
@@ -946,75 +960,253 @@ a:hover,
     padding-right: 2.5rem;
 }
 
+/* 所属・期間・担当は「ラベル : 値」を縦に揃えた定義リストで固定表示する */
 .project-dialog-meta {
-    font-size: 0.82rem;
-    line-height: 1.8;
+    margin: 1.25rem 0 0;
+    padding: 1rem 1.1rem;
+    border-radius: 0.5rem;
+    background: var(--surface-sunken);
+}
+
+.project-dialog-meta-row {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+}
+
+.project-dialog-meta-row + .project-dialog-meta-row {
+    margin-top: 0.5rem;
+}
+
+.project-dialog-meta dt {
+    font-size: 0.72rem;
+    font-weight: 700;
     color: var(--text-muted);
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--border-subtle);
+    letter-spacing: 0.04em;
 }
 
-.project-dialog-summary {
-    margin-top: 1.25rem;
-    font-size: 0.92rem;
-    line-height: 1.95;
-}
-
-.project-dialog-subhead {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-top: 1.75rem;
-    margin-bottom: 0.75rem;
-    font-feature-settings: normal;
-}
-
-.project-dialog-highlights {
-    list-style: none;
-    padding: 0;
+.project-dialog-meta dd {
     margin: 0;
-}
-
-.project-dialog-highlights li {
-    position: relative;
-    padding-left: 1rem;
-    font-size: 0.88rem;
-    line-height: 1.9;
+    font-size: 0.84rem;
+    line-height: 1.7;
     color: var(--foreground);
 }
 
-.project-dialog-highlights li + li {
+/* モーダルの代表画像。1枚だけ出し、残りは一覧ページへ送る */
+.project-dialog-cover {
+    margin: 1.75rem 0 0;
+}
+
+.project-dialog-cover img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    /* 縦長でもモーダルが極端に伸びないよう高さを抑える */
+    max-height: 300px;
+    margin: 0 auto;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface-sunken);
+}
+
+.project-dialog-cover figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* 固定項目（概要・課題・取り組み・成果・使用技術・リンク） */
+.project-dialog-section {
+    margin-top: 1.75rem;
+}
+
+.project-dialog-subhead {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--foreground);
+    margin-bottom: 0.7rem;
+}
+
+/* 見出しの左にアクセントの短い縦棒を置き、項目の始まりを目立たせる */
+.project-dialog-subhead::before {
+    content: "";
+    width: 3px;
+    height: 0.95em;
+    border-radius: 2px;
+    background: var(--accent);
+    flex-shrink: 0;
+}
+
+.project-dialog-text {
+    font-size: 0.88rem;
+    line-height: 1.95;
+    color: var(--foreground);
+}
+
+/* 取り組みは番号付き。番号はアクセント色の等幅で揃える */
+.project-dialog-approach {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: approach;
+}
+
+.project-dialog-approach li {
+    position: relative;
+    counter-increment: approach;
+    padding-left: 1.75rem;
+    font-size: 0.88rem;
+    line-height: 1.95;
+    color: var(--foreground);
+}
+
+.project-dialog-approach li + li {
     margin-top: 0.85rem;
 }
 
-/* 箇条書きの記号はアクセント色の小さな四角で統一 */
-.project-dialog-highlights li::before {
-    content: "";
+.project-dialog-approach li::before {
+    content: counter(approach);
     position: absolute;
     left: 0;
-    top: 0.8em;
-    width: 4px;
-    height: 4px;
-    border-radius: 1px;
-    background: var(--accent);
+    top: 0;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 2.3;
+    color: var(--accent);
+    font-feature-settings: normal;
 }
 
 .project-dialog-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
-    margin-top: 1.75rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-subtle);
+}
+
+/* リンク・資料。種別ラベルの幅を揃えて縦のラインを通す */
+.project-dialog-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .project-dialog-link {
-    display: inline-block;
-    margin-top: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.95rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface-sunken);
     font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.project-dialog-link:hover {
+    border-color: var(--accent-line);
+    background: color-mix(in srgb, var(--accent) 4%, var(--surface-sunken));
+    color: var(--foreground);
+}
+
+.project-dialog-link-kind {
+    flex-shrink: 0;
+    min-width: 4.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+}
+
+.project-dialog-link-title {
+    flex: 1;
+    min-width: 0;
+}
+
+.project-dialog-link-arrow {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.project-dialog-link:hover .project-dialog-link-arrow {
+    color: var(--accent);
+    transform: translateX(3px);
+}
+
+
+/* ===========================================
+   GALLERY PAGE (/projects/<id>)
+   =========================================== */
+
+.gallery-page {
+    padding-top: 3rem;
+}
+
+.gallery-back {
+    display: inline-block;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--text-muted);
+}
+
+.gallery-back:hover {
+    color: var(--accent);
+}
+
+.gallery-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+/* 枠が罫線と背景を持ち、メディアはその中で中央に収まる */
+.gallery-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 0.65rem;
+    background: var(--surface-sunken);
+    overflow: hidden;
+}
+
+.gallery-media {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    /* 縦長の画像・動画が画面からはみ出さないよう高さを制限する */
+    max-height: 78vh;
+    object-fit: contain;
+}
+
+.gallery-caption {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+}
+
+.gallery-bottom-back {
+    margin-top: 3.5rem;
 }
 
 
@@ -1165,6 +1357,15 @@ a:hover,
     .timeline-grid {
         grid-template-columns: 1fr;
         gap: 2.25rem;
+    }
+
+    .profile-facts {
+        padding: 1.25rem 1.35rem 1.5rem;
+    }
+
+    .profile-facts-grid {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
     }
 
     .cert-timeline-item {

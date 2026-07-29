@@ -28,16 +28,22 @@ const facts = [
             {PROFILE.intro.map((paragraph) => <p>{paragraph}</p>)}
         </div>
 
-        <ul class="about-facts">
-            {
-                facts.map((fact) => (
-                    <li class="about-fact">
-                        <span class="about-fact-label">{fact.label}</span>
-                        <span>{fact.value}</span>
-                    </li>
-                ))
-            }
-        </ul>
+        <div class="profile-facts">
+            <div class="block-head">
+                <h3 class="block-title">基本情報</h3>
+                <span class="block-rule"></span>
+            </div>
+            <dl class="profile-facts-grid">
+                {
+                    facts.map((fact) => (
+                        <div class="profile-fact">
+                            <dt>{fact.label}</dt>
+                            <dd>{fact.value}</dd>
+                        </div>
+                    ))
+                }
+            </dl>
+        </div>
 
         <div class="timeline-grid">
             {

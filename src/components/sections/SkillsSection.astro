@@ -1,5 +1,9 @@
 ---
-import { SKILL_CATEGORIES, SKILL_LEVELS } from "../../data/skills";
+import {
+    SKILL_CATEGORIES,
+    SKILL_LEGEND,
+    SKILL_LEVEL_RANK,
+} from "../../data/skills";
 ---
 
 <section id="skills" class="section-block">
@@ -11,14 +15,11 @@ import { SKILL_CATEGORIES, SKILL_LEVELS } from "../../data/skills";
 
         <ul class="skill-legend">
             {
-                // 習熟度の高い順（書ける→使える→使い方がわかる→使ったことがある）に表示する。
-                // reverse() は元配列を破壊するのでコピーしてから回す。
-                [...SKILL_LEVELS].reverse().map((level) => (
-                    <li
-                        class={`skill-legend-item skill-lv${SKILL_LEVELS.indexOf(level) + 1}`}
-                    >
+                // SKILL_LEGEND は高い順に定義済み
+                SKILL_LEGEND.map((level) => (
+                    <li class={`skill-legend-item skill-lv${level.rank}`}>
                         <span class="skill-legend-bar" />
-                        {level}
+                        {level.label}
                     </li>
                 ))
             }
@@ -26,9 +27,9 @@ import { SKILL_CATEGORIES, SKILL_LEVELS } from "../../data/skills";
 
         {
             SKILL_CATEGORIES.map((category) => {
-                // 書ける→使える→使い方がわかる→使ったことがある の順に並べる
+                // ランクの高い順に並べる
                 const sortedItems = [...category.items].sort(
-                    (a, b) => SKILL_LEVELS.indexOf(b.level) - SKILL_LEVELS.indexOf(a.level)
+                    (a, b) => SKILL_LEVEL_RANK[b.level] - SKILL_LEVEL_RANK[a.level]
                 );
                 return (
                     <div class="skill-category">
@@ -37,14 +38,14 @@ import { SKILL_CATEGORIES, SKILL_LEVELS } from "../../data/skills";
                             <span class="block-rule" />
                         </div>
                         <ul class="skill-list">
-                            {sortedItems.map((item) => {
-                                const levelIndex = SKILL_LEVELS.indexOf(item.level) + 1;
-                                return (
-                                    <li class={`skill-chip skill-lv${levelIndex}`} title={item.level}>
-                                        {item.name}
-                                    </li>
-                                );
-                            })}
+                            {sortedItems.map((item) => (
+                                <li
+                                    class={`skill-chip skill-lv${SKILL_LEVEL_RANK[item.level]}`}
+                                    title={item.level}
+                                >
+                                    {item.name}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 );

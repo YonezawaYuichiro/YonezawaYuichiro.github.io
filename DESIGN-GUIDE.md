@@ -12,15 +12,31 @@ Inspired by [AstroPaper](https://github.com/satnaing/astro-paper).
 
 All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed in components.
 
+### Type scale (fixed — do not add sizes)
+
+Six steps plus two clamps. Ad-hoc values like `0.86rem` are how the page ends up with
+20+ near-identical sizes and stops looking designed. Pick the nearest step instead.
+
+| Step | Size | Used for |
+|------|------|----------|
+| micro | `0.72rem` | eyebrows, tags, `dt` labels, link kind labels |
+| xs | `0.8rem` | captions, metadata, dates, legends |
+| sm | `0.875rem` | secondary body, chips, buttons, links, card summaries |
+| base | `1rem` | body text, section leads |
+| md | `1.125rem` | card titles, `title-md` |
+| lg | `1.375rem` | dialog titles |
+| — | `clamp(1.35rem, 1.2rem + 0.6vw, 1.6rem)` | `title-lg` / h2 |
+| — | `clamp(2.1rem, 1.5rem + 2.6vw, 3.1rem)` | hero name |
+
 ### Typography Classes
 | Class | Description |
 |-------|-------------|
 | `title-xl` | Page title (clamp 1.5–1.9rem, 800) |
 | `title-lg` | Section title (clamp 1.35–1.6rem, 700) |
-| `title-md` | Subsection (1.05rem, 700) |
+| `title-md` | Subsection (1.125rem, 700) |
 | `body` | Body text (1rem, 1.95 line-height) |
 | `body-sm` | Small text (0.875rem, muted) |
-| `body-xs` | Tiny text (0.78rem, muted) |
+| `body-xs` | Tiny text (0.8rem, muted) |
 | `label` | Uppercase mono label (metadata headings) |
 | `mono` | Code/text (JetBrains Mono) |
 | `measure` | Caps a text block at `--measure` (34em) |
@@ -28,8 +44,7 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 ### Layout Classes
 | Class | Description |
 |-------|-------------|
-| `container-narrow` | Max-width 780px (reading columns) |
-| `container-wide` | Max-width 980px (grids, hero) |
+| `container-wide` | Max-width 980px. **The only container width** — every section uses it so headings align vertically down the page. Constrain reading width inside with `.measure`, never by narrowing the container. |
 | `gap-1` to `gap-4` | Gap scale |
 
 ### Component Classes
@@ -123,6 +138,10 @@ Defined per theme as `--lv-color` on `.skill-lv1`–`.skill-lv4`.
 ### Contrast (non-negotiable)
 - Text must pass WCAG AAA contrast in both light and dark modes.
 - Minimum 7:1 contrast ratio for body text.
+- **`muted` is the value that decides this**, and it must clear 7:1 against all three
+  surfaces it can land on — `background`, `surface`, and `surface-sunken` — not just the
+  page background. Checking only against `background` is how it silently ends up at ~6:1
+  on cards. Current worst case: light 7.12, dark 7.12.
 
 ---
 
@@ -154,7 +173,10 @@ Defined per theme as `--lv-color` on `.skill-lv1`–`.skill-lv4`.
 - Separation = 1px solid border OR subtle background variation.
 - Depth comes from **layered surfaces** (`--surface-sunken` < `--background` < `--surface`),
   not from elevation.
-- **Border-radius:** 0.5rem buttons/chips, 0.65rem cards, 100px pills.
+- **Border-radius — three values only:** `0.5rem` (buttons, chips, small boxes), `0.75rem`
+  (cards, panels, dialog, media frames), `100px` (pills). Plus `50%` for icon buttons and
+  `2px` for the small accent bars. Intermediate values such as `0.65rem` read as sloppiness
+  because they sit 2px away from a value already in use elsewhere on the same screen.
 - Backdrop blur is allowed on exactly two elements: the sticky navbar and the modal backdrop.
 
 ### Links

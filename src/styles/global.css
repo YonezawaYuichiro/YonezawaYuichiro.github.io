@@ -29,7 +29,6 @@
 
     /* 本文の折返し幅。日本語は 34em 前後が読みやすい */
     --measure: 34em;
-    --content-width: 780px;
     --wide-width: 980px;
 }
 
@@ -87,7 +86,7 @@ h2,
 
 h3,
 .title-md {
-    font-size: 1.05rem;
+    font-size: 1.125rem;
     font-weight: 700;
     line-height: 1.45;
 }
@@ -108,7 +107,7 @@ p,
 }
 
 .body-xs {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     color: var(--text-muted);
 }
@@ -121,7 +120,7 @@ p,
 code,
 .mono {
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.5;
     font-feature-settings: normal;
@@ -159,11 +158,8 @@ a:hover,
    LAYOUT & SPACING
    =========================================== */
 
-.container-narrow {
-    max-width: var(--content-width);
-    margin: 0 auto;
-}
-
+/* 全セクションで共通。見出しの左端を縦に揃えるため幅は1種類だけにする。
+   読み幅は .measure / .section-lead など内側で個別に制限する */
 .container-wide {
     max-width: var(--wide-width);
     margin: 0 auto;
@@ -186,7 +182,7 @@ a:hover,
     gap: 0.4rem;
     padding: 0.7rem 1.35rem;
     font-weight: 600;
-    font-size: 0.92rem;
+    font-size: 0.875rem;
     border: 1px solid var(--border);
     border-radius: 0.5rem;
     background: var(--surface);
@@ -238,7 +234,7 @@ a:hover,
     align-items: center;
     color: var(--text-muted);
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 500;
     line-height: 1;
     padding: 0.32rem 0.55rem;
@@ -274,7 +270,7 @@ a:hover,
 }
 
 .navbar-brand {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
     letter-spacing: 0.02em;
     text-decoration: none;
@@ -302,7 +298,7 @@ a:hover,
 .nav-link {
     display: inline-block;
     padding: 0.3rem 0;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
     color: var(--text-muted);
@@ -413,7 +409,7 @@ a:hover,
 .section-lead {
     margin-top: 0.9rem;
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.9;
     max-width: var(--measure);
 }
@@ -427,7 +423,7 @@ a:hover,
 }
 
 .block-title {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 700;
     color: var(--foreground);
     letter-spacing: 0.02em;
@@ -485,7 +481,7 @@ a:hover,
 
 .hero-reading {
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -513,7 +509,7 @@ a:hover,
 
 .hero-lead {
     margin-top: 1rem;
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.95;
     color: var(--text-muted);
     max-width: var(--measure);
@@ -544,7 +540,7 @@ a:hover,
     align-items: center;
     gap: 0.6rem;
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     letter-spacing: 0.1em;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -572,7 +568,7 @@ a:hover,
     margin-top: 2.5rem;
     padding: 1.5rem 1.75rem 1.75rem;
     border: 1px solid var(--border);
-    border-radius: 0.65rem;
+    border-radius: 0.75rem;
     background: var(--surface);
 }
 
@@ -591,7 +587,7 @@ a:hover,
 }
 
 .profile-fact dt {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     color: var(--text-muted);
@@ -599,7 +595,7 @@ a:hover,
 
 .profile-fact dd {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 600;
     line-height: 1.7;
     color: var(--foreground);
@@ -647,14 +643,14 @@ a:hover,
 }
 
 .timeline-label {
-    font-size: 0.92rem;
+    font-size: 0.875rem;
     font-weight: 700;
     line-height: 1.6;
     color: var(--foreground);
 }
 
 .timeline-detail {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     line-height: 1.75;
     color: var(--text-muted);
     margin-top: 0.2rem;
@@ -686,7 +682,7 @@ a:hover,
 
 .cert-timeline-date {
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.76rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: var(--text-muted);
     font-variant-numeric: tabular-nums;
@@ -694,13 +690,13 @@ a:hover,
 }
 
 .cert-timeline-label {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--foreground);
 }
 
 .cert-timeline-note {
-    font-size: 0.76rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
@@ -732,7 +728,7 @@ a:hover,
     border: 1px solid color-mix(in srgb, var(--lv-color) 30%, var(--border));
     border-radius: 0.5rem;
     background: color-mix(in srgb, var(--lv-color) 7%, var(--surface));
-    font-size: 0.88rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--foreground);
     line-height: 1.4;
@@ -807,7 +803,7 @@ a:hover,
 }
 
 .note-box-body {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     line-height: 1.95;
     color: var(--foreground);
 }
@@ -828,7 +824,7 @@ a:hover,
     text-align: left;
     padding: 1.5rem 1.6rem;
     border: 1px solid var(--border);
-    border-radius: 0.65rem;
+    border-radius: 0.75rem;
     background: var(--surface);
     cursor: pointer;
     transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -846,7 +842,7 @@ a:hover,
 
 .project-card-category {
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--accent);
     letter-spacing: 0.07em;
@@ -855,7 +851,7 @@ a:hover,
 }
 
 .project-card-title {
-    font-size: 1.1rem;
+    font-size: 1.125rem;
     font-weight: 700;
     line-height: 1.45;
     color: var(--foreground);
@@ -863,14 +859,14 @@ a:hover,
 }
 
 .project-card-org {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     color: var(--text-muted);
 }
 
 .project-card-summary {
     margin-top: 0.35rem;
-    font-size: 0.86rem;
+    font-size: 0.875rem;
     color: var(--text-muted);
     line-height: 1.8;
     display: -webkit-box;
@@ -892,7 +888,7 @@ a:hover,
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--text-muted);
     transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -936,14 +932,14 @@ a:hover,
     float: right;
     margin-bottom: -34px;
     z-index: 2;
-    font-size: 1.1rem;
+    font-size: 1.125rem;
     line-height: 1;
     background: var(--surface);
 }
 
 .project-dialog-category {
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.07em;
     text-transform: uppercase;
@@ -953,7 +949,7 @@ a:hover,
 }
 
 .project-dialog-title {
-    font-size: 1.35rem;
+    font-size: 1.375rem;
     font-weight: 800;
     line-height: 1.4;
     margin-bottom: 0.5rem;
@@ -988,7 +984,7 @@ a:hover,
 
 .project-dialog-meta dd {
     margin: 0;
-    font-size: 0.84rem;
+    font-size: 0.875rem;
     line-height: 1.7;
     color: var(--foreground);
 }
@@ -1014,7 +1010,7 @@ a:hover,
 
 .project-dialog-cover figcaption {
     margin-top: 0.6rem;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     color: var(--text-muted);
 }
@@ -1046,7 +1042,7 @@ a:hover,
 }
 
 .project-dialog-text {
-    font-size: 0.88rem;
+    font-size: 0.875rem;
     line-height: 1.95;
     color: var(--foreground);
 }
@@ -1063,7 +1059,7 @@ a:hover,
     position: relative;
     counter-increment: approach;
     padding-left: 1.75rem;
-    font-size: 0.88rem;
+    font-size: 0.875rem;
     line-height: 1.95;
     color: var(--foreground);
 }
@@ -1078,7 +1074,7 @@ a:hover,
     left: 0;
     top: 0;
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     line-height: 2.3;
     color: var(--accent);
@@ -1109,7 +1105,7 @@ a:hover,
     border: 1px solid var(--border);
     border-radius: 0.5rem;
     background: var(--surface-sunken);
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--foreground);
     text-decoration: none;
@@ -1125,7 +1121,7 @@ a:hover,
 .project-dialog-link-kind {
     flex-shrink: 0;
     min-width: 4.5rem;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     color: var(--accent);
@@ -1159,7 +1155,7 @@ a:hover,
 .gallery-back {
     display: inline-block;
     margin-bottom: 2rem;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     text-decoration: none;
     color: var(--text-muted);
 }
@@ -1183,7 +1179,7 @@ a:hover,
     align-items: center;
     justify-content: center;
     border: 1px solid var(--border);
-    border-radius: 0.65rem;
+    border-radius: 0.75rem;
     background: var(--surface-sunken);
     overflow: hidden;
 }
@@ -1200,7 +1196,7 @@ a:hover,
 
 .gallery-caption {
     margin-top: 0.75rem;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     line-height: 1.7;
     color: var(--text-muted);
 }
@@ -1229,7 +1225,7 @@ a:hover,
     text-decoration: none;
     padding: 1rem 1.25rem;
     border: 1px solid var(--border);
-    border-radius: 0.65rem;
+    border-radius: 0.75rem;
     background: var(--surface);
     transition: border-color 0.2s ease, background-color 0.2s ease;
 }
@@ -1243,7 +1239,7 @@ a:hover,
 .contact-row-label {
     display: block;
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1253,7 +1249,7 @@ a:hover,
 }
 
 .contact-row-value {
-    font-size: 0.92rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--foreground);
     word-break: break-all;

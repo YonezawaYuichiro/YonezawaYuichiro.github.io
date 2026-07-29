@@ -4,20 +4,25 @@
 //   取り組み … 課題に対して何をしたか（3件）
 //   成果     … 結果どうなったか（1〜2文）
 // リンクの種別。ラベルをここで固定し、プロジェクトごとに表記がぶれないようにする
-export type ProjectLinkKind = "repo" | "slide" | "article" | "demo";
+export type ProjectLinkKind = "repo" | "slide" | "article" | "demo" | "site";
 
 export const PROJECT_LINK_LABELS: Record<ProjectLinkKind, string> = {
     repo: "リポジトリ",
     slide: "発表資料",
     article: "記事",
     demo: "デモ",
+    site: "関連サイト",
 };
 
 export interface ProjectLink {
     kind: ProjectLinkKind;
-    /** リンク先の内容（例: "GitHub", "ハッカソン発表スライド（PPTX）"） */
+    /** リンク先の内容（例: "GitHub", "PDF"） */
     title: string;
-    /** URL。public/ 配下のファイルは "/files/xxx.pptx" のように書く */
+    /**
+     * URL。public/ 配下のファイルは "/files/xxx.pdf" と書く。
+     * "public" は付けない（ビルド時に public/ の中身が公開ルートへ展開されるため）。
+     * Windowsのパス区切り "\" は文字列内でエスケープ扱いになるので必ず "/" を使う。
+     */
     url: string;
 }
 
@@ -84,6 +89,11 @@ export const PROJECTS: ProjectData[] = [
                 title: "GitHub",
                 url: "https://github.com/YonezawaYuichiro/Daily-Brief",
             },
+            {
+                kind: "slide",
+                title: "PDF",
+                url: "/files/Daily-Brief.pdf",
+            },
         ],
         imageUrl: "",
     },
@@ -106,8 +116,13 @@ export const PROJECTS: ProjectData[] = [
         result:
             "撮影から点群・メッシュ・テクスチャ生成までを一連のコマンドで実行できる状態にしました。被覆率・法線・UV・空面を検査するスクリプトも用意し、出力の妥当性を目視以外でも確認できるようにしています。",
         tech: ["COLMAP", "OpenMVS", "Python", "rembg", "ステッピングモーター制御"],
-        // TODO: 選考課題の報告資料があれば { kind: "slide", ... } を追加する
-        links: [],
+        links: [
+            {
+                kind: "slide",
+                title: "PDF",
+                url: "/files/３D化パイプライン.pdf",
+            },
+        ],
         imageUrl: "",
     },
     {
@@ -134,6 +149,11 @@ export const PROJECTS: ProjectData[] = [
                 kind: "repo",
                 title: "GitHub",
                 url: "https://github.com/YonezawaYuichiro/kigyou",
+            },
+            {
+                kind: "slide",
+                title: "PDF",
+                url: "/files/対話式選好学習.pdf",
             },
         ],
         imageUrl: "",
@@ -163,8 +183,11 @@ export const PROJECTS: ProjectData[] = [
                 title: "GitHub",
                 url: "https://github.com/YonezawaYuichiro/face-tracker",
             },
-            // TODO: ProtoPedia の記事URLが分かったら
-            // { kind: "article", title: "ProtoPedia", url: "..." } を追加する
+            {
+                kind: "article",
+                title: "Protopedia",
+                url: "https://protopedia.net/prototype/private/4fa1857e-525a-4dc3-b826-8d57e2958cde",
+            },
         ],
         imageUrl: "",
     },
@@ -188,7 +211,13 @@ export const PROJECTS: ProjectData[] = [
             "最終スコアは RMSE 11.103 でした。入賞には届きませんでしたが、18回の試行それぞれで何を変えて何が起きたかと、精度が落ちたため棄却したモデルの経緯をドキュメントとして残しています。",
         tech: ["LightGBM", "PyTorch", "Optuna", "Wavelet変換", "スタッキング"],
         // TODO: 授業の発表資料があれば { kind: "slide", ... } を追加する
-        links: [],
+        links: [
+            {
+                kind: "site",
+                title: "SIGNATE コンペページ",
+                url: "https://user.competition.signate.jp/ja/competition/detail/?competition=37308d147238487c96551300b8e4cb76&task=8940dcfa70434a6aaaa28d661652d536&tab=leaderboard&leaderboard=private",
+            },
+        ],
         imageUrl: "",
     },
     {
@@ -216,8 +245,11 @@ export const PROJECTS: ProjectData[] = [
                 title: "GitHub",
                 url: "https://github.com/sousci/decopin-project",
             },
-            // TODO: ハッカソンの発表資料を public/files/ に置いて
-            // { kind: "slide", title: "発表スライド（PPTX）", url: "/files/decopin.pptx" } を追加する
+            {
+                kind: "article",
+                title: "Protopedia",
+                url: "https://protopedia.net/prototype/9061",
+            },
         ],
         imageUrl: "",
     },

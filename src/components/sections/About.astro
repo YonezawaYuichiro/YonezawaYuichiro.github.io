@@ -74,13 +74,14 @@ import { PROFILE } from "../../data/profile";
         </div>
 
         <div class="cert-block">
-            <p class="timeline-block-title">保有資格・免許</p>
-            <ul class="badge-list">
+            <p class="timeline-block-title">保有資格・免許（時系列順）</p>
+            <ul class="cert-timeline">
                 {
                     PROFILE.certifications.map((item) => (
-                        <li class="badge-item">
-                            <span class="badge-item-name">{item.label}</span>
-                            <span class="badge-item-meta">{item.detail}</span>
+                        <li class="cert-timeline-item">
+                            <span class="cert-timeline-date">{item.date}</span>
+                            <span class="cert-timeline-label">{item.label}</span>
+                            {item.note && <span class="cert-timeline-note">{item.note}</span>}
                         </li>
                     ))
                 }

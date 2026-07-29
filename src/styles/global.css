@@ -433,6 +433,46 @@ a:hover,
     border-top: 1px solid var(--border);
 }
 
+.cert-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cert-timeline-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.cert-timeline-item:last-child {
+    border-bottom: none;
+}
+
+.cert-timeline-date {
+    flex-shrink: 0;
+    width: 4.5rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.cert-timeline-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.cert-timeline-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
 
 /* ===========================================
    BADGE LIST (資格・スキルなど、名前+一言の一覧に共通利用)

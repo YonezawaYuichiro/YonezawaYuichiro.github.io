@@ -5,6 +5,15 @@ export interface TimelineItem {
     detail: string;
 }
 
+export interface CertificationItem {
+    /** 取得年月（表示用。例: "2024.09"） */
+    date: string;
+    /** 資格・免許名 */
+    label: string;
+    /** 補足（任意） */
+    note?: string;
+}
+
 export interface ProfileData {
     name: string;
     reading: string;
@@ -15,7 +24,7 @@ export interface ProfileData {
     base: string;
     aspiration: string;
     education: TimelineItem[];
-    certifications: TimelineItem[];
+    certifications: CertificationItem[];
     workHistory: TimelineItem[];
     awards: TimelineItem[];
     internships: TimelineItem[];
@@ -48,18 +57,20 @@ export const PROFILE: ProfileData = {
             detail: "3年制・現在2年生／21歳／2028年3月卒業見込み",
         },
     ],
+    // 時系列順（古い→新しい）
     certifications: [
-        { label: "応用情報技術者", detail: "2025年10月合格" },
-        { label: "基本情報技術者", detail: "2025年2月合格" },
-        { label: "ITパスポート", detail: "2025年2月合格" },
-        { label: "第二種電気工事士（学科試験）", detail: "2026年5月合格" },
-        { label: "3次元CAD利用技術者試験2級", detail: "2025年12月合格" },
-        { label: "JDLA Deep Learning for GENERAL", detail: "2026年1月合格" },
-        { label: "AVILEN E資格講座", detail: "2026年6月修了" },
-        { label: "技術英語能力検定3級", detail: "2025年5月合格" },
-        { label: "MOS Word365 Expert", detail: "2024年11月取得" },
-        { label: "フォークリフト免許", detail: "2025年1月取得" },
-        { label: "普通自動車第一種免許（AT限定）", detail: "2024年9月取得" },
+        { date: "2024.09", label: "普通自動車第一種免許（AT限定）" },
+        { date: "2024.11", label: "MOS Word365 Expert" },
+        { date: "2025.01", label: "フォークリフト免許" },
+        { date: "2025.02", label: "ITパスポート" },
+        { date: "2025.02", label: "基本情報技術者" },
+        { date: "2025.05", label: "技術英語能力検定3級" },
+        { date: "2025.10", label: "応用情報技術者" },
+        { date: "2025.10", label: "Paiza Bランク" },
+        { date: "2025.12", label: "3次元CAD利用技術者試験2級" },
+        { date: "2026.01", label: "JDLA Deep Learning for GENERAL" },
+        { date: "2026.05", label: "第二種電気工事士（学科試験）" },
+        { date: "2026.06", label: "AVILEN E資格講座" },
     ],
     workHistory: [
         {

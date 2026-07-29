@@ -16,7 +16,7 @@ export interface ProfileData {
     certifications: TimelineItem[];
     workHistory: TimelineItem[];
     awards: TimelineItem[];
-    internship: TimelineItem;
+    internships: TimelineItem[];
     recentLearning: TimelineItem[];
     avatar: string;
     contact: {
@@ -59,20 +59,26 @@ export const PROFILE: ProfileData = {
     ],
     workHistory: [
         {
-            label: "三重物流株式会社（アルバイト）",
+            label: "三興物流株式会社（アルバイト）",
             detail: "物流倉庫での搬送業務を担当／2024年2月〜2025年1月",
         },
     ],
     awards: [
         {
-            label: "ベクシーキューブハッカソン2026",
-            detail: "「ぷにぷに」デジタルキャラクターエンジニア賞",
+            label: "テックシーカーハッカソン",
+            detail: "デナリパム フィジカル ブルーエンジニア賞",
         },
     ],
-    internship: {
-        label: "Hutzper（大阪／製造業向け検査AIスタートアップ）",
-        detail: "2026年8月上旬よりインターン開始予定",
-    },
+    internships: [
+        {
+            label: "信濃ロボティクスイノベーションズ合同会社",
+            detail: "5ヶ月間のインターンでDaily-Briefの開発等を担当",
+        },
+        {
+            label: "Hutzper（大阪／製造業向け検査AIスタートアップ）",
+            detail: "2026年8月上旬よりインターン開始予定",
+        },
+    ],
     recentLearning: [
         { label: "JDLA Deep Learning for ENGINEER（E資格）", detail: "受験予定" },
     ],

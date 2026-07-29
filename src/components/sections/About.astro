@@ -25,10 +25,14 @@ import { PROFILE } from "../../data/profile";
             </div>
             <div>
                 <p class="timeline-block-title">インターン</p>
-                <div class="timeline-item">
-                    <p class="timeline-label">{PROFILE.internship.label}</p>
-                    <p class="timeline-detail">{PROFILE.internship.detail}</p>
-                </div>
+                {
+                    PROFILE.internships.map((item) => (
+                        <div class="timeline-item">
+                            <p class="timeline-label">{item.label}</p>
+                            <p class="timeline-detail">{item.detail}</p>
+                        </div>
+                    ))
+                }
             </div>
             <div>
                 <p class="timeline-block-title">職歴</p>

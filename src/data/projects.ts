@@ -21,7 +21,7 @@ export const PROJECTS: ProjectData[] = [
     {
         id: "daily-brief",
         title: "Daily-Brief",
-        org: "信頼ロボティクス（5ヶ月インターン）",
+        org: "信濃ロボティクスイノベーションズ合同会社（5ヶ月インターン）",
         category: "インターン業務",
         role: "アイデアは社長、実装は米澤佑一郎が担当",
         summary:
@@ -94,7 +94,7 @@ export const PROJECTS: ProjectData[] = [
     {
         id: "tango-de-go",
         title: "単語でGO",
-        org: "信頼ロボティクス（インターン選考課題）",
+        org: "信濃ロボティクスイノベーションズ合同会社（インターン選考課題）",
         category: "個人開発（初）",
         role: "本人一人で開発",
         summary:

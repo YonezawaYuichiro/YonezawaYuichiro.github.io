@@ -495,7 +495,7 @@ a:hover,
 }
 
 .skill-bar-track {
-    height: 6px;
+    height: 4px;
     border-radius: 999px;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -504,36 +504,37 @@ a:hover,
 
 .skill-bar-fill {
     height: 100%;
-    background: var(--accent);
+    background: color-mix(in srgb, var(--accent) 70%, var(--text-muted));
     border-radius: 999px;
 }
 
 .skill-level {
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
     text-align: right;
 }
 
 .skill-note {
     grid-column: 1 / -1;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
     margin: -0.3rem 0 0.5rem;
 }
 
 .ai-stance-box {
-    margin-top: 2.5rem;
-    padding: 1.25rem 1.5rem;
-    border: 1px dashed var(--border);
-    border-radius: 0.25rem;
-    background: var(--surface);
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
 }
 
 .ai-stance-title {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     margin-bottom: 0.4rem;
 }
 
@@ -618,6 +619,8 @@ a:hover,
 .project-dialog {
     max-width: 560px;
     width: calc(100% - 2rem);
+    max-height: calc(100% - 4rem);
+    margin: auto;
     border: 1px solid var(--border);
     border-radius: 0.5rem;
     padding: 0;

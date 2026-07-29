@@ -749,33 +749,6 @@ a:hover,
 [data-theme="dark"] .skill-lv3 { --lv-color: #7fa3ff; }
 [data-theme="dark"] .skill-lv4 { --lv-color: #f0776a; }
 
-.skill-legend {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
-    padding: 0;
-    margin: 1.75rem 0 2.75rem;
-    padding-bottom: 1.75rem;
-    border-bottom: 1px solid var(--border-subtle);
-}
-
-.skill-legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
-.skill-legend-bar {
-    width: 3px;
-    height: 0.85rem;
-    border-radius: 2px;
-    background: var(--lv-color);
-    flex-shrink: 0;
-}
-
 /* 補足コラム（AIとの付き合い方など） */
 .note-box {
     margin-top: 3.25rem;

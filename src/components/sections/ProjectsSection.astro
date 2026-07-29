@@ -32,6 +32,12 @@ import ProjectCard from "../ui/ProjectCard.astro";
             <h3 class="project-dialog-title" id="project-dialog-title"></h3>
             <p class="project-dialog-meta" id="project-dialog-meta"></p>
             <p class="project-dialog-summary" id="project-dialog-summary"></p>
+
+            <div id="project-dialog-highlights-block">
+                <p class="project-dialog-subhead">技術的な工夫</p>
+                <ul class="project-dialog-highlights" id="project-dialog-highlights"></ul>
+            </div>
+
             <div class="project-dialog-tags" id="project-dialog-tags"></div>
             <a
                 href="#"
@@ -56,6 +62,10 @@ import ProjectCard from "../ui/ProjectCard.astro";
         const titleEl = document.getElementById("project-dialog-title");
         const metaEl = document.getElementById("project-dialog-meta");
         const summaryEl = document.getElementById("project-dialog-summary");
+        const highlightsEl = document.getElementById("project-dialog-highlights");
+        const highlightsBlockEl = document.getElementById(
+            "project-dialog-highlights-block",
+        );
         const tagsEl = document.getElementById("project-dialog-tags");
         const linkEl = document.getElementById("project-dialog-link");
         const noLinkEl = document.getElementById("project-dialog-no-link");
@@ -71,6 +81,17 @@ import ProjectCard from "../ui/ProjectCard.astro";
                 titleEl.textContent = project.title;
                 metaEl.textContent = `${project.org} ／ ${project.role}`;
                 summaryEl.textContent = project.summary;
+
+                // highlights は任意項目。無い場合は見出しごと隠す
+                highlightsEl.innerHTML = "";
+                const highlights = project.highlights || [];
+                highlights.forEach((highlight) => {
+                    const li = document.createElement("li");
+                    li.textContent = highlight;
+                    highlightsEl.appendChild(li);
+                });
+                highlightsBlockEl.style.display = highlights.length ? "" : "none";
+
                 tagsEl.innerHTML = "";
                 project.tech.forEach((tech) => {
                     const span = document.createElement("span");

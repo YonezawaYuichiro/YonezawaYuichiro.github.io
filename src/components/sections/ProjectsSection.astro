@@ -117,8 +117,13 @@ import ProjectCard from "../ui/ProjectCard.astro";
             const anchor = document.createElement("a");
             anchor.href = link.url;
             anchor.className = "project-dialog-link";
-            // サイト内の一覧ページは同じタブ、外部リンクとPDFは別タブで開く
-            if (!link.url.startsWith("/projects/")) {
+            if (link.url.startsWith("/projects/")) {
+                // サイト内の一覧ページは同じタブで開く。
+                // ClientRouter のDOM差し替えだと video が描画されないことがあるため、
+                // data-astro-reload で通常のページ読み込みを強制する
+                anchor.setAttribute("data-astro-reload", "");
+            } else {
+                // 外部リンクとPDFは別タブ
                 anchor.target = "_blank";
                 anchor.rel = "noreferrer";
             }

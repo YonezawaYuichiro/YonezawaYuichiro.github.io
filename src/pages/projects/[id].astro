@@ -60,3 +60,17 @@ const { project } = Astro.props;
         </div>
     </section>
 </BaseLayout>
+
+<script is:inline>
+    // ClientRouter でこのページに入った場合、差し替えられた video が
+    // 読み込みを開始しないことがある。未取得なら load() で明示的に始める
+    function ensureVideosLoad() {
+        document.querySelectorAll(".gallery-item video").forEach((video) => {
+            if (video.networkState === HTMLMediaElement.NETWORK_EMPTY) {
+                video.load();
+            }
+        });
+    }
+
+    document.addEventListener("astro:page-load", ensureVideosLoad);
+</script>

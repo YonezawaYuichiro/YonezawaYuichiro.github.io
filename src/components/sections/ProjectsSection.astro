@@ -9,7 +9,7 @@ import ProjectCard from "../ui/ProjectCard.astro";
             <p class="section-eyebrow">Projects</p>
             <h2 class="title-lg">プロジェクト</h2>
             <p class="section-lead">
-                カードを選ぶと、担当範囲・使用技術・リポジトリを表示します。
+                カードを選ぶと、課題・取り組み・成果を表示します。
             </p>
         </header>
 
@@ -18,6 +18,7 @@ import ProjectCard from "../ui/ProjectCard.astro";
         </div>
     </div>
 
+    <!-- 項目は固定。全プロジェクトが同じ枠を同じ順番で埋める -->
     <dialog id="project-dialog" class="project-dialog">
         <div class="project-dialog-inner">
             <button
@@ -28,27 +29,65 @@ import ProjectCard from "../ui/ProjectCard.astro";
             >
                 ×
             </button>
+
             <p class="project-dialog-category" id="project-dialog-category"></p>
             <h3 class="project-dialog-title" id="project-dialog-title"></h3>
-            <p class="project-dialog-meta" id="project-dialog-meta"></p>
-            <p class="project-dialog-summary" id="project-dialog-summary"></p>
 
-            <div id="project-dialog-highlights-block">
-                <p class="project-dialog-subhead">技術的な工夫</p>
-                <ul class="project-dialog-highlights" id="project-dialog-highlights"></ul>
-            </div>
+            <dl class="project-dialog-meta">
+                <div class="project-dialog-meta-row">
+                    <dt>所属</dt>
+                    <dd id="project-dialog-org"></dd>
+                </div>
+                <div class="project-dialog-meta-row">
+                    <dt>期間</dt>
+                    <dd id="project-dialog-period"></dd>
+                </div>
+                <div class="project-dialog-meta-row">
+                    <dt>担当</dt>
+                    <dd id="project-dialog-role"></dd>
+                </div>
+            </dl>
 
-            <div class="project-dialog-tags" id="project-dialog-tags"></div>
-            <a
-                href="#"
-                id="project-dialog-link"
-                class="link project-dialog-link"
-                target="_blank"
-                rel="noreferrer"
-            >
-                リポジトリを見る →
-            </a>
-            <p class="body-xs" id="project-dialog-no-link">リポジトリ準備中です。</p>
+            <section class="project-dialog-section">
+                <h4 class="project-dialog-subhead">概要</h4>
+                <p class="project-dialog-text" id="project-dialog-summary"></p>
+            </section>
+
+            <section class="project-dialog-section">
+                <h4 class="project-dialog-subhead">課題</h4>
+                <p class="project-dialog-text" id="project-dialog-challenge"></p>
+            </section>
+
+            <section class="project-dialog-section">
+                <h4 class="project-dialog-subhead">取り組み</h4>
+                <ol class="project-dialog-approach" id="project-dialog-approach"></ol>
+            </section>
+
+            <section class="project-dialog-section">
+                <h4 class="project-dialog-subhead">成果</h4>
+                <p class="project-dialog-text" id="project-dialog-result"></p>
+            </section>
+
+            <section class="project-dialog-section">
+                <h4 class="project-dialog-subhead">使用技術</h4>
+                <div class="project-dialog-tags" id="project-dialog-tags"></div>
+            </section>
+
+            <section class="project-dialog-section">
+                <h4 class="project-dialog-subhead">リポジトリ</h4>
+                <a
+                    href="#"
+                    id="project-dialog-link"
+                    class="link project-dialog-link"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    GitHubで見る →
+                </a>
+                <p class="project-dialog-text" id="project-dialog-no-link">
+                    公開していません。
+                </p>
+            </section>
         </div>
     </dialog>
 </section>
@@ -58,18 +97,20 @@ import ProjectCard from "../ui/ProjectCard.astro";
         const dialog = document.getElementById("project-dialog");
         if (!(dialog instanceof HTMLDialogElement)) return;
 
-        const categoryEl = document.getElementById("project-dialog-category");
-        const titleEl = document.getElementById("project-dialog-title");
-        const metaEl = document.getElementById("project-dialog-meta");
-        const summaryEl = document.getElementById("project-dialog-summary");
-        const highlightsEl = document.getElementById("project-dialog-highlights");
-        const highlightsBlockEl = document.getElementById(
-            "project-dialog-highlights-block",
-        );
-        const tagsEl = document.getElementById("project-dialog-tags");
-        const linkEl = document.getElementById("project-dialog-link");
-        const noLinkEl = document.getElementById("project-dialog-no-link");
-        const closeBtn = document.getElementById("project-dialog-close");
+        const el = (id) => document.getElementById(`project-dialog-${id}`);
+        const categoryEl = el("category");
+        const titleEl = el("title");
+        const orgEl = el("org");
+        const periodEl = el("period");
+        const roleEl = el("role");
+        const summaryEl = el("summary");
+        const challengeEl = el("challenge");
+        const approachEl = el("approach");
+        const resultEl = el("result");
+        const tagsEl = el("tags");
+        const linkEl = el("link");
+        const noLinkEl = el("no-link");
+        const closeBtn = el("close");
 
         document.querySelectorAll(".project-card").forEach((card) => {
             card.addEventListener("click", () => {
@@ -79,18 +120,19 @@ import ProjectCard from "../ui/ProjectCard.astro";
 
                 categoryEl.textContent = project.category;
                 titleEl.textContent = project.title;
-                metaEl.textContent = `${project.org} ／ ${project.role}`;
+                orgEl.textContent = project.org;
+                periodEl.textContent = project.period;
+                roleEl.textContent = project.role;
                 summaryEl.textContent = project.summary;
+                challengeEl.textContent = project.challenge;
+                resultEl.textContent = project.result;
 
-                // highlights は任意項目。無い場合は見出しごと隠す
-                highlightsEl.innerHTML = "";
-                const highlights = project.highlights || [];
-                highlights.forEach((highlight) => {
+                approachEl.innerHTML = "";
+                project.approach.forEach((item) => {
                     const li = document.createElement("li");
-                    li.textContent = highlight;
-                    highlightsEl.appendChild(li);
+                    li.textContent = item;
+                    approachEl.appendChild(li);
                 });
-                highlightsBlockEl.style.display = highlights.length ? "" : "none";
 
                 tagsEl.innerHTML = "";
                 project.tech.forEach((tech) => {
@@ -100,15 +142,14 @@ import ProjectCard from "../ui/ProjectCard.astro";
                     tagsEl.appendChild(span);
                 });
 
-                if (project.repoUrl) {
-                    linkEl.href = project.repoUrl;
-                    linkEl.style.display = "";
-                    noLinkEl.style.display = "none";
-                } else {
-                    linkEl.style.display = "none";
-                    noLinkEl.style.display = "";
-                }
+                // リポジトリの有無だけは可変。項目自体は常に出す
+                const hasRepo = Boolean(project.repoUrl);
+                if (hasRepo) linkEl.href = project.repoUrl;
+                linkEl.style.display = hasRepo ? "" : "none";
+                noLinkEl.style.display = hasRepo ? "none" : "";
 
+                // 前回開いた位置が残らないよう先頭へ戻す
+                dialog.scrollTop = 0;
                 dialog.showModal();
             });
         });

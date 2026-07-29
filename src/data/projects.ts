@@ -28,7 +28,7 @@ export const PROJECTS: ProjectData[] = [
             "メールやカレンダーから重要な予定を抽出して要約し、音声データとして提供するツール。",
         // TODO: 実際に使用したAPI名など、より具体的な技術要素があれば追記する
         tech: ["Python", "LLM", "各種API", "音声合成"],
-        repoUrl: "", // TODO: リポジトリURLを追加
+        repoUrl: "https://github.com/YonezawaYuichiro/Daily-Brief",
         imageUrl: "", // TODO: スクリーンショット等を追加
     },
     {
@@ -40,19 +40,19 @@ export const PROJECTS: ProjectData[] = [
         summary:
             "物体を回転台に乗せ、ステッピングモーターで回転させながら撮影。撮影した点群～メッシュ化と多視点3Dモデル化のパイプラインを構築。",
         tech: ["COLMAP", "OpenMVS", "Python", "ステッピングモーター制御"],
-        repoUrl: "", // TODO: リポジトリURLを追加
+        repoUrl: "", // リポジトリなし
         imageUrl: "",
     },
     {
         id: "dialogue-preference-learning",
-        title: "対話式嗜好学習",
+        title: "対話式選好学習",
         org: "学校（研究の授業）",
         category: "研究課題（未完成）",
         role: "アイデアから実装まで全て米澤佑一郎が担当",
         summary:
             "就職活動で就活生にどんどん企業を紹介してもらうため、Claude Skillsを用いた価値観抽出法を提案・実装中。未完成。",
         tech: ["Claude Skills", "LLM", "Python"],
-        repoUrl: "", // TODO: リポジトリURLを追加
+        repoUrl: "https://github.com/YonezawaYuichiro/kigyou",
         imageUrl: "",
     },
     {
@@ -64,31 +64,31 @@ export const PROJECTS: ProjectData[] = [
         summary: "カメラで顔を認識し、サーボモーターで顔を追従させるシステム。",
         // TODO: より詳細な技術要素（マイコン種別など）が分かれば追記する
         tech: ["OpenCV", "サーボ制御", "Webカメラ"],
-        repoUrl: "", // TODO: リポジトリURLを追加
+        repoUrl: "https://github.com/YonezawaYuichiro/face-tracker",
         imageUrl: "",
     },
     {
         id: "signate-flood-prediction",
-        title: "SIGNATE（果樹園含水率予測）",
+        title: "SIGNATE（木材含水率予測）",
         org: "学校（授業）",
         category: "コンペ課題",
         role: "米澤佑一郎が担当",
         summary:
-            "果樹園の含水率を予測するモデルの開発。コンペ自体には入賞しなかったものの、モデルの精度を可能な限り向上させることに成功。",
+            "木材の含水率を予測するモデルの開発。コンペ自体には入賞しなかったものの、モデルの精度を可能な限り向上させることに成功。",
         tech: ["TCN", "LightGBM", "PLS+CV", "EfficientNet (CNN)"],
-        repoUrl: "", // TODO: リポジトリURLを追加
+        repoUrl: "", // リポジトリなし
         imageUrl: "",
     },
     {
         id: "handon-power-device",
-        title: "ハンドオン強化装置",
+        title: "デコピン強化装置",
         org: "学校（ハッカソン）",
         category: "ハッカソン",
-        role: "アイデアと回路設計を担当。UnityでのハンドオンゲームはHutzperが担当",
+        role: "アイデアと回路設計を担当。UnityでのデコピンゲームはHutzperが担当",
         summary:
-            "指の巻き上げと放出を使ったハンドオン強化装置。UDPを使ってArduino UNO QとUnityを連携。",
+            "指の巻き上げと放出を使ったデコピン強化装置。UDPを使ってArduino UNO QとUnityを連携。",
         tech: ["Arduino UNO Q", "Unity", "UDP通信", "加速度センサ"],
-        repoUrl: "", // TODO: リポジトリURLを追加
+        repoUrl: "https://github.com/sousci/decopin-project",
         imageUrl: "",
     },
     {
@@ -100,7 +100,7 @@ export const PROJECTS: ProjectData[] = [
         summary:
             "初めての個人開発。HTML/CSS/JavaScriptで作った基本的なWebアプリ。Webの基礎を学んだ。",
         tech: ["HTML", "CSS", "JavaScript"],
-        repoUrl: "", // TODO: リポジトリURLを追加
+        repoUrl: "https://github.com/YonezawaYuichiro/tango_table",
         imageUrl: "",
     },
     {
@@ -111,7 +111,7 @@ export const PROJECTS: ProjectData[] = [
         role: "セオリーに沿ってUnityを操作",
         summary: "ロボットのシミュレーションを学ぶための課題。",
         tech: ["Unity"],
-        repoUrl: "", // TODO: リポジトリURLを追加
+        repoUrl: "https://github.com/YonezawaYuichiro/robocon-cleaner-sim",
         imageUrl: "",
     },
 ];

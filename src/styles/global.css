@@ -27,9 +27,11 @@
     /* 罫線より更に淡い区切り */
     --border-subtle: color-mix(in srgb, var(--border) 55%, var(--background));
 
-    /* 本文の折返し幅。日本語は 34em 前後が読みやすい */
-    --measure: 34em;
-    --wide-width: 980px;
+    /* 本文の折返し幅。日本語は1行 40〜45字が読みやすい（42em = 約42字）。
+       コンテナ幅との差が開きすぎると本文だけ左に取り残されて見えるため、
+       --wide-width とセットで調整する */
+    --measure: 42em;
+    --wide-width: 880px;
 }
 
 [data-theme="dark"] {
@@ -504,7 +506,7 @@ a:hover,
     font-weight: 700;
     line-height: 1.7;
     color: var(--foreground);
-    max-width: 27em;
+    max-width: 32em;
 }
 
 .hero-lead {
@@ -523,8 +525,8 @@ a:hover,
 }
 
 .hero-portrait {
-    width: 210px;
-    height: 210px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--border);

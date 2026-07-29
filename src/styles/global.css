@@ -1017,7 +1017,7 @@ a:hover,
     color: var(--text-muted);
 }
 
-/* 固定項目（概要・課題・取り組み・成果・使用技術・リンク） */
+/* 固定項目（概要・設計意匠・成果・使用技術・リンク） */
 .project-dialog-section {
     margin-top: 1.75rem;
 }
@@ -1049,29 +1049,26 @@ a:hover,
     color: var(--foreground);
 }
 
-/* 取り組みは番号付き。番号はアクセント色の等幅で揃える */
-.project-dialog-approach {
+/* 設計意匠（課題→設計のペア）は番号付き。番号はアクセント色の等幅で揃える */
+.project-dialog-design {
     list-style: none;
     padding: 0;
     margin: 0;
-    counter-reset: approach;
+    counter-reset: design;
 }
 
-.project-dialog-approach li {
+.project-dialog-design li {
     position: relative;
-    counter-increment: approach;
+    counter-increment: design;
     padding-left: 1.75rem;
-    font-size: 0.875rem;
-    line-height: 1.95;
-    color: var(--foreground);
 }
 
-.project-dialog-approach li + li {
-    margin-top: 0.85rem;
+.project-dialog-design li + li {
+    margin-top: 1.1rem;
 }
 
-.project-dialog-approach li::before {
-    content: counter(approach);
+.project-dialog-design li::before {
+    content: counter(design);
     position: absolute;
     left: 0;
     top: 0;
@@ -1081,6 +1078,35 @@ a:hover,
     line-height: 2.3;
     color: var(--accent);
     font-feature-settings: normal;
+}
+
+/* ポイントは見出しとして太字、課題は控えめな色、設計は本文色にして流れを見せる */
+.project-dialog-design-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.6;
+    color: var(--foreground);
+}
+
+.project-dialog-design-problem {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+}
+
+.project-dialog-design-solution {
+    margin-top: 0.35rem;
+    font-size: 0.875rem;
+    line-height: 1.95;
+    color: var(--foreground);
+}
+
+/* 「ポイント：」「課題：」「設計：」の項目名ラベル */
+.project-dialog-design-label {
+    font-weight: 700;
+    color: var(--accent);
+    margin-right: 0.3em;
 }
 
 .project-dialog-tags {

@@ -9,7 +9,7 @@ import ProjectCard from "../ui/ProjectCard.astro";
             <p class="section-eyebrow">Projects</p>
             <h2 class="title-lg">プロジェクト</h2>
             <p class="section-lead">
-                カードを選ぶと、課題・取り組み・成果を表示します。
+                カードを選ぶと、設計意匠・成果を表示します。
             </p>
         </header>
 
@@ -59,13 +59,8 @@ import ProjectCard from "../ui/ProjectCard.astro";
             </section>
 
             <section class="project-dialog-section">
-                <h4 class="project-dialog-subhead">課題</h4>
-                <p class="project-dialog-text" id="project-dialog-challenge"></p>
-            </section>
-
-            <section class="project-dialog-section">
-                <h4 class="project-dialog-subhead">取り組み</h4>
-                <ol class="project-dialog-approach" id="project-dialog-approach"></ol>
+                <h4 class="project-dialog-subhead">設計意匠</h4>
+                <ol class="project-dialog-design" id="project-dialog-design"></ol>
             </section>
 
             <section class="project-dialog-section">
@@ -101,8 +96,7 @@ import ProjectCard from "../ui/ProjectCard.astro";
         const periodEl = el("period");
         const roleEl = el("role");
         const summaryEl = el("summary");
-        const challengeEl = el("challenge");
-        const approachEl = el("approach");
+        const designEl = el("design");
         const resultEl = el("result");
         const tagsEl = el("tags");
         const linksEl = el("links");
@@ -160,14 +154,31 @@ import ProjectCard from "../ui/ProjectCard.astro";
                 periodEl.textContent = project.period;
                 roleEl.textContent = project.role;
                 summaryEl.textContent = project.summary;
-                challengeEl.textContent = project.challenge;
                 resultEl.textContent = project.result;
 
-                approachEl.innerHTML = "";
-                project.approach.forEach((item) => {
+                // ポイント・課題・設計の各行の頭に付けるラベルを組み立てる
+                const buildLabeledLine = (label, text, className) => {
+                    const p = document.createElement("p");
+                    p.className = className;
+
+                    const labelEl = document.createElement("span");
+                    labelEl.className = "project-dialog-design-label";
+                    labelEl.textContent = label;
+
+                    p.append(labelEl, document.createTextNode(text));
+                    return p;
+                };
+
+                designEl.innerHTML = "";
+                project.design.forEach((point) => {
                     const li = document.createElement("li");
-                    li.textContent = item;
-                    approachEl.appendChild(li);
+
+                    const title = buildLabeledLine("ポイント：", point.title, "project-dialog-design-title");
+                    const problem = buildLabeledLine("課題：", point.problem, "project-dialog-design-problem");
+                    const solution = buildLabeledLine("設計：", point.solution, "project-dialog-design-solution");
+
+                    li.append(title, problem, solution);
+                    designEl.appendChild(li);
                 });
 
                 tagsEl.innerHTML = "";

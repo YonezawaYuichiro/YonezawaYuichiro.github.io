@@ -10,7 +10,8 @@ export const THEMES: Record<string, Theme> = {
         background: "#fbfbfd",
         surface: "#ffffff",
         foreground: "#14161c",
-        muted: "#5b6170",
+        // background / surface / surface-sunken すべての上で 7:1（AAA）を満たす明度
+        muted: "#4d525f",
         border: "#e4e7ee",
         accent: "#3358d4",
     },
@@ -19,7 +20,8 @@ export const THEMES: Record<string, Theme> = {
         background: "#0e1116",
         surface: "#161a22",
         foreground: "#e7eaf0",
-        muted: "#8d95a5",
+        // background / surface / surface-sunken すべての上で 7:1（AAA）を満たす明度
+        muted: "#9ea6b5",
         border: "#242a35",
         accent: "#83a8ff",
     },

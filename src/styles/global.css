@@ -568,35 +568,35 @@ a:hover,
     flex-shrink: 0;
 }
 
-/* レベル別の色分け: 使ったことがある=赤 / 使い方がわかる=青 / 使える=緑 / 書ける=白 */
-.skill-lv1 { --skill-lv-color: #dc2626; }
-.skill-lv2 { --skill-lv-color: #2563eb; }
-.skill-lv3 { --skill-lv-color: #16a34a; }
-.skill-lv4 { --skill-lv-color: #ffffff; }
+/* レベル別の色分け: 使ったことがある=白 / 使い方がわかる=緑 / 使える=青 / 書ける=赤 */
+.skill-lv1 { --skill-lv-color: #ffffff; }
+.skill-lv2 { --skill-lv-color: #16a34a; }
+.skill-lv3 { --skill-lv-color: #2563eb; }
+.skill-lv4 { --skill-lv-color: #dc2626; }
 
 .skill-legend-dot {
     border: 1px solid color-mix(in srgb, var(--skill-lv-color) 60%, var(--border));
 }
 
-.skill-category .badge-item.skill-lv1,
 .skill-category .badge-item.skill-lv2,
-.skill-category .badge-item.skill-lv3 {
+.skill-category .badge-item.skill-lv3,
+.skill-category .badge-item.skill-lv4 {
     background: var(--skill-lv-color);
     border-color: var(--skill-lv-color);
 }
 
-.skill-category .badge-item.skill-lv1 .badge-item-name,
 .skill-category .badge-item.skill-lv2 .badge-item-name,
-.skill-category .badge-item.skill-lv3 .badge-item-name {
+.skill-category .badge-item.skill-lv3 .badge-item-name,
+.skill-category .badge-item.skill-lv4 .badge-item-name {
     color: #ffffff;
 }
 
-.skill-category .badge-item.skill-lv4 {
+.skill-category .badge-item.skill-lv1 {
     background: var(--skill-lv-color);
     border-color: var(--border);
 }
 
-.skill-category .badge-item.skill-lv4 .badge-item-name {
+.skill-category .badge-item.skill-lv1 .badge-item-name {
     color: #111827;
 }
 

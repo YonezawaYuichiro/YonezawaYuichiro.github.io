@@ -23,21 +23,27 @@ import { SKILL_CATEGORIES, SKILL_LEVELS, AI_STANCE_NOTE } from "../../data/skill
 
         <div class="mt-4">
             {
-                SKILL_CATEGORIES.map((category) => (
-                    <div class="skill-category">
-                        <p class="skill-category-title">{category.category}</p>
-                        <ul class="badge-list">
-                            {category.items.map((item) => {
-                                const levelIndex = SKILL_LEVELS.indexOf(item.level) + 1;
-                                return (
-                                    <li class={`badge-item skill-lv${levelIndex}`}>
-                                        <span class="badge-item-name">{item.name}</span>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
-                ))
+                SKILL_CATEGORIES.map((category) => {
+                    // 書ける→使える→使い方がわかる→使ったことがある の順に並べる
+                    const sortedItems = [...category.items].sort(
+                        (a, b) => SKILL_LEVELS.indexOf(b.level) - SKILL_LEVELS.indexOf(a.level)
+                    );
+                    return (
+                        <div class="skill-category">
+                            <p class="skill-category-title">{category.category}</p>
+                            <ul class="badge-list">
+                                {sortedItems.map((item) => {
+                                    const levelIndex = SKILL_LEVELS.indexOf(item.level) + 1;
+                                    return (
+                                        <li class={`badge-item skill-lv${levelIndex}`}>
+                                            <span class="badge-item-name">{item.name}</span>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    );
+                })
             }
         </div>
 

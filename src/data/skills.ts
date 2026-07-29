@@ -27,27 +27,36 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     {
         category: "プログラミング言語",
         items: [
-            { name: "HTML", level: "書ける" },
-            { name: "CSS", level: "使える" },
             { name: "Python", level: "書ける" },
+            { name: "HTML", level: "書ける" },
             { name: "JavaScript", level: "使える" },
-            { name: "TypeScript", level: "使い方がわかる" },
-            { name: "C++ (Arduino)", level: "使い方がわかる" },
+            { name: "C/C++", level: "使える" },
+            { name: "CSS", level: "使い方がわかる" },
+            { name: "TypeScript", level: "使ったことがある" },
+            { name: "C#", level: "使ったことがある" },
         ],
     },
     {
         category: "フレームワーク・ライブラリ",
         items: [
-            { name: "FastAPI", level: "使える" },
-            { name: "PyTorch", level: "使い方がわかる" },
+            { name: "FastAPI", level: "書ける" },
+            { name: "LightGBM", level: "使い方がわかる" },
+            { name: "OpenCV", level: "使い方がわかる" },
+            { name: "Flask", level: "使い方がわかる" },
+            { name: "Jinja2", level: "使い方がわかる" },
+            { name: "PyTorch", level: "使える" },
             { name: "React", level: "使い方がわかる" },
+            { name: "SQLAlchemy", level: "使い方がわかる" },
+            { name: "Astro", level: "使ったことがある" },
         ],
     },
     {
-        category: "インフラ・データベース",
+        category: "インフラ・データベース・環境",
         items: [
-            { name: "Git / GitHub", level: "使える" },
+            { name: "Git / GitHub", level: "書ける" },
             { name: "PostgreSQL", level: "使える" },
+            { name: "Windows (CMD / PowerShell)", level: "使い方がわかる" },
+            { name: "Linux (Git Bash)", level: "使い方がわかる" },
             { name: "Docker", level: "使い方がわかる" },
             { name: "AWS", level: "使い方がわかる" },
             { name: "Alembic", level: "使ったことがある" },
@@ -55,17 +64,32 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
         ],
     },
     {
-        category: "ハードウェア・設計",
+        category: "ハードウェア・電子工作",
         items: [
-            { name: "Fusion360", level: "使える" },
+            { name: "Arduino", level: "使える" },
             { name: "電気回路", level: "使える" },
+            { name: "サーボモーター", level: "使える" },
+            { name: "Raspberry Pi", level: "使い方がわかる" },
+            { name: "ESP32", level: "使い方がわかる" },
+            { name: "ステッピングモーター", level: "使い方がわかる" },
             { name: "BLE", level: "使い方がわかる" },
-            { name: "Unity", level: "使ったことがある" },
         ],
     },
     {
-        category: "ドメイン知識",
-        items: [{ name: "LLM", level: "使える" }],
+        category: "AI・生成AIツール",
+        items: [
+            { name: "Claude Skills", level: "書ける" },
+            { name: "Claude Code", level: "書ける" },
+            { name: "LLM (API連携など)", level: "使える" },
+        ],
+    },
+    {
+        category: "ツール・その他",
+        items: [
+            { name: "Fusion360", level: "使える" },
+            { name: "Unity", level: "使ったことがある" },
+            { name: "3Dフォトグラメトリ (COLMAP / OpenMVS)", level: "使ったことがある" },
+        ],
     },
 ];
 

@@ -1,0 +1,100 @@
+---
+import { PROJECTS } from "../../data/projects";
+import ProjectCard from "../ui/ProjectCard.astro";
+---
+
+<section id="projects" class="section-block">
+    <div class="container-narrow">
+        <p class="section-eyebrow">Projects</p>
+        <h2 class="title-lg">プロジェクト</h2>
+        <p class="body mt-4">
+            カードをクリックすると詳細を表示します。
+        </p>
+
+        <div class="project-grid">
+            {PROJECTS.map((project) => <ProjectCard project={project} />)}
+        </div>
+    </div>
+
+    <dialog id="project-dialog" class="project-dialog">
+        <div class="project-dialog-inner">
+            <button
+                type="button"
+                class="btn-icon project-dialog-close"
+                id="project-dialog-close"
+                aria-label="閉じる"
+            >
+                ×
+            </button>
+            <p class="project-dialog-category" id="project-dialog-category"></p>
+            <h3 class="project-dialog-title" id="project-dialog-title"></h3>
+            <p class="project-dialog-meta" id="project-dialog-meta"></p>
+            <p class="project-dialog-summary" id="project-dialog-summary"></p>
+            <div class="project-dialog-tags" id="project-dialog-tags"></div>
+            <a
+                href="#"
+                id="project-dialog-link"
+                class="link project-dialog-link"
+                target="_blank"
+                rel="noreferrer"
+            >
+                リポジトリを見る →
+            </a>
+            <p class="body-xs" id="project-dialog-no-link">リポジトリ準備中です。</p>
+        </div>
+    </dialog>
+</section>
+
+<script is:inline>
+    function initProjectModal() {
+        const dialog = document.getElementById("project-dialog");
+        if (!(dialog instanceof HTMLDialogElement)) return;
+
+        const categoryEl = document.getElementById("project-dialog-category");
+        const titleEl = document.getElementById("project-dialog-title");
+        const metaEl = document.getElementById("project-dialog-meta");
+        const summaryEl = document.getElementById("project-dialog-summary");
+        const tagsEl = document.getElementById("project-dialog-tags");
+        const linkEl = document.getElementById("project-dialog-link");
+        const noLinkEl = document.getElementById("project-dialog-no-link");
+        const closeBtn = document.getElementById("project-dialog-close");
+
+        document.querySelectorAll(".project-card").forEach((card) => {
+            card.addEventListener("click", () => {
+                const raw = card.getAttribute("data-project");
+                if (!raw) return;
+                const project = JSON.parse(raw);
+
+                categoryEl.textContent = project.category;
+                titleEl.textContent = project.title;
+                metaEl.textContent = `${project.org} ／ ${project.role}`;
+                summaryEl.textContent = project.summary;
+                tagsEl.innerHTML = "";
+                project.tech.forEach((tech) => {
+                    const span = document.createElement("span");
+                    span.className = "tag";
+                    span.textContent = `#${tech}`;
+                    tagsEl.appendChild(span);
+                });
+
+                if (project.repoUrl) {
+                    linkEl.href = project.repoUrl;
+                    linkEl.style.display = "";
+                    noLinkEl.style.display = "none";
+                } else {
+                    linkEl.style.display = "none";
+                    noLinkEl.style.display = "";
+                }
+
+                dialog.showModal();
+            });
+        });
+
+        closeBtn?.addEventListener("click", () => dialog.close());
+        dialog.addEventListener("click", (event) => {
+            if (event.target === dialog) dialog.close();
+        });
+    }
+
+    document.addEventListener("astro:page-load", initProjectModal);
+</script>

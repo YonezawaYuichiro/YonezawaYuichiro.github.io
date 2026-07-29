@@ -1,36 +1,65 @@
 ---
-import { NAV_LINKS, PAGES } from "../../config";
+import { NAV_LINKS, THEME_CONFIG } from "../../config";
+import Icon from "../ui/Icon.astro";
 
-const currentPath = Astro.url.pathname;
+const showToggle = THEME_CONFIG.lightAndDark;
 ---
 
-<nav class="navbar">
-    <ul class="nav-links">
+<header class="navbar">
+    <a href="#top" class="navbar-brand">米澤佑一郎</a>
+
+    <button
+        id="nav-menu-toggle"
+        class="btn-icon nav-menu-toggle"
+        aria-label="メニューを開閉"
+        aria-expanded="false"
+    >
+        <span class="nav-menu-icon" aria-hidden="true"></span>
+    </button>
+
+    <nav id="nav-menu" class="nav-menu">
+        <ul class="nav-links">
+            {
+                NAV_LINKS.map((link) => (
+                    <li>
+                        <a href={link.href} class="nav-link">
+                            {link.label}
+                            <span class="nav-link-line" />
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+
         {
-            NAV_LINKS.filter((link) => {
-                const isHome = link.href === "/";
-                const pageKey = isHome
-                    ? "home"
-                    : link.href.split("/").filter(Boolean)[0];
-                const pageConfig = (PAGES as any)[pageKey];
-                return link.isActive !== false && pageConfig?.active !== false;
-            }).map((link) => (
-                <li>
-                    <a
-                        href={link.href}
-                        class={`nav-link ${
-                            currentPath === link.href ||
-                            (link.href !== "/" &&
-                                currentPath.startsWith(link.href))
-                                ? "active"
-                                : "inactive"
-                        }`}
-                    >
-                        {link.label}
-                        <span class="nav-link-line" />
-                    </a>
-                </li>
-            ))
+            showToggle && (
+                <button id="theme-toggle" aria-label="ダーク/ライト切替" class="btn-icon">
+                    <Icon name="Sun" size={16} class="hidden dark:block" />
+                    <Icon name="Moon" size={16} class="block dark:hidden" />
+                </button>
+            )
         }
-    </ul>
-</nav>
+    </nav>
+</header>
+
+<script is:inline>
+    function initNavMenu() {
+        const toggle = document.getElementById("nav-menu-toggle");
+        const menu = document.getElementById("nav-menu");
+        if (!toggle || !menu) return;
+
+        toggle.addEventListener("click", () => {
+            const isOpen = menu.classList.toggle("open");
+            toggle.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        menu.querySelectorAll(".nav-link").forEach((link) => {
+            link.addEventListener("click", () => {
+                menu.classList.remove("open");
+                toggle.setAttribute("aria-expanded", "false");
+            });
+        });
+    }
+
+    document.addEventListener("astro:page-load", initNavMenu);
+</script>

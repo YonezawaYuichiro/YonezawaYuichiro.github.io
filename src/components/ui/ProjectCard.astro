@@ -1,0 +1,25 @@
+---
+import Tag from "./Tag.astro";
+import type { ProjectData } from "../../data/projects";
+
+interface Props {
+    project: ProjectData;
+}
+
+const { project } = Astro.props;
+---
+
+<button
+    type="button"
+    class="project-card"
+    data-project={JSON.stringify(project)}
+    aria-haspopup="dialog"
+>
+    <span class="project-card-category">{project.category}</span>
+    <span class="project-card-title">{project.title}</span>
+    <span class="project-card-org">{project.org}</span>
+    <span class="project-card-summary">{project.summary}</span>
+    <span class="project-card-tags">
+        {project.tech.slice(0, 4).map((t) => <Tag name={t} size="sm" />)}
+    </span>
+</button>

@@ -1,12 +1,11 @@
-import type { SiteConfig, ThemeConfig, SettingsConfig, UmamiAnalyticsConfig, AnalyticsConfig } from "../types";
+import type { SiteConfig, ThemeConfig, AnalyticsConfig, UmamiAnalyticsConfig } from "../types";
 
 export const SITE: SiteConfig = {
     website: "https://YonezawaYuichiro.github.io/",
-    author: "OYONE",
-    desc: "こんにちは",
-    title: "Yonezawa Yuichiro",
-    ogImage: "shannon.webp",
-    postPerPage: 5,
+    author: "米澤 佑一郎",
+    desc: "フィジカルAI領域を志すエンジニア志望学生のポートフォリオサイト。",
+    title: "Yuichiro Yonezawa Portfolio",
+    ogImage: "main_page.jpg",
     favicon: "/favicon.svg",
     lang: "ja",
 };
@@ -14,13 +13,7 @@ export const SITE: SiteConfig = {
 export const THEME_CONFIG: ThemeConfig = {
     lightAndDark: true,
     themeLight: "light_default",
-    themeDark: "dark_notepad",
-};
-
-export const SETTINGS: SettingsConfig = {
-    showTagsInNavbar: true,
-    showRSSInFooter: true,
-    addDevToolsInProduction: true,
+    themeDark: "dark_default",
 };
 
 const umami: UmamiAnalyticsConfig = {

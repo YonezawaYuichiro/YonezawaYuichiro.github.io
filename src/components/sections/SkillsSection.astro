@@ -1,0 +1,38 @@
+---
+import { SKILL_CATEGORIES, SKILL_MAX_LEVEL, AI_STANCE_NOTE } from "../../data/skills";
+---
+
+<section id="skills" class="section-block">
+    <div class="container-narrow">
+        <p class="section-eyebrow">Skills</p>
+        <h2 class="title-lg">スキル</h2>
+
+        <div class="mt-4">
+            {
+                SKILL_CATEGORIES.map((category) => (
+                    <div class="skill-category">
+                        <p class="skill-category-title">{category.category}</p>
+                        {category.items.map((item) => (
+                            <div class="skill-row">
+                                <span class="skill-name">{item.name}</span>
+                                <span class="skill-bar-track">
+                                    <span
+                                        class="skill-bar-fill"
+                                        style={`width: ${(item.level / SKILL_MAX_LEVEL) * 100}%`}
+                                    />
+                                </span>
+                                <span class="skill-level">{item.level}/{SKILL_MAX_LEVEL}</span>
+                                {item.note && <p class="skill-note">※ {item.note}</p>}
+                            </div>
+                        ))}
+                    </div>
+                ))
+            }
+        </div>
+
+        <div class="ai-stance-box">
+            <p class="ai-stance-title">{AI_STANCE_NOTE.title}</p>
+            <p class="ai-stance-body">{AI_STANCE_NOTE.body}</p>
+        </div>
+    </div>
+</section>

@@ -4,7 +4,6 @@ export interface SiteConfig {
     desc: string;
     title: string;
     ogImage: string;
-    postPerPage: number;
     favicon: string;
     lang: string;
 }
@@ -13,12 +12,6 @@ export interface ThemeConfig {
     lightAndDark: boolean;
     themeLight: string;
     themeDark: string;
-}
-
-export interface SettingsConfig {
-    showTagsInNavbar: boolean;
-    showRSSInFooter: boolean;
-    addDevToolsInProduction: boolean;
 }
 
 export interface UmamiAnalyticsConfig {
@@ -34,7 +27,6 @@ export interface AnalyticsConfig {
 export interface NavLink {
     href: string;
     label: string;
-    isActive: boolean;
 }
 
 export interface SocialLink {
@@ -43,11 +35,3 @@ export interface SocialLink {
     linkTitle: string;
     isActive: boolean;
 }
-
-export interface PageConfig {
-    title: string;
-    subtitle: string;
-    isActive: boolean;
-}
-
-export type PagesConfig = Record<string, PageConfig>;

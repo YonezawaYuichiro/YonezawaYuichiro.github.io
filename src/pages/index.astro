@@ -1,31 +1,17 @@
 ---
-import { getEntry, render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { PAGES } from "../config";
-
-// Load bio content
-const bioEntry = await getEntry("bio", "bio");
-const { Content: BioContent } = bioEntry
-	? await render(bioEntry)
-	: { Content: null };
+import Hero from "../components/sections/Hero.astro";
+import About from "../components/sections/About.astro";
+import SkillsSection from "../components/sections/SkillsSection.astro";
+import ProjectsSection from "../components/sections/ProjectsSection.astro";
+import ContactSection from "../components/sections/ContactSection.astro";
+import { PROFILE } from "../data/profile";
 ---
 
-<BaseLayout title={PAGES.home.title}>
-	<div class="container-narrow">
-		{
-			(PAGES.home.title || PAGES.home.subtitle) && (
-				<header class="page-header">
-					{PAGES.home.title && (
-						<h1 class="page-title">{PAGES.home.title}</h1>
-					)}
-					{PAGES.home.subtitle && (
-						<p class="page-subtitle">{PAGES.home.subtitle}</p>
-					)}
-				</header>
-			)
-		}
-		<div class="prose">
-			{BioContent ? <BioContent /> : <p>Loading bio...</p>}
-		</div>
-	</div>
+<BaseLayout title={PROFILE.name} description={PROFILE.tagline}>
+    <Hero />
+    <About />
+    <SkillsSection />
+    <ProjectsSection />
+    <ContactSection />
 </BaseLayout>

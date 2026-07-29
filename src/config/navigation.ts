@@ -1,12 +1,10 @@
 import type { NavLink } from "../types";
 
+// 1ページ完結構成のアンカーナビ。すべて日本語ラベル。
 export const NAV_LINKS: NavLink[] = [
-    { href: "/", label: "About", isActive: true },
-    { href: "/publications", label: "Publications", isActive: true },
-    { href: "/talks", label: "Talks", isActive: true },
-    { href: "/teaching", label: "Teaching", isActive: true },
-    { href: "/projects", label: "Code", isActive: true },
-    { href: "/posts", label: "Blog", isActive: true },
-    { href: "/tags", label: "Tags", isActive: true },
-    { href: "/cv", label: "CV", isActive: true },
+    { href: "#top", label: "トップ" },
+    { href: "#about", label: "自己紹介" },
+    { href: "#skills", label: "スキル" },
+    { href: "#projects", label: "プロジェクト" },
+    { href: "#contact", label: "お問い合わせ" },
 ];

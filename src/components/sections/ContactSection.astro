@@ -1,0 +1,41 @@
+---
+import { PROFILE } from "../../data/profile";
+---
+
+<section id="contact" class="section-block">
+    <div class="container-narrow">
+        <p class="section-eyebrow">Contact</p>
+        <h2 class="title-lg">お問い合わせ</h2>
+        <p class="body mt-4">ご興味を持っていただけましたら、お気軽にご連絡ください。</p>
+
+        <div class="contact-list">
+            <a class="contact-row" href={`mailto:${PROFILE.contact.email}`}>
+                <span>
+                    <span class="contact-row-label">Email</span><br />
+                    <span class="contact-row-value">{PROFILE.contact.email}</span>
+                </span>
+            </a>
+            <a
+                class="contact-row"
+                href={PROFILE.contact.github}
+                target="_blank"
+                rel="noreferrer"
+            >
+                <span>
+                    <span class="contact-row-label">GitHub</span><br />
+                    <span class="contact-row-value">{PROFILE.contact.github.replace("https://", "")}</span>
+                </span>
+            </a>
+            {
+                PROFILE.contact.x && (
+                    <a class="contact-row" href={PROFILE.contact.x} target="_blank" rel="noreferrer">
+                        <span>
+                            <span class="contact-row-label">X</span><br />
+                            <span class="contact-row-value">{PROFILE.contact.x.replace("https://", "")}</span>
+                        </span>
+                    </a>
+                )
+            }
+        </div>
+    </div>
+</section>

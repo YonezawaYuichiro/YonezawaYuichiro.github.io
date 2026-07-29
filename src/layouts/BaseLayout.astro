@@ -1,8 +1,8 @@
 ---
 import { SITE, THEME_CONFIG, ANALYTICS, THEMES } from "../config";
 import { ClientRouter } from "astro:transitions";
-import LeftSidebar from "../components/layout/LeftSidebar.astro";
-import RightMain from "../components/layout/RightMain.astro";
+import Navbar from "../components/layout/Navbar.astro";
+import Footer from "../components/layout/Footer.astro";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -10,7 +10,6 @@ import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
-import "katex/dist/katex.min.css";
 import "../styles/global.css";
 
 const themeLightKey = (THEME_CONFIG.themeLight.startsWith('light_') ? THEME_CONFIG.themeLight : `light_${THEME_CONFIG.themeLight}`) as keyof typeof THEMES;
@@ -42,7 +41,7 @@ const jsonLd = {
     "@type": "Person",
     name: SITE.author,
     url: SITE.website,
-    jobTitle: "Professor",
+    jobTitle: "Student / Aspiring Engineer",
     description: SITE.desc,
 };
 ---
@@ -219,11 +218,12 @@ const jsonLd = {
     <body
         class="bg-background text-foreground transition-colors duration-300 min-h-screen"
     >
-        <div class="flex max-lg:flex-col mx-auto max-w-6xl w-full min-h-screen">
-            <LeftSidebar />
-            <RightMain>
+        <div class="page-shell">
+            <Navbar />
+            <main class="page-main">
                 <slot />
-            </RightMain>
+            </main>
+            <Footer />
         </div>
     </body>
 </html>

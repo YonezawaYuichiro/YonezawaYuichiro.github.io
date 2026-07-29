@@ -1,0 +1,82 @@
+---
+import { PROFILE } from "../../data/profile";
+---
+
+<section id="about" class="section-block">
+    <div class="container-narrow">
+        <p class="section-eyebrow">About</p>
+        <h2 class="title-lg">自己紹介</h2>
+
+        <div class="about-lead mt-4">
+            {PROFILE.intro.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+
+        <div class="timeline-grid">
+            <div>
+                <p class="timeline-block-title">学歴</p>
+                {
+                    PROFILE.education.map((item) => (
+                        <div class="timeline-item">
+                            <p class="timeline-label">{item.label}</p>
+                            <p class="timeline-detail">{item.detail}</p>
+                        </div>
+                    ))
+                }
+            </div>
+            <div>
+                <p class="timeline-block-title">インターン</p>
+                <div class="timeline-item">
+                    <p class="timeline-label">{PROFILE.internship.label}</p>
+                    <p class="timeline-detail">{PROFILE.internship.detail}</p>
+                </div>
+            </div>
+            <div>
+                <p class="timeline-block-title">職歴</p>
+                {
+                    PROFILE.workHistory.map((item) => (
+                        <div class="timeline-item">
+                            <p class="timeline-label">{item.label}</p>
+                            <p class="timeline-detail">{item.detail}</p>
+                        </div>
+                    ))
+                }
+            </div>
+            <div>
+                <p class="timeline-block-title">受賞</p>
+                {
+                    PROFILE.awards.map((item) => (
+                        <div class="timeline-item">
+                            <p class="timeline-label">{item.label}</p>
+                            <p class="timeline-detail">{item.detail}</p>
+                        </div>
+                    ))
+                }
+            </div>
+            <div class="timeline-full">
+                <p class="timeline-block-title">直近の学習</p>
+                {
+                    PROFILE.recentLearning.map((item) => (
+                        <div class="timeline-item">
+                            <p class="timeline-label">{item.label}</p>
+                            <p class="timeline-detail">{item.detail}</p>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div class="cert-block">
+            <p class="timeline-block-title">保有資格・免許</p>
+            <ul class="cert-list">
+                {
+                    PROFILE.certifications.map((item) => (
+                        <li class="cert-item">
+                            <span class="cert-item-name">{item.label}</span>
+                            <span class="cert-item-date">{item.detail}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </div>
+</section>

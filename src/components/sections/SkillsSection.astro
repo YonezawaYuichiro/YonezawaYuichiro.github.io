@@ -1,5 +1,5 @@
 ---
-import { SKILL_CATEGORIES, AI_STANCE_NOTE } from "../../data/skills";
+import { SKILL_CATEGORIES, SKILL_LEVELS, AI_STANCE_NOTE } from "../../data/skills";
 ---
 
 <section id="skills" class="section-block">
@@ -7,8 +7,19 @@ import { SKILL_CATEGORIES, AI_STANCE_NOTE } from "../../data/skills";
         <p class="section-eyebrow">Skills</p>
         <h2 class="title-lg">スキル</h2>
         <p class="body mt-4">
-            数値の自己採点ではなく、実際にできることを基準にした申告です（使ったことがある ／ 使い方がわかる ／ 使える ／ 書ける）。
+            数値の自己採点ではなく、実際にできることを基準にした4段階の申告です。
         </p>
+
+        <ul class="skill-legend">
+            {
+                SKILL_LEVELS.map((level, i) => (
+                    <li class={`skill-legend-item skill-lv${i + 1}`}>
+                        <span class="skill-legend-dot" />
+                        {level}
+                    </li>
+                ))
+            }
+        </ul>
 
         <div class="mt-4">
             {
@@ -16,12 +27,15 @@ import { SKILL_CATEGORIES, AI_STANCE_NOTE } from "../../data/skills";
                     <div class="skill-category">
                         <p class="skill-category-title">{category.category}</p>
                         <ul class="badge-list">
-                            {category.items.map((item) => (
-                                <li class="badge-item">
-                                    <span class="badge-item-name">{item.name}</span>
-                                    <span class="badge-item-meta">{item.level}</span>
-                                </li>
-                            ))}
+                            {category.items.map((item) => {
+                                const levelIndex = SKILL_LEVELS.indexOf(item.level) + 1;
+                                return (
+                                    <li class={`badge-item skill-lv${levelIndex}`}>
+                                        <span class="badge-item-name">{item.name}</span>
+                                        <span class="badge-item-meta">{item.level}</span>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 ))

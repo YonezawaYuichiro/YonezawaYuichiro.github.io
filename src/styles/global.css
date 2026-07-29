@@ -489,6 +489,62 @@ a:hover,
     margin-bottom: 0.5rem;
 }
 
+/* Legend + level color-coding (single accent color, intensity scale) */
+.skill-legend {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0;
+    margin: 1rem 0 0;
+}
+
+.skill-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.skill-legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--skill-lv-color);
+    flex-shrink: 0;
+}
+
+.skill-lv1 { --skill-lv-color: var(--border); }
+.skill-lv2 { --skill-lv-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
+.skill-lv3 { --skill-lv-color: color-mix(in srgb, var(--accent) 70%, var(--border)); }
+.skill-lv4 { --skill-lv-color: var(--accent); }
+
+.skill-category .badge-item.skill-lv1 {
+    border-color: var(--border);
+}
+
+.skill-category .badge-item.skill-lv2 {
+    border-color: var(--skill-lv-color);
+}
+
+.skill-category .badge-item.skill-lv3 {
+    border-color: var(--skill-lv-color);
+    background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.skill-category .badge-item.skill-lv4 {
+    border-color: var(--skill-lv-color);
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+}
+
+.skill-category .badge-item.skill-lv2 .badge-item-meta,
+.skill-category .badge-item.skill-lv3 .badge-item-meta,
+.skill-category .badge-item.skill-lv4 .badge-item-meta {
+    color: var(--skill-lv-color);
+    font-weight: 600;
+}
+
 .ai-stance-box {
     margin-top: 2rem;
     padding-top: 1rem;

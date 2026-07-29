@@ -15,6 +15,14 @@ export interface SkillCategory {
     items: SkillItem[];
 }
 
+// 低い順に並んだ4段階。バッジの色分け（濃淡）にもこの並び順を使う。
+export const SKILL_LEVELS: SkillLevel[] = [
+    "使ったことがある",
+    "使い方がわかる",
+    "使える",
+    "書ける",
+];
+
 export const SKILL_CATEGORIES: SkillCategory[] = [
     {
         category: "プログラミング言語",

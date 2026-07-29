@@ -10,10 +10,14 @@ const timelineBlocks = [
     { title: "直近の学習", items: PROFILE.recentLearning, full: true },
 ];
 
+// 基本情報。wide を true にすると2カラムを横断して1行を占める
 const facts = [
-    { label: "生年月日", value: PROFILE.birthDate },
-    { label: "出身", value: PROFILE.birthPlace },
-    { label: "拠点", value: PROFILE.base },
+    { label: "在学", value: PROFILE.enrollment, wide: true },
+    { label: "生年月日", value: PROFILE.birthDate, wide: false },
+    { label: "卒業予定", value: PROFILE.graduation, wide: false },
+    { label: "出身", value: PROFILE.birthPlace, wide: false },
+    { label: "拠点", value: PROFILE.base, wide: false },
+    { label: "希望職種", value: PROFILE.desiredRole, wide: true },
 ];
 ---
 
@@ -28,16 +32,22 @@ const facts = [
             {PROFILE.intro.map((paragraph) => <p>{paragraph}</p>)}
         </div>
 
-        <ul class="about-facts">
-            {
-                facts.map((fact) => (
-                    <li class="about-fact">
-                        <span class="about-fact-label">{fact.label}</span>
-                        <span>{fact.value}</span>
-                    </li>
-                ))
-            }
-        </ul>
+        <div class="profile-facts">
+            <div class="block-head">
+                <h3 class="block-title">基本情報</h3>
+                <span class="block-rule"></span>
+            </div>
+            <dl class="profile-facts-grid">
+                {
+                    facts.map((fact) => (
+                        <div class={`profile-fact${fact.wide ? " profile-fact--wide" : ""}`}>
+                            <dt>{fact.label}</dt>
+                            <dd>{fact.value}</dd>
+                        </div>
+                    ))
+                }
+            </dl>
+        </div>
 
         <div class="timeline-grid">
             {

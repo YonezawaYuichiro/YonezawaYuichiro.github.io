@@ -22,12 +22,6 @@ export interface ProfileData {
     birthDate: string;
     birthPlace: string;
     base: string;
-    /** 在学状況（学校・学科・学年） */
-    enrollment: string;
-    /** 卒業予定 */
-    graduation: string;
-    /** 希望職種 */
-    desiredRole: string;
     aspiration: string;
     education: TimelineItem[];
     certifications: CertificationItem[];
@@ -57,9 +51,6 @@ export const PROFILE: ProfileData = {
     birthDate: "2004年12月14日",
     birthPlace: "香川県高松市",
     base: "大阪府",
-    enrollment: "大阪ハイテクノロジー専門学校 人工知能学科（3年制・2年生）",
-    graduation: "2028年3月（見込み）",
-    desiredRole: "フィジカルAI領域のエンジニア",
     aspiration:
         "製造・ロボティクス・物流など物理世界へのAI実装に関心があります。Webアプリ・機械学習・マイコン制御まで、領域を問わず手を動かして作ってきました。",
     education: [

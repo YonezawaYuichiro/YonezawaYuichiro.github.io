@@ -31,23 +31,25 @@ const { project } = Astro.props;
                 {
                     project.media.map((item) => (
                         <li class="gallery-item">
-                            {item.type === "video" ? (
-                                <video
-                                    class="gallery-media"
-                                    src={item.src}
-                                    controls
-                                    playsinline
-                                    preload="metadata"
-                                />
-                            ) : (
-                                <img
-                                    class="gallery-media"
-                                    src={item.src}
-                                    alt={item.caption}
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            )}
+                            <div class="gallery-frame">
+                                {item.type === "video" ? (
+                                    <video
+                                        class="gallery-media"
+                                        src={item.src}
+                                        controls
+                                        playsinline
+                                        preload="metadata"
+                                    />
+                                ) : (
+                                    <img
+                                        class="gallery-media"
+                                        src={item.src}
+                                        alt={item.caption}
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
+                                )}
+                            </div>
                             <p class="gallery-caption">{item.caption}</p>
                         </li>
                     ))

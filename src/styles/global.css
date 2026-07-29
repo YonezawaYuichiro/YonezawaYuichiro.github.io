@@ -1000,9 +1000,12 @@ a:hover,
 
 .project-dialog-cover img {
     display: block;
-    width: 100%;
+    width: auto;
     height: auto;
-    max-height: 320px;
+    max-width: 100%;
+    /* 縦長でもモーダルが極端に伸びないよう高さを抑える */
+    max-height: 300px;
+    margin: 0 auto;
     object-fit: contain;
     border: 1px solid var(--border);
     border-radius: 0.5rem;
@@ -1174,13 +1177,25 @@ a:hover,
     gap: 2.5rem;
 }
 
-.gallery-media {
-    display: block;
-    width: 100%;
-    height: auto;
+/* 枠が罫線と背景を持ち、メディアはその中で中央に収まる */
+.gallery-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid var(--border);
     border-radius: 0.65rem;
     background: var(--surface-sunken);
+    overflow: hidden;
+}
+
+.gallery-media {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    /* 縦長の画像・動画が画面からはみ出さないよう高さを制限する */
+    max-height: 78vh;
+    object-fit: contain;
 }
 
 .gallery-caption {

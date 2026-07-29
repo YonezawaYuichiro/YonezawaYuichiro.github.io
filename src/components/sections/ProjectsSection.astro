@@ -197,9 +197,11 @@ import ProjectCard from "../ui/ProjectCard.astro";
                 links.forEach((link) => linksEl.appendChild(buildLink(link)));
                 noLinkEl.style.display = links.length ? "none" : "";
 
-                // 前回開いた位置が残らないよう先頭へ戻す
-                dialog.scrollTop = 0;
                 dialog.showModal();
+                // 前回開いた位置が残らないよう先頭へ戻す。
+                // 閉じている間は display:none でスクロール領域が無く代入が効かないため、
+                // 必ず showModal() の後に実行する
+                dialog.scrollTop = 0;
             });
         });
 

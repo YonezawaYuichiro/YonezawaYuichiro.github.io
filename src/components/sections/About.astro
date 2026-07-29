@@ -75,12 +75,12 @@ import { PROFILE } from "../../data/profile";
 
         <div class="cert-block">
             <p class="timeline-block-title">保有資格・免許</p>
-            <ul class="cert-list">
+            <ul class="badge-list">
                 {
                     PROFILE.certifications.map((item) => (
-                        <li class="cert-item">
-                            <span class="cert-item-name">{item.label}</span>
-                            <span class="cert-item-date">{item.detail}</span>
+                        <li class="badge-item">
+                            <span class="badge-item-name">{item.label}</span>
+                            <span class="badge-item-meta">{item.detail}</span>
                         </li>
                     ))
                 }

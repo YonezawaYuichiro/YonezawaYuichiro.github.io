@@ -433,7 +433,12 @@ a:hover,
     border-top: 1px solid var(--border);
 }
 
-.cert-list {
+
+/* ===========================================
+   BADGE LIST (資格・スキルなど、名前+一言の一覧に共通利用)
+   =========================================== */
+
+.badge-list {
     list-style: none;
     padding: 0;
     margin: 0.75rem 0 0;
@@ -442,7 +447,7 @@ a:hover,
     gap: 0.6rem;
 }
 
-.cert-item {
+.badge-item {
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
@@ -453,13 +458,13 @@ a:hover,
     margin-bottom: 0;
 }
 
-.cert-item-name {
+.badge-item-name {
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--foreground);
 }
 
-.cert-item-date {
+.badge-item-meta {
     font-size: 0.72rem;
     font-family: "JetBrains Mono", monospace;
     color: var(--text-muted);
@@ -471,7 +476,7 @@ a:hover,
    =========================================== */
 
 .skill-category {
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
 }
 
 .skill-category:last-child {
@@ -481,49 +486,7 @@ a:hover,
 .skill-category-title {
     font-size: 0.95rem;
     font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.skill-row {
-    display: grid;
-    grid-template-columns: 9rem 1fr 2.5rem;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.65rem;
-}
-
-.skill-name {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--foreground);
-}
-
-.skill-bar-track {
-    height: 4px;
-    border-radius: 999px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    overflow: hidden;
-}
-
-.skill-bar-fill {
-    height: 100%;
-    background: color-mix(in srgb, var(--accent) 70%, var(--text-muted));
-    border-radius: 999px;
-}
-
-.skill-level {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    text-align: right;
-}
-
-.skill-note {
-    grid-column: 1 / -1;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin: -0.3rem 0 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .ai-stance-box {

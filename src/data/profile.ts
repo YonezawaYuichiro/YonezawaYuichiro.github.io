@@ -41,7 +41,7 @@ export const PROFILE: ProfileData = {
     birthPlace: "香川県高松市",
     base: "大阪府",
     aspiration:
-        "製造・ロボティクス・物流など、物理世界へのAI実装（Forward Deployed Engineer, FDE）を志向したキャリアを歩みたいと考えています。",
+        "製造・ロボティクス・物流など、物理世界へのAI実装を志向したキャリアを歩みたいと考えています。",
     education: [
         {
             label: "大阪ハイテクノロジー専門学校 人工知能学科",
@@ -49,7 +49,7 @@ export const PROFILE: ProfileData = {
         },
     ],
     certifications: [
-        { label: "応用情報技術者", detail: "2025年10月合格（IT学習開始から最短9ヶ月）" },
+        { label: "応用情報技術者", detail: "2025年10月合格" },
         { label: "基本情報技術者", detail: "2025年2月合格" },
         { label: "ITパスポート", detail: "2025年2月合格" },
         { label: "第二種電気工事士（学科試験）", detail: "2026年5月合格" },

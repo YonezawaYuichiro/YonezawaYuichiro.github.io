@@ -895,9 +895,12 @@ a:hover,
 
 /* Modal */
 .project-dialog {
-    max-width: 580px;
+    max-width: 620px;
     width: calc(100% - 2rem);
     max-height: calc(100% - 4rem);
+    /* 工夫リストで内容が伸びるため、はみ出したらモーダル内でスクロールさせる */
+    overflow-y: auto;
+    overscroll-behavior: contain;
     margin: auto;
     border: 1px solid var(--border);
     border-radius: 0.75rem;
@@ -957,11 +960,55 @@ a:hover,
     line-height: 1.95;
 }
 
+.project-dialog-subhead {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    font-feature-settings: normal;
+}
+
+.project-dialog-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.project-dialog-highlights li {
+    position: relative;
+    padding-left: 1rem;
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: var(--foreground);
+}
+
+.project-dialog-highlights li + li {
+    margin-top: 0.85rem;
+}
+
+/* 箇条書きの記号はアクセント色の小さな四角で統一 */
+.project-dialog-highlights li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 4px;
+    height: 4px;
+    border-radius: 1px;
+    background: var(--accent);
+}
+
 .project-dialog-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
-    margin-top: 1.5rem;
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-subtle);
 }
 
 .project-dialog-link {

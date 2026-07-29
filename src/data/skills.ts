@@ -66,8 +66,8 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     {
         category: "インフラ・データベース・環境",
         items: [
-            { name: "Git / GitHub", level: "使える" },
-            { name: "PostgreSQL", level: "使える" },
+            { name: "Git / GitHub", level: "書ける" },
+            { name: "PostgreSQL", level: "書ける" },
             { name: "Windows (CMD / PowerShell)", level: "使い方がわかる" },
             { name: "Linux (Git Bash)", level: "使い方がわかる" },
             { name: "Docker", level: "使い方がわかる" },

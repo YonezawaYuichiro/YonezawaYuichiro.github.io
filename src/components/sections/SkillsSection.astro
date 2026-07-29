@@ -9,6 +9,21 @@ import { SKILL_CATEGORIES, SKILL_LEVELS } from "../../data/skills";
             <h2 class="title-lg">スキル</h2>
         </header>
 
+        <ul class="skill-legend">
+            {
+                // 習熟度の高い順（書ける→使える→使い方がわかる→使ったことがある）に表示する。
+                // reverse() は元配列を破壊するのでコピーしてから回す。
+                [...SKILL_LEVELS].reverse().map((level) => (
+                    <li
+                        class={`skill-legend-item skill-lv${SKILL_LEVELS.indexOf(level) + 1}`}
+                    >
+                        <span class="skill-legend-bar" />
+                        {level}
+                    </li>
+                ))
+            }
+        </ul>
+
         {
             SKILL_CATEGORIES.map((category) => {
                 // 書ける→使える→使い方がわかる→使ったことがある の順に並べる

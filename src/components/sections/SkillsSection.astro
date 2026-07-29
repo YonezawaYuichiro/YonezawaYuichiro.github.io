@@ -7,21 +7,7 @@ import { SKILL_CATEGORIES, SKILL_LEVELS, AI_STANCE_NOTE } from "../../data/skill
         <header class="section-head">
             <p class="section-eyebrow">Skills</p>
             <h2 class="title-lg">スキル</h2>
-            <p class="section-lead">
-                数値の自己採点ではなく、実際にできることを基準にした4段階の申告です。
-            </p>
         </header>
-
-        <ul class="skill-legend">
-            {
-                SKILL_LEVELS.map((level, i) => (
-                    <li class={`skill-legend-item skill-lv${i + 1}`}>
-                        <span class="skill-legend-bar" />
-                        {level}
-                    </li>
-                ))
-            }
-        </ul>
 
         {
             SKILL_CATEGORIES.map((category) => {

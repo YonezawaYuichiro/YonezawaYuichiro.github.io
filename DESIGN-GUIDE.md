@@ -44,7 +44,6 @@ All styles are defined in `@src/styles/global.css`. No inline `<style>` allowed 
 | `timeline` / `timeline-item` | Vertical rule + dot chronology list |
 | `cert-timeline-*` | Date / label / note grid rows |
 | `skill-chip` + `skill-lv1`–`skill-lv4` | Skill badge with level bar |
-| `skill-legend` | Level key above the skill lists |
 | `note-box` | Accent-edged callout |
 | `project-card` + `project-card-arrow` | Clickable project summary card |
 | `contact-row` | Channel row with hover arrow |

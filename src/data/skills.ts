@@ -94,7 +94,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
         items: [
             { name: "Arduino", level: "使える" },
             { name: "サーボモーター", level: "使える" },
-            { name: "電気回路", level: "使える" },
+            { name: "回路設計", level: "使える" },
             { name: "Raspberry Pi", level: "使い方がわかる" },
             { name: "ESP32", level: "使い方がわかる" },
             { name: "ステッピングモーター", level: "使い方がわかる" },

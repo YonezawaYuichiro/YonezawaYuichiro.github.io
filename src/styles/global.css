@@ -1401,17 +1401,26 @@ html:not([data-theme]) .theme-icon--light {
     overflow: hidden;
 }
 
-/* 縦位置だけ Flora.astro から --fl-top で渡す。
-   左右・奥行き・大きさはすべてクラスで決める */
+/* 1枚ごとに変わる値（縦位置・傾き・倍率・差し込み量）は
+   Flora.astro からカスタムプロパティで渡す。
+   全部が同じ角度・同じ大きさで入ると「横から生えているだけ」に見える */
 .flora .fl {
     position: absolute;
     display: block;
     top: var(--fl-top, 0);
+    /* rotate を先に書くことで、左右反転しても傾きは画面基準のままになる。
+       原点は中央のまま。端に寄せると scaleX(-1) が自分の幅ぶん平行移動して
+       画面外へ飛ぶ */
+    transform: rotate(var(--fl-rot, 0deg)) scaleX(var(--fl-flip, 1))
+        scale(var(--fl-scale, 1));
 }
 
 /* 左右。右側は反転させて内向きに生やす */
-.flora .fl-side-l { left: -110px; }
-.flora .fl-side-r { right: -110px; transform: scaleX(-1); }
+.flora .fl-side-l { left: var(--fl-inset, -110px); }
+.flora .fl-side-r {
+    right: var(--fl-inset, -110px);
+    --fl-flip: -1;
+}
 
 /* 奥行き3層。手前を暗く、奥を明るくしないと平面に見える */
 .flora .fl-depth-far  { color: var(--leaf-far);  opacity: .26; }
@@ -1426,8 +1435,8 @@ html:not([data-theme]) .theme-icon--light {
 
 /* 奥の層は明るいので文字帯に入れてはいけない。
    大きい分だけ外側へ逃がす（クラス3つで側面指定に勝たせる） */
-.flora .fl-depth-far.fl-side-l { left: -180px; }
-.flora .fl-depth-far.fl-side-r { right: -180px; }
+.flora .fl-depth-far.fl-side-l { left: var(--fl-inset, -180px); }
+.flora .fl-depth-far.fl-side-r { right: var(--fl-inset, -180px); }
 
 /* 下辺の下草 */
 .flora .fl-grass-1 { top: auto; bottom: -34px; left: 2%;   width: 130px; color: var(--leaf-near); opacity: .95; }

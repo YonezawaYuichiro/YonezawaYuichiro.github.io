@@ -25,29 +25,51 @@ interface Placement {
     side: Side;
     /** ページ上端からの位置（% または px） */
     top: string;
+    /** 傾き。全部が同じ角度で入ると機械的に見えるので必ず散らす */
+    rot: number;
+    /** 大きさの倍率。1枚ごとに変えて反復感を消す */
+    scale?: number;
+    /** 端からの差し込み量の上書き。群れの中で前後をずらすのに使う */
+    inset?: string;
     /** 揺らすか。シダのみ揺らす */
     sway?: boolean;
 }
 
+/**
+ * 構図の方針
+ *  - 等間隔に1枚ずつ置くと「横から生えているだけ」になる。
+ *    2〜3枚を重ねた群れを作り、その群れを不等間隔で配置する。
+ *  - 角から斜めに差し込むと、画面の外にも森が続いて見える。
+ *  - 傾き・大きさ・差し込み量を1枚ずつ変えて、反復に気づかせない。
+ */
 const PLACEMENTS: Placement[] = [
-    // ヒーロー周辺は密に置いて、開いた瞬間に森だと分かるようにする
-    { species: "frond", depth: "far", side: "l", top: "-20px", sway: true },
-    { species: "frond", depth: "far", side: "r", top: "60px", sway: true },
-    { species: "frond", depth: "near", side: "l", top: "130px", sway: true },
+    // --- ヒーロー左上の群れ。3枚重ねて視界を縁取る ---
+    { species: "frond", depth: "far", side: "l", top: "-70px", rot: 16, scale: 1.15, inset: "-150px", sway: true },
+    { species: "bough", depth: "mid", side: "l", top: "24px", rot: 38, inset: "-60px" },
+    { species: "frond", depth: "near", side: "l", top: "120px", rot: 6, scale: .9, inset: "-130px", sway: true },
 
-    // 以降はページ全体に均等配置（左右交互・樹種交互）
-    { species: "bough", depth: "mid", side: "r", top: "11%" },
-    { species: "frond", depth: "near", side: "l", top: "19%", sway: true },
-    { species: "broadleaf", depth: "far", side: "r", top: "27%" },
-    { species: "frond", depth: "mid", side: "l", top: "34%", sway: true },
-    { species: "bough", depth: "near", side: "r", top: "42%" },
-    { species: "frond", depth: "far", side: "l", top: "50%", sway: true },
-    { species: "broadleaf", depth: "mid", side: "r", top: "57%" },
-    { species: "frond", depth: "near", side: "l", top: "64%", sway: true },
-    { species: "bough", depth: "mid", side: "r", top: "72%" },
-    { species: "frond", depth: "far", side: "l", top: "79%", sway: true },
-    { species: "broadleaf", depth: "near", side: "r", top: "86%" },
-    { species: "frond", depth: "mid", side: "l", top: "92%", sway: true },
+    // --- ヒーロー右上。左より軽くして左右で密度差をつける ---
+    { species: "frond", depth: "far", side: "r", top: "-40px", rot: -12, scale: 1.05, inset: "-165px", sway: true },
+    { species: "broadleaf", depth: "near", side: "r", top: "150px", rot: -7, scale: .85, inset: "-70px" },
+
+    // --- 中盤。単体と群れを不等間隔で混ぜる ---
+    { species: "frond", depth: "near", side: "r", top: "16%", rot: -24, scale: .8, sway: true },
+
+    { species: "frond", depth: "far", side: "l", top: "24%", rot: 10, scale: 1.1, sway: true },
+    { species: "bough", depth: "mid", side: "l", top: "27%", rot: 32, scale: .85, inset: "-50px" },
+
+    { species: "broadleaf", depth: "mid", side: "r", top: "37%", rot: -5, scale: .95 },
+    { species: "frond", depth: "near", side: "l", top: "46%", rot: -14, scale: .85, sway: true },
+
+    { species: "frond", depth: "far", side: "r", top: "56%", rot: 22, scale: 1.2, sway: true },
+    { species: "bough", depth: "near", side: "r", top: "60%", rot: -20, scale: .8, inset: "-60px" },
+
+    { species: "frond", depth: "mid", side: "l", top: "69%", rot: 28, scale: .95, sway: true },
+    { species: "frond", depth: "near", side: "r", top: "79%", rot: -9, scale: .9, sway: true },
+
+    // --- 最下部。下草へ繋げるため左右とも低く濃く ---
+    { species: "bough", depth: "far", side: "l", top: "87%", rot: 15, scale: 1.1 },
+    { species: "broadleaf", depth: "near", side: "l", top: "93%", rot: 12, scale: .8, inset: "-60px" },
 ];
 
 // viewBox は樹種ごとに固有
@@ -145,7 +167,14 @@ const VIEWBOX: Record<Species, string> = {
         PLACEMENTS.map((p) => (
             <svg
                 class={`fl fl-${p.species} fl-depth-${p.depth} fl-side-${p.side}`}
-                style={`--fl-top:${p.top}`}
+                style={[
+                    `--fl-top:${p.top}`,
+                    `--fl-rot:${p.rot}deg`,
+                    p.scale ? `--fl-scale:${p.scale}` : "",
+                    p.inset ? `--fl-inset:${p.inset}` : "",
+                ]
+                    .filter(Boolean)
+                    .join(";")}
                 viewBox={VIEWBOX[p.species]}
             >
                 {p.sway ? (

@@ -15,9 +15,20 @@
  * 数箇所にまとめると、間に葉が1枚も無い区間ができて森に見えなくなる。
  */
 
+import { frond, bough, broadleaf, grass } from "./FloraShapes";
+
 type Species = "frond" | "bough" | "broadleaf";
 type Depth = "near" | "mid" | "far";
 type Side = "l" | "r";
+
+// 形状は数式で生成する。手描きのパスだと同じ形の繰り返しになって
+// クリップアートに見えるため（FloraShapes.ts 参照）
+const SHAPES = {
+    frond: frond(),
+    bough: bough(),
+    broadleaf: broadleaf(),
+    grass: grass(),
+} as const;
 
 interface Placement {
     species: Species;
@@ -44,19 +55,19 @@ interface Placement {
  */
 const PLACEMENTS: Placement[] = [
     // --- ヒーロー左上の群れ。3枚重ねて視界を縁取る ---
-    { species: "frond", depth: "far", side: "l", top: "-70px", rot: 16, scale: 1.15, inset: "-150px", sway: true },
-    { species: "bough", depth: "mid", side: "l", top: "24px", rot: 38, inset: "-60px" },
+    { species: "frond", depth: "far", side: "l", top: "-70px", rot: 16, scale: 1.15, inset: "-235px", sway: true },
+    { species: "bough", depth: "mid", side: "l", top: "24px", rot: 38, inset: "-170px" },
     { species: "frond", depth: "near", side: "l", top: "120px", rot: 6, scale: .9, inset: "-130px", sway: true },
 
     // --- ヒーロー右上。左より軽くして左右で密度差をつける ---
-    { species: "frond", depth: "far", side: "r", top: "-40px", rot: -12, scale: 1.05, inset: "-165px", sway: true },
+    { species: "frond", depth: "far", side: "r", top: "-40px", rot: -12, scale: 1.05, inset: "-230px", sway: true },
     { species: "broadleaf", depth: "near", side: "r", top: "150px", rot: -7, scale: .85, inset: "-70px" },
 
     // --- 中盤。単体と群れを不等間隔で混ぜる ---
     { species: "frond", depth: "near", side: "r", top: "16%", rot: -24, scale: .8, sway: true },
 
     { species: "frond", depth: "far", side: "l", top: "24%", rot: 10, scale: 1.1, sway: true },
-    { species: "bough", depth: "mid", side: "l", top: "27%", rot: 32, scale: .85, inset: "-50px" },
+    { species: "bough", depth: "mid", side: "l", top: "27%", rot: 32, scale: .85, inset: "-165px" },
 
     { species: "broadleaf", depth: "mid", side: "r", top: "37%", rot: -5, scale: .95 },
     { species: "frond", depth: "near", side: "l", top: "46%", rot: -14, scale: .85, sway: true },
@@ -72,93 +83,44 @@ const PLACEMENTS: Placement[] = [
     { species: "broadleaf", depth: "near", side: "l", top: "93%", rot: 12, scale: .8, inset: "-60px" },
 ];
 
-// viewBox は樹種ごとに固有
+// viewBox は生成した図形の実寸から取る
 const VIEWBOX: Record<Species, string> = {
-    frond: "0 0 240 90",
-    bough: "0 0 210 80",
-    broadleaf: "0 0 170 40",
+    frond: SHAPES.frond.viewBox,
+    bough: SHAPES.bough.viewBox,
+    broadleaf: SHAPES.broadleaf.viewBox,
 };
 ---
 
 <div class="flora" aria-hidden="true">
-    {/* ---- 図形の定義（描画されない） ---- */}
+    {/* ---- 図形の定義（描画されない）。形状は FloraShapes.ts が生成する ---- */}
     <svg class="flora-defs" width="0" height="0">
         <defs>
-            {/* 羽片：シダの葉1枚分 */}
-            <path id="fl-pinna" d="M0 0C13-6 32-7 46 0C32 7 13 6 0 0Z" />
-
-            {/* シダ：中軸に沿って羽片を並べる */}
-            <g id="fl-frond">
-                <path
-                    d="M0 0C70 4 150 26 236 78"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="3.5"
-                    stroke-linecap="round"
-                    opacity="0.85"
-                />
-                <g fill="currentColor">
-                    <use href="#fl-pinna" transform="translate(14 1) rotate(-30) scale(1.05)" />
-                    <use href="#fl-pinna" transform="translate(14 1) rotate(28) scale(.95)" />
-                    <use href="#fl-pinna" transform="translate(44 4) rotate(-26) scale(1.15)" />
-                    <use href="#fl-pinna" transform="translate(44 4) rotate(32) scale(1.02)" />
-                    <use href="#fl-pinna" transform="translate(76 9) rotate(-22) scale(1.2)" />
-                    <use href="#fl-pinna" transform="translate(76 9) rotate(36) scale(1.05)" />
-                    <use href="#fl-pinna" transform="translate(108 17) rotate(-16) scale(1.14)" />
-                    <use href="#fl-pinna" transform="translate(108 17) rotate(42) scale(.98)" />
-                    <use href="#fl-pinna" transform="translate(140 28) rotate(-10) scale(1.02)" />
-                    <use href="#fl-pinna" transform="translate(140 28) rotate(48) scale(.88)" />
-                    <use href="#fl-pinna" transform="translate(170 42) rotate(-4) scale(.88)" />
-                    <use href="#fl-pinna" transform="translate(170 42) rotate(54) scale(.74)" />
-                    <use href="#fl-pinna" transform="translate(198 58) rotate(4) scale(.7)" />
-                    <use href="#fl-pinna" transform="translate(198 58) rotate(58) scale(.58)" />
-                    <use href="#fl-pinna" transform="translate(220 70) rotate(16) scale(.5)" />
-                </g>
-            </g>
-
-            {/* 杉の枝：中軸に針葉を密に。シダより硬質で画面に芯を入れる */}
-            <g id="fl-bough">
-                <path
-                    d="M0 0C60 10 130 34 200 74"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                />
-                <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none">
-                    <path
-                        d="M18 3l-16-16M18 3l4 20M40 8l-14-18M40 8l2 21M62 15l-12-19M62 15l0 22M84 24l-10-20M84 24l-2 22M105 35l-8-21M105 35l-5 22M124 47l-6-21M124 47l-8 21M141 60l-4-22M141 60l-11 19M156 72l-2-22M156 72l-13 17"
-                    />
-                </g>
-            </g>
-
-            {/* 広葉：面積のある一枚葉。葉脈は地の色で抜く */}
-            <g id="fl-broadleaf">
-                <path d="M0 0C46-40 118-46 168-16C120 34 44 40 0 0Z" fill="currentColor" />
-                <path
-                    d="M4 0C52-6 116-16 166-16"
-                    fill="none"
-                    stroke="var(--background)"
-                    stroke-width="2"
-                    opacity="0.45"
-                />
-                <g fill="none" stroke="var(--background)" stroke-width="1.4" opacity="0.32">
-                    <path
-                        d="M34-4C42-16 52-24 62-29M62-8C70-19 82-26 94-30M92-12C100-21 112-27 124-29"
-                    />
-                </g>
-            </g>
-
-            {/* 下草：細い葉が扇状に立ち上がる */}
-            <g id="fl-grass">
-                <g fill="currentColor">
-                    <path d="M60 200C56 140 44 88 20 44C40 92 52 142 54 200Z" />
-                    <path d="M66 200C68 132 78 78 104 30C88 84 78 138 74 200Z" />
-                    <path d="M52 200C42 150 22 108 0 82C22 116 36 158 44 200Z" />
-                    <path d="M76 200C86 146 108 104 132 78C108 112 92 152 84 200Z" />
-                    <path d="M62 200C62 152 64 104 70 62C68 108 68 154 68 200Z" />
-                </g>
-            </g>
+            {
+                (["frond", "bough", "broadleaf", "grass"] as const).map((key) => (
+                    <g id={`fl-${key}`}>
+                        {SHAPES[key].parts.map((part) =>
+                            part.mode === "vein" ? (
+                                <path
+                                    d={part.d}
+                                    transform={part.transform}
+                                    fill="none"
+                                    stroke="var(--background)"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    opacity="0.34"
+                                />
+                            ) : (
+                                <path
+                                    d={part.d}
+                                    transform={part.transform}
+                                    fill={part.mode === "cut" ? "var(--background)" : "currentColor"}
+                                    opacity={part.mode === "cut" ? "0.42" : undefined}
+                                />
+                            ),
+                        )}
+                    </g>
+                ))
+            }
         </defs>
     </svg>
 
@@ -181,8 +143,6 @@ const VIEWBOX: Record<Species, string> = {
                     <g class={p.side === "l" ? "fl-sway-l" : "fl-sway"}>
                         <use href={`#fl-${p.species}`} />
                     </g>
-                ) : p.species === "broadleaf" ? (
-                    <use href="#fl-broadleaf" transform="translate(0 36)" />
                 ) : (
                     <use href={`#fl-${p.species}`} />
                 )}
@@ -191,8 +151,8 @@ const VIEWBOX: Record<Species, string> = {
     }
 
     {/* 下辺の下草。ページの終わりを「地面」にする */}
-    <svg class="fl fl-grass-1" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>
-    <svg class="fl fl-grass-2" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>
-    <svg class="fl fl-grass-3" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>
-    <svg class="fl fl-grass-4" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-1" viewBox={SHAPES.grass.viewBox}><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-2" viewBox={SHAPES.grass.viewBox}><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-3" viewBox={SHAPES.grass.viewBox}><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-4" viewBox={SHAPES.grass.viewBox}><use href="#fl-grass" /></svg>
 </div>

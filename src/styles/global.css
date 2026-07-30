@@ -1433,10 +1433,13 @@ html:not([data-theme]) .theme-icon--light {
 .flora .fl-broadleaf  { width: 330px; }
 .flora .fl-depth-far  { width: 440px; }
 
-/* 奥の層は明るいので文字帯に入れてはいけない。
-   大きい分だけ外側へ逃がす（クラス3つで側面指定に勝たせる） */
-.flora .fl-depth-far.fl-side-l { left: var(--fl-inset, -180px); }
-.flora .fl-depth-far.fl-side-r { right: var(--fl-inset, -180px); }
+/* 明るい層（中景・奥）は文字帯に入れてはいけない。
+   傾けると外接矩形が実際の絵より広がるので、その分も見込んで逃がす
+   （クラス3つで側面指定に勝たせる） */
+.flora .fl-depth-mid.fl-side-l { left: var(--fl-inset, -160px); }
+.flora .fl-depth-mid.fl-side-r { right: var(--fl-inset, -160px); }
+.flora .fl-depth-far.fl-side-l { left: var(--fl-inset, -215px); }
+.flora .fl-depth-far.fl-side-r { right: var(--fl-inset, -215px); }
 
 /* 下辺の下草 */
 .flora .fl-grass-1 { top: auto; bottom: -34px; left: 2%;   width: 130px; color: var(--leaf-near); opacity: .95; }

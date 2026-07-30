@@ -138,9 +138,18 @@ A third theme, `nature_forest`, selected by cycling the toggle (`light → dark 
 It is the **only** theme allowed decorative artwork; everything below is scoped under
 `[data-theme="nature"]` so no other theme is affected.
 
-- **Botanicals** live in `src/components/ui/Flora.astro`. Shapes are declared once in `<defs>`
-  and placed with `<use>`, so repeating a leaf costs nothing in transfer size. The markup is
-  always in the DOM and shown/hidden by CSS — toggling it with JS makes the theme switch visibly lag.
+- **Botanicals** are *generated*, not hand-drawn: `src/components/ui/FloraShapes.ts` computes the
+  path data and `Flora.astro` places it. Hand-authored paths end up as one shape repeated with
+  `<use>`, which is what makes decorative plants look like clip art. The generators vary leaflet
+  length along the rachis, serrate the margins, taper the spines, and break left/right symmetry —
+  a seeded PRNG keeps the result identical across builds.
+- Shapes are emitted once into `<defs>` and placed with `<use>`, so repeating a leaf costs nothing
+  in transfer size. The markup is always in the DOM and shown/hidden by CSS — toggling it with JS
+  makes the theme switch visibly lag.
+- **Leaflets need visible gaps.** If a leaflet's width exceeds the spacing between stations along
+  the rachis they fuse into a lump. Keep the width ratio near `0.185` of leaflet length.
+- **Rotation inflates bounding boxes.** A tilted leaf reaches further sideways than its artwork
+  suggests, so the mid/far layers need a larger outward inset than the geometry alone implies.
 - **Three depth layers**, and the order matters: `--leaf-near` (#16301f, darkest) in front,
   `--leaf-mid`, then `--leaf-far` (#2f6b3c, lightest) behind. Reversing this reads as flat.
   One species alone looks like wallpaper — mixing fern and conifer is what reads as forest.

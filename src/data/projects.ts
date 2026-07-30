@@ -330,7 +330,7 @@ export const PROJECTS: ProjectData[] = [
             {
                 kind: "slide",
                 title: "PDF",
-                url: "files/デコピンマシーン紹介スライド.pdf",
+                url: "/files/デコピンマシーン紹介スライド.pdf",
             },
             {
                 kind: "article",

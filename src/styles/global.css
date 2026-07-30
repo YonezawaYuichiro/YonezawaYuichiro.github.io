@@ -1401,28 +1401,39 @@ html:not([data-theme]) .theme-icon--light {
     overflow: hidden;
 }
 
+/* 縦位置だけ Flora.astro から --fl-top で渡す。
+   左右・奥行き・大きさはすべてクラスで決める */
 .flora .fl {
     position: absolute;
     display: block;
+    top: var(--fl-top, 0);
 }
 
-/* 奥の層 */
-.fl-far-l  { top: -20px;  left: -40px;  width: 420px; color: var(--leaf-far); opacity: .26; }
-.fl-far-r  { top: 60px;   right: -70px; width: 440px; color: var(--leaf-far); opacity: .24; transform: scaleX(-1); }
+/* 左右。右側は反転させて内向きに生やす */
+.flora .fl-side-l { left: -110px; }
+.flora .fl-side-r { right: -110px; transform: scaleX(-1); }
 
-/* 中景の層 */
-.fl-mid-l  { top: 46%;    left: -120px; width: 380px; color: var(--leaf-mid); opacity: .55; }
-.fl-mid-r  { top: 64%;    right: -80px; width: 340px; color: var(--leaf-mid); opacity: .5;  transform: scaleX(-1); }
+/* 奥行き3層。手前を暗く、奥を明るくしないと平面に見える */
+.flora .fl-depth-far  { color: var(--leaf-far);  opacity: .26; }
+.flora .fl-depth-mid  { color: var(--leaf-mid);  opacity: .5; }
+.flora .fl-depth-near { color: var(--leaf-near); opacity: 1; }
 
-/* 手前の層。ここだけ文字の背後に入り込む */
-.fl-near-l { top: 130px;  left: -110px; width: 400px; color: var(--leaf-near); opacity: 1; }
-.fl-near-r { top: 42%;    right: -120px; width: 380px; color: var(--leaf-near); opacity: 1; transform: scaleX(-1) scaleY(-1); }
+/* 奥ほど大きく見せると遠近が出る */
+.flora .fl-frond      { width: 400px; }
+.flora .fl-bough      { width: 360px; }
+.flora .fl-broadleaf  { width: 330px; }
+.flora .fl-depth-far  { width: 440px; }
+
+/* 奥の層は明るいので文字帯に入れてはいけない。
+   大きい分だけ外側へ逃がす（クラス3つで側面指定に勝たせる） */
+.flora .fl-depth-far.fl-side-l { left: -180px; }
+.flora .fl-depth-far.fl-side-r { right: -180px; }
 
 /* 下辺の下草 */
-.fl-grass-1 { bottom: -34px; left: 2%;   width: 130px; color: var(--leaf-near); opacity: .95; }
-.fl-grass-2 { bottom: -42px; left: 11%;  width: 104px; color: var(--leaf-mid);  opacity: .5; }
-.fl-grass-3 { bottom: -36px; right: 3%;  width: 140px; color: var(--leaf-near); opacity: .95; }
-.fl-grass-4 { bottom: -44px; right: 12%; width: 100px; color: var(--leaf-mid);  opacity: .5; }
+.flora .fl-grass-1 { top: auto; bottom: -34px; left: 2%;   width: 130px; color: var(--leaf-near); opacity: .95; }
+.flora .fl-grass-2 { top: auto; bottom: -42px; left: 11%;  width: 104px; color: var(--leaf-mid);  opacity: .5; }
+.flora .fl-grass-3 { top: auto; bottom: -36px; right: 3%;  width: 140px; color: var(--leaf-near); opacity: .95; }
+.flora .fl-grass-4 { top: auto; bottom: -44px; right: 12%; width: 100px; color: var(--leaf-mid);  opacity: .5; }
 
 /* 風で揺れる。回転の基点を葉の付け根に置くのが要点 */
 @media (prefers-reduced-motion: no-preference) {
@@ -1446,22 +1457,23 @@ html:not([data-theme]) .theme-icon--light {
    基底の `.flora .fl { display: block }` はクラス2つ分の詳細度を持つため、
    `.fl-mid-l` 単独では display を上書きできない */
 @media (max-width: 1400px) {
-    .flora .fl-mid-l,
-    .flora .fl-mid-r,
-    .flora .fl-near-l,
-    .flora .fl-near-r,
+    /* 手前・中景は文字に食い込むので消し、奥の層だけ残す */
+    .flora .fl-depth-near,
+    .flora .fl-depth-mid,
     .flora .fl-grass-1,
     .flora .fl-grass-2,
     .flora .fl-grass-3,
     .flora .fl-grass-4 { display: none; }
 
-    .flora .fl-far-l { width: 280px; left: -100px; }
-    .flora .fl-far-r { width: 300px; right: -120px; }
+    .flora .fl-depth-far { width: 300px; }
+    .flora .fl-side-l { left: -110px; }
+    .flora .fl-side-r { right: -120px; }
 }
 
 @media (max-width: 720px) {
-    .flora .fl-far-l { width: 210px; left: -85px; opacity: .18; }
-    .flora .fl-far-r { width: 220px; right: -95px; opacity: .18; }
+    .flora .fl-depth-far { width: 215px; opacity: .18; }
+    .flora .fl-side-l { left: -85px; }
+    .flora .fl-side-r { right: -95px; }
 }
 
 /* セクションの地色が葉を隠さないよう、面を半透明にして葉を透かす */

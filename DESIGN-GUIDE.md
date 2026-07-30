@@ -144,6 +144,10 @@ It is the **only** theme allowed decorative artwork; everything below is scoped 
 - **Three depth layers**, and the order matters: `--leaf-near` (#16301f, darkest) in front,
   `--leaf-mid`, then `--leaf-far` (#2f6b3c, lightest) behind. Reversing this reads as flat.
   One species alone looks like wallpaper — mixing fern and conifer is what reads as forest.
+- **Distribution:** positions are declared as percentages of page height in the `PLACEMENTS`
+  array in `Flora.astro`, spaced so the largest gap between leaves stays under one viewport
+  height. Clustering them at a few spots leaves multi-thousand-pixel stretches with no leaf
+  at all, and the forest reads as two decorations bolted onto an empty page.
 - **Placement:** outside the 880px content column, with leaf tips reaching 50–80px behind text.
   **Only the near (darkest) layer may pass behind text.** The mid layer is capped at 0.5 opacity
   there and the far layer never enters the text band — `muted` drops to 4.1 over an undimmed

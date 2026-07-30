@@ -10,7 +10,52 @@
  *
  * 配置は本文カラム（880px）の外側が主。葉の先端だけが文字の背後に
  * 50〜80px入り込む。入り込ませてよいのは暗い層のみ（global.css 参照）。
+ *
+ * 縦位置はページ高に対する％で、およそ1画面に1枚は入るよう均等に散らす。
+ * 数箇所にまとめると、間に葉が1枚も無い区間ができて森に見えなくなる。
  */
+
+type Species = "frond" | "bough" | "broadleaf";
+type Depth = "near" | "mid" | "far";
+type Side = "l" | "r";
+
+interface Placement {
+    species: Species;
+    depth: Depth;
+    side: Side;
+    /** ページ上端からの位置（% または px） */
+    top: string;
+    /** 揺らすか。シダのみ揺らす */
+    sway?: boolean;
+}
+
+const PLACEMENTS: Placement[] = [
+    // ヒーロー周辺は密に置いて、開いた瞬間に森だと分かるようにする
+    { species: "frond", depth: "far", side: "l", top: "-20px", sway: true },
+    { species: "frond", depth: "far", side: "r", top: "60px", sway: true },
+    { species: "frond", depth: "near", side: "l", top: "130px", sway: true },
+
+    // 以降はページ全体に均等配置（左右交互・樹種交互）
+    { species: "bough", depth: "mid", side: "r", top: "11%" },
+    { species: "frond", depth: "near", side: "l", top: "19%", sway: true },
+    { species: "broadleaf", depth: "far", side: "r", top: "27%" },
+    { species: "frond", depth: "mid", side: "l", top: "34%", sway: true },
+    { species: "bough", depth: "near", side: "r", top: "42%" },
+    { species: "frond", depth: "far", side: "l", top: "50%", sway: true },
+    { species: "broadleaf", depth: "mid", side: "r", top: "57%" },
+    { species: "frond", depth: "near", side: "l", top: "64%", sway: true },
+    { species: "bough", depth: "mid", side: "r", top: "72%" },
+    { species: "frond", depth: "far", side: "l", top: "79%", sway: true },
+    { species: "broadleaf", depth: "near", side: "r", top: "86%" },
+    { species: "frond", depth: "mid", side: "l", top: "92%", sway: true },
+];
+
+// viewBox は樹種ごとに固有
+const VIEWBOX: Record<Species, string> = {
+    frond: "0 0 240 90",
+    bough: "0 0 210 80",
+    broadleaf: "0 0 170 40",
+};
 ---
 
 <div class="flora" aria-hidden="true">
@@ -95,21 +140,26 @@
         </defs>
     </svg>
 
-    {/* ---- 配置。奥（薄い）→ 手前（濃い）の順に重ねる ---- */}
-
-    {/* 奥：明るく薄い。文字帯には入れない */}
-    <svg class="fl fl-far-l" viewBox="0 0 240 90"><g class="fl-sway-l"><use href="#fl-frond" /></g></svg>
-    <svg class="fl fl-far-r" viewBox="0 0 240 90"><g class="fl-sway"><use href="#fl-frond" /></g></svg>
-
-    {/* 中景：杉の枝と広葉 */}
-    <svg class="fl fl-mid-l" viewBox="0 0 210 80"><use href="#fl-bough" /></svg>
-    <svg class="fl fl-mid-r" viewBox="0 0 170 40">
-        <use href="#fl-broadleaf" transform="translate(0 36)" />
-    </svg>
-
-    {/* 手前：最も暗い層。文字の背後に入り込むのはここだけ */}
-    <svg class="fl fl-near-l" viewBox="0 0 240 90"><g class="fl-sway-l"><use href="#fl-frond" /></g></svg>
-    <svg class="fl fl-near-r" viewBox="0 0 240 90"><g class="fl-sway"><use href="#fl-frond" /></g></svg>
+    {/* ---- 配置。奥（薄い）→ 手前（濃い）で重なりの前後を作る ---- */}
+    {
+        PLACEMENTS.map((p) => (
+            <svg
+                class={`fl fl-${p.species} fl-depth-${p.depth} fl-side-${p.side}`}
+                style={`--fl-top:${p.top}`}
+                viewBox={VIEWBOX[p.species]}
+            >
+                {p.sway ? (
+                    <g class={p.side === "l" ? "fl-sway-l" : "fl-sway"}>
+                        <use href={`#fl-${p.species}`} />
+                    </g>
+                ) : p.species === "broadleaf" ? (
+                    <use href="#fl-broadleaf" transform="translate(0 36)" />
+                ) : (
+                    <use href={`#fl-${p.species}`} />
+                )}
+            </svg>
+        ))
+    }
 
     {/* 下辺の下草。ページの終わりを「地面」にする */}
     <svg class="fl fl-grass-1" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>

@@ -33,9 +33,13 @@ const showToggle = THEME_CONFIG.lightAndDark;
 
         {
             showToggle && (
-                <button id="theme-toggle" aria-label="ダーク/ライト切替" class="btn-icon">
-                    <Icon name="Sun" size={16} class="hidden dark:block" />
-                    <Icon name="Moon" size={16} class="block dark:hidden" />
+                /* 3テーマを巡るので、Tailwind の dark: 変種ではなく
+                   data-theme を見る専用クラスでアイコンを出し分ける。
+                   aria-label は「次に切り替わるテーマ名」をJSが入れる */
+                <button id="theme-toggle" class="btn-icon theme-toggle" aria-label="テーマを切り替え">
+                    <Icon name="Moon" size={16} class="theme-icon theme-icon--light" />
+                    <Icon name="Sun" size={16} class="theme-icon theme-icon--dark" />
+                    <Icon name="Leaf" size={16} class="theme-icon theme-icon--nature" />
                 </button>
             )
         }

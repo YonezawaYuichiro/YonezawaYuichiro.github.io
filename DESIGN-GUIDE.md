@@ -128,7 +128,35 @@ Six steps plus two clamps. Ad-hoc values like `0.86rem` are how the page ends up
 - Derived tokens are computed in `global.css` via `color-mix`, so new themes need no extra setup:
   `--surface-sunken` (section tint), `--accent-soft` (accent wash), `--accent-line` (hairline
   accent), `--border-subtle` (faint divider)
-- Users select active light/dark themes via `src/config/site.ts` (`THEME_CONFIG.themeLight`, `THEME_CONFIG.themeDark`)
+- Users select the three active themes via `src/config/site.ts` (`THEME_CONFIG.themeLight`,
+  `themeDark`, `themeNature`). The toggle cycles `light → dark → nature` and its `aria-label`
+  announces the theme it will switch *to*.
+
+### Nature mode (the only decorated theme)
+
+A third theme, `nature_forest`, selected by cycling the toggle (`light → dark → nature`).
+It is the **only** theme allowed decorative artwork; everything below is scoped under
+`[data-theme="nature"]` so no other theme is affected.
+
+- **Botanicals** live in `src/components/ui/Flora.astro`. Shapes are declared once in `<defs>`
+  and placed with `<use>`, so repeating a leaf costs nothing in transfer size. The markup is
+  always in the DOM and shown/hidden by CSS — toggling it with JS makes the theme switch visibly lag.
+- **Three depth layers**, and the order matters: `--leaf-near` (#16301f, darkest) in front,
+  `--leaf-mid`, then `--leaf-far` (#2f6b3c, lightest) behind. Reversing this reads as flat.
+  One species alone looks like wallpaper — mixing fern and conifer is what reads as forest.
+- **Placement:** outside the 880px content column, with leaf tips reaching 50–80px behind text.
+  **Only the near (darkest) layer may pass behind text.** The mid layer is capped at 0.5 opacity
+  there and the far layer never enters the text band — `muted` drops to 4.1 over an undimmed
+  mid leaf.
+- **`muted` for this theme is set from the contrast over leaves, not over the background**
+  (#abbeb0 → 7.26 over the near leaf, 7.13 over mid at 0.5).
+- **Below 1400px** the mid/near/grass layers are hidden, since the column no longer leaves
+  260px of margin on each side. When writing those rules, prefix the selector with `.flora` —
+  the base rule `.flora .fl { display: block }` carries two classes of specificity and a bare
+  `.fl-mid-l` cannot override it.
+- **Headings switch to mincho** in this theme only; body text stays gothic.
+- **Sway** is 11–13s, ±1.1°, `transform-origin` at the leaf's base, and sits inside
+  `prefers-reduced-motion: no-preference`.
 
 ### Skill level colors (the only multi-hue exception)
 Skill proficiency is the one place with four hues. They are kept low-saturation and applied as a

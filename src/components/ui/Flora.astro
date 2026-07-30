@@ -1,0 +1,119 @@
+---
+/**
+ * ネイチャーモードの装飾植物。
+ *
+ * 全テーマで常にDOMに出力し、表示は CSS の [data-theme="nature"] で切り替える。
+ * （JSで出し分けるとテーマ切替のたびに描画が遅れて見えるため）
+ *
+ * 図形は defs に1回だけ定義し、各配置は <use> で参照する。
+ * 同じ葉を何枚並べても転送量は増えない。
+ *
+ * 配置は本文カラム（880px）の外側が主。葉の先端だけが文字の背後に
+ * 50〜80px入り込む。入り込ませてよいのは暗い層のみ（global.css 参照）。
+ */
+---
+
+<div class="flora" aria-hidden="true">
+    {/* ---- 図形の定義（描画されない） ---- */}
+    <svg class="flora-defs" width="0" height="0">
+        <defs>
+            {/* 羽片：シダの葉1枚分 */}
+            <path id="fl-pinna" d="M0 0C13-6 32-7 46 0C32 7 13 6 0 0Z" />
+
+            {/* シダ：中軸に沿って羽片を並べる */}
+            <g id="fl-frond">
+                <path
+                    d="M0 0C70 4 150 26 236 78"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    opacity="0.85"
+                />
+                <g fill="currentColor">
+                    <use href="#fl-pinna" transform="translate(14 1) rotate(-30) scale(1.05)" />
+                    <use href="#fl-pinna" transform="translate(14 1) rotate(28) scale(.95)" />
+                    <use href="#fl-pinna" transform="translate(44 4) rotate(-26) scale(1.15)" />
+                    <use href="#fl-pinna" transform="translate(44 4) rotate(32) scale(1.02)" />
+                    <use href="#fl-pinna" transform="translate(76 9) rotate(-22) scale(1.2)" />
+                    <use href="#fl-pinna" transform="translate(76 9) rotate(36) scale(1.05)" />
+                    <use href="#fl-pinna" transform="translate(108 17) rotate(-16) scale(1.14)" />
+                    <use href="#fl-pinna" transform="translate(108 17) rotate(42) scale(.98)" />
+                    <use href="#fl-pinna" transform="translate(140 28) rotate(-10) scale(1.02)" />
+                    <use href="#fl-pinna" transform="translate(140 28) rotate(48) scale(.88)" />
+                    <use href="#fl-pinna" transform="translate(170 42) rotate(-4) scale(.88)" />
+                    <use href="#fl-pinna" transform="translate(170 42) rotate(54) scale(.74)" />
+                    <use href="#fl-pinna" transform="translate(198 58) rotate(4) scale(.7)" />
+                    <use href="#fl-pinna" transform="translate(198 58) rotate(58) scale(.58)" />
+                    <use href="#fl-pinna" transform="translate(220 70) rotate(16) scale(.5)" />
+                </g>
+            </g>
+
+            {/* 杉の枝：中軸に針葉を密に。シダより硬質で画面に芯を入れる */}
+            <g id="fl-bough">
+                <path
+                    d="M0 0C60 10 130 34 200 74"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                />
+                <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none">
+                    <path
+                        d="M18 3l-16-16M18 3l4 20M40 8l-14-18M40 8l2 21M62 15l-12-19M62 15l0 22M84 24l-10-20M84 24l-2 22M105 35l-8-21M105 35l-5 22M124 47l-6-21M124 47l-8 21M141 60l-4-22M141 60l-11 19M156 72l-2-22M156 72l-13 17"
+                    />
+                </g>
+            </g>
+
+            {/* 広葉：面積のある一枚葉。葉脈は地の色で抜く */}
+            <g id="fl-broadleaf">
+                <path d="M0 0C46-40 118-46 168-16C120 34 44 40 0 0Z" fill="currentColor" />
+                <path
+                    d="M4 0C52-6 116-16 166-16"
+                    fill="none"
+                    stroke="var(--background)"
+                    stroke-width="2"
+                    opacity="0.45"
+                />
+                <g fill="none" stroke="var(--background)" stroke-width="1.4" opacity="0.32">
+                    <path
+                        d="M34-4C42-16 52-24 62-29M62-8C70-19 82-26 94-30M92-12C100-21 112-27 124-29"
+                    />
+                </g>
+            </g>
+
+            {/* 下草：細い葉が扇状に立ち上がる */}
+            <g id="fl-grass">
+                <g fill="currentColor">
+                    <path d="M60 200C56 140 44 88 20 44C40 92 52 142 54 200Z" />
+                    <path d="M66 200C68 132 78 78 104 30C88 84 78 138 74 200Z" />
+                    <path d="M52 200C42 150 22 108 0 82C22 116 36 158 44 200Z" />
+                    <path d="M76 200C86 146 108 104 132 78C108 112 92 152 84 200Z" />
+                    <path d="M62 200C62 152 64 104 70 62C68 108 68 154 68 200Z" />
+                </g>
+            </g>
+        </defs>
+    </svg>
+
+    {/* ---- 配置。奥（薄い）→ 手前（濃い）の順に重ねる ---- */}
+
+    {/* 奥：明るく薄い。文字帯には入れない */}
+    <svg class="fl fl-far-l" viewBox="0 0 240 90"><g class="fl-sway-l"><use href="#fl-frond" /></g></svg>
+    <svg class="fl fl-far-r" viewBox="0 0 240 90"><g class="fl-sway"><use href="#fl-frond" /></g></svg>
+
+    {/* 中景：杉の枝と広葉 */}
+    <svg class="fl fl-mid-l" viewBox="0 0 210 80"><use href="#fl-bough" /></svg>
+    <svg class="fl fl-mid-r" viewBox="0 0 170 40">
+        <use href="#fl-broadleaf" transform="translate(0 36)" />
+    </svg>
+
+    {/* 手前：最も暗い層。文字の背後に入り込むのはここだけ */}
+    <svg class="fl fl-near-l" viewBox="0 0 240 90"><g class="fl-sway-l"><use href="#fl-frond" /></g></svg>
+    <svg class="fl fl-near-r" viewBox="0 0 240 90"><g class="fl-sway"><use href="#fl-frond" /></g></svg>
+
+    {/* 下辺の下草。ページの終わりを「地面」にする */}
+    <svg class="fl fl-grass-1" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-2" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-3" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-4" viewBox="0 0 140 200"><use href="#fl-grass" /></svg>
+</div>

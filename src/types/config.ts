@@ -12,6 +12,8 @@ export interface ThemeConfig {
     lightAndDark: boolean;
     themeLight: string;
     themeDark: string;
+    /** 3つ目のテーマ（ネイチャーモード）。装飾の葉はこのテーマのみ表示される */
+    themeNature: string;
 }
 
 export interface UmamiAnalyticsConfig {

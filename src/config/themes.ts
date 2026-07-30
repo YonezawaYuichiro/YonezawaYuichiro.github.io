@@ -25,6 +25,17 @@ export const THEMES: Record<string, Theme> = {
         border: "#242a35",
         accent: "#83a8ff",
     },
+    // ネイチャーモード。装飾の葉が文字の背後を通るため、muted は
+    // 「地の上」ではなく「葉の上」で7:1を満たす明度に決めている（葉手前で7.26）
+    nature_forest: {
+        isDark: true,
+        background: "#0b120e",
+        surface: "#141d17",
+        foreground: "#e9efe7",
+        muted: "#abbeb0",
+        border: "#25342b",
+        accent: "#7fc98d",
+    },
     light_notepad: {
         isDark: false,
         background: "#fbf6e9",

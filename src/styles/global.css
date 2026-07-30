@@ -229,6 +229,27 @@ a:hover,
     background: var(--accent-soft);
 }
 
+/* テーマ切替ボタン：3テーマ分のアイコンを重ねて置き、
+   data-theme に一致する1枚だけを表示する */
+.theme-toggle {
+    position: relative;
+}
+
+.theme-icon {
+    display: none;
+}
+
+[data-theme="light"] .theme-icon--light,
+[data-theme="dark"] .theme-icon--dark,
+[data-theme="nature"] .theme-icon--nature {
+    display: block;
+}
+
+/* data-theme が未設定の初期描画ではライト用を出す（ちらつき防止） */
+html:not([data-theme]) .theme-icon--light {
+    display: block;
+}
+
 
 /* Tags/Badges */
 .tag {
@@ -364,6 +385,15 @@ a:hover,
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    /* ネイチャーモードの装飾レイヤーの位置基準になる */
+    position: relative;
+}
+
+/* 本文は装飾レイヤー（z-index:0）より必ず上に置く */
+.page-main,
+.footer {
+    position: relative;
+    z-index: 1;
 }
 
 .page-main {
@@ -1312,6 +1342,138 @@ a:hover,
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
+}
+
+
+/* ===========================================
+   NATURE MODE（3つ目のテーマ）
+
+   このテーマだけの例外として装飾SVGの重ね置きを許可する。
+   他テーマには一切影響しないよう、すべて [data-theme="nature"] で囲む。
+   =========================================== */
+
+/* 葉の3層。手前を暗く、奥を明るくしないと平面に見える */
+[data-theme="nature"] {
+    --leaf-near: #16301f;  /* 手前。文字の背後に入り込めるのはこの色のみ */
+    --leaf-mid: #24512f;   /* 中景。文字帯では不透明度0.5まで */
+    --leaf-far: #2f6b3c;   /* 奥。文字帯には入れない */
+}
+
+/* 見出しだけ明朝体にする。葉の有機的な曲線と相性が良い */
+[data-theme="nature"] h1,
+[data-theme="nature"] h2,
+[data-theme="nature"] h3,
+[data-theme="nature"] .title-xl,
+[data-theme="nature"] .title-lg,
+[data-theme="nature"] .hero-name,
+[data-theme="nature"] .project-dialog-title,
+[data-theme="nature"] .project-card-title {
+    font-family: "游明朝", "Yu Mincho", YuMincho, "Hiragino Mincho ProN",
+        "Hiragino Mincho Pro", "MS PMincho", serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* 明朝は同じサイズでも細く見えるので、ヒーローだけ少し太らせる */
+[data-theme="nature"] .hero-name {
+    font-weight: 700;
+}
+
+/* --- 装飾レイヤー本体 --- */
+.flora {
+    display: none;
+}
+
+[data-theme="nature"] .flora {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    /* クリックを透過させ、はみ出しは切り落とす */
+    pointer-events: none;
+    overflow: clip;
+}
+
+.flora-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.flora .fl {
+    position: absolute;
+    display: block;
+}
+
+/* 奥の層 */
+.fl-far-l  { top: -20px;  left: -40px;  width: 420px; color: var(--leaf-far); opacity: .26; }
+.fl-far-r  { top: 60px;   right: -70px; width: 440px; color: var(--leaf-far); opacity: .24; transform: scaleX(-1); }
+
+/* 中景の層 */
+.fl-mid-l  { top: 46%;    left: -120px; width: 380px; color: var(--leaf-mid); opacity: .55; }
+.fl-mid-r  { top: 64%;    right: -80px; width: 340px; color: var(--leaf-mid); opacity: .5;  transform: scaleX(-1); }
+
+/* 手前の層。ここだけ文字の背後に入り込む */
+.fl-near-l { top: 130px;  left: -110px; width: 400px; color: var(--leaf-near); opacity: 1; }
+.fl-near-r { top: 42%;    right: -120px; width: 380px; color: var(--leaf-near); opacity: 1; transform: scaleX(-1) scaleY(-1); }
+
+/* 下辺の下草 */
+.fl-grass-1 { bottom: -34px; left: 2%;   width: 130px; color: var(--leaf-near); opacity: .95; }
+.fl-grass-2 { bottom: -42px; left: 11%;  width: 104px; color: var(--leaf-mid);  opacity: .5; }
+.fl-grass-3 { bottom: -36px; right: 3%;  width: 140px; color: var(--leaf-near); opacity: .95; }
+.fl-grass-4 { bottom: -44px; right: 12%; width: 100px; color: var(--leaf-mid);  opacity: .5; }
+
+/* 風で揺れる。回転の基点を葉の付け根に置くのが要点 */
+@media (prefers-reduced-motion: no-preference) {
+    [data-theme="nature"] .fl-sway {
+        transform-origin: 100% 0%;
+        animation: fl-sway 11s ease-in-out infinite alternate;
+    }
+    [data-theme="nature"] .fl-sway-l {
+        transform-origin: 0% 0%;
+        animation: fl-sway 13s ease-in-out infinite alternate;
+    }
+    @keyframes fl-sway {
+        from { transform: rotate(-1.1deg); }
+        to   { transform: rotate(1.1deg); }
+    }
+}
+
+/* 本文カラム(880px)の左右に260pxずつ余白が取れない幅では、
+   中景・手前・下草が本文に食い込むので奥の2枚だけに絞る */
+/* セレクタは必ず .flora を前置する。
+   基底の `.flora .fl { display: block }` はクラス2つ分の詳細度を持つため、
+   `.fl-mid-l` 単独では display を上書きできない */
+@media (max-width: 1400px) {
+    .flora .fl-mid-l,
+    .flora .fl-mid-r,
+    .flora .fl-near-l,
+    .flora .fl-near-r,
+    .flora .fl-grass-1,
+    .flora .fl-grass-2,
+    .flora .fl-grass-3,
+    .flora .fl-grass-4 { display: none; }
+
+    .flora .fl-far-l { width: 280px; left: -100px; }
+    .flora .fl-far-r { width: 300px; right: -120px; }
+}
+
+@media (max-width: 720px) {
+    .flora .fl-far-l { width: 210px; left: -85px; opacity: .18; }
+    .flora .fl-far-r { width: 220px; right: -95px; opacity: .18; }
+}
+
+/* セクションの地色が葉を隠さないよう、面を半透明にして葉を透かす */
+[data-theme="nature"] .section-block--tinted {
+    background: color-mix(in srgb, var(--surface-sunken) 82%, transparent);
+}
+
+[data-theme="nature"] .project-card,
+[data-theme="nature"] .profile-facts,
+[data-theme="nature"] .note-box,
+[data-theme="nature"] .contact-row {
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
 }
 
 

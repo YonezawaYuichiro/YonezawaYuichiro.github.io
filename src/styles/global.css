@@ -1379,6 +1379,33 @@ html:not([data-theme]) .theme-icon--light {
     font-weight: 700;
 }
 
+/* --- 背景の空気 ---
+   平らな一色だと「暗い緑の板」にしかならない。森の中の見え方は
+   「上から光が落ちて下ほど暗い」「木漏れ日が斑に落ちる」「均質な面がない」の3つ。
+
+   明るさの上限は実測で決めている。木漏れ日が3枚重なった最悪ケースでも
+   補助文7.52 / アクセント7.46 でAAA(7:1)を維持する。 */
+[data-theme="nature"] .page-shell {
+    background:
+        /* 木漏れ日。位置をずらして斑にする */
+        radial-gradient(52% 30% at 12% 4%, rgba(143, 209, 157, 0.04), transparent 70%),
+        radial-gradient(46% 24% at 86% 26%, rgba(143, 209, 157, 0.028), transparent 72%),
+        radial-gradient(58% 26% at 22% 68%, rgba(143, 209, 157, 0.02), transparent 74%),
+        /* 林冠から林床への空気遠近 */
+        linear-gradient(180deg, #0e1712 0%, #0b120e 46%, #080e0b 100%);
+}
+
+/* 粒状のむら。完全に平坦な面が無くなるだけで生々しさが出る */
+[data-theme="nature"] .page-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 /* --- 装飾レイヤー本体 --- */
 .flora {
     display: none;

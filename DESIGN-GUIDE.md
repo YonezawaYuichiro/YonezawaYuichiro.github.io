@@ -150,6 +150,13 @@ It is the **only** theme allowed decorative artwork; everything below is scoped 
   the rachis they fuse into a lump. Keep the width ratio near `0.185` of leaflet length.
 - **Rotation inflates bounding boxes.** A tilted leaf reaches further sideways than its artwork
   suggests, so the mid/far layers need a larger outward inset than the geometry alone implies.
+- **The ground is not flat.** A single fill reads as a dark green board. Three cues carry the
+  "inside a forest" feeling: a vertical gradient (lighter canopy above, darker floor below),
+  a few offset dappled-light pools, and a faint grain so no surface is perfectly even.
+  All three are on `.page-shell` / `.page-shell::before` and only under `[data-theme="nature"]`.
+- **The background's brightness ceiling is set by contrast, not taste.** Every added light layer
+  raises the composite luminance. The current values keep muted at 7.52 and accent at 7.46 even
+  where all three light pools overlap. Recompute before raising any of them.
 - **Three depth layers**, and the order matters: `--leaf-near` (#16301f, darkest) in front,
   `--leaf-mid`, then `--leaf-far` (#2f6b3c, lightest) behind. Reversing this reads as flat.
   One species alone looks like wallpaper — mixing fern and conifer is what reads as forest.

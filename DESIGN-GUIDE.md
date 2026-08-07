@@ -128,7 +128,55 @@ Six steps plus two clamps. Ad-hoc values like `0.86rem` are how the page ends up
 - Derived tokens are computed in `global.css` via `color-mix`, so new themes need no extra setup:
   `--surface-sunken` (section tint), `--accent-soft` (accent wash), `--accent-line` (hairline
   accent), `--border-subtle` (faint divider)
-- Users select active light/dark themes via `src/config/site.ts` (`THEME_CONFIG.themeLight`, `THEME_CONFIG.themeDark`)
+- Users select the three active themes via `src/config/site.ts` (`THEME_CONFIG.themeLight`,
+  `themeDark`, `themeNature`). The toggle cycles `light → dark → nature` and its `aria-label`
+  announces the theme it will switch *to*.
+
+### Nature mode (the only decorated theme)
+
+A third theme, `nature_forest`, selected by cycling the toggle (`light → dark → nature`).
+It is the **only** theme allowed decorative artwork; everything below is scoped under
+`[data-theme="nature"]` so no other theme is affected.
+
+- **Botanicals** are *generated*, not hand-drawn: `src/components/ui/FloraShapes.ts` computes the
+  path data and `Flora.astro` places it. Hand-authored paths end up as one shape repeated with
+  `<use>`, which is what makes decorative plants look like clip art. The generators vary leaflet
+  length along the rachis, serrate the margins, taper the spines, and break left/right symmetry —
+  a seeded PRNG keeps the result identical across builds.
+- Shapes are emitted once into `<defs>` and placed with `<use>`, so repeating a leaf costs nothing
+  in transfer size. The markup is always in the DOM and shown/hidden by CSS — toggling it with JS
+  makes the theme switch visibly lag.
+- **Leaflets need visible gaps.** If a leaflet's width exceeds the spacing between stations along
+  the rachis they fuse into a lump. Keep the width ratio near `0.185` of leaflet length.
+- **Rotation inflates bounding boxes.** A tilted leaf reaches further sideways than its artwork
+  suggests, so the mid/far layers need a larger outward inset than the geometry alone implies.
+- **The ground is not flat.** A single fill reads as a dark green board. Three cues carry the
+  "inside a forest" feeling: a vertical gradient (lighter canopy above, darker floor below),
+  a few offset dappled-light pools, and a faint grain so no surface is perfectly even.
+  All three are on `.page-shell` / `.page-shell::before` and only under `[data-theme="nature"]`.
+- **The background's brightness ceiling is set by contrast, not taste.** Every added light layer
+  raises the composite luminance. The current values keep muted at 7.52 and accent at 7.46 even
+  where all three light pools overlap. Recompute before raising any of them.
+- **Three depth layers**, and the order matters: `--leaf-near` (#16301f, darkest) in front,
+  `--leaf-mid`, then `--leaf-far` (#2f6b3c, lightest) behind. Reversing this reads as flat.
+  One species alone looks like wallpaper — mixing fern and conifer is what reads as forest.
+- **Distribution:** positions are declared as percentages of page height in the `PLACEMENTS`
+  array in `Flora.astro`, spaced so the largest gap between leaves stays under one viewport
+  height. Clustering them at a few spots leaves multi-thousand-pixel stretches with no leaf
+  at all, and the forest reads as two decorations bolted onto an empty page.
+- **Placement:** outside the 880px content column, with leaf tips reaching 50–80px behind text.
+  **Only the near (darkest) layer may pass behind text.** The mid layer is capped at 0.5 opacity
+  there and the far layer never enters the text band — `muted` drops to 4.1 over an undimmed
+  mid leaf.
+- **`muted` for this theme is set from the contrast over leaves, not over the background**
+  (#abbeb0 → 7.26 over the near leaf, 7.13 over mid at 0.5).
+- **Below 1400px** the mid/near/grass layers are hidden, since the column no longer leaves
+  260px of margin on each side. When writing those rules, prefix the selector with `.flora` —
+  the base rule `.flora .fl { display: block }` carries two classes of specificity and a bare
+  `.fl-mid-l` cannot override it.
+- **Headings switch to mincho** in this theme only; body text stays gothic.
+- **Sway** is 11–13s, ±1.1°, `transform-origin` at the leaf's base, and sits inside
+  `prefers-reduced-motion: no-preference`.
 
 ### Skill level colors (the only multi-hue exception)
 Skill proficiency is the one place with four hues. They are kept low-saturation and applied as a

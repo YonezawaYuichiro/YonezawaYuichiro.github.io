@@ -1,0 +1,158 @@
+---
+/**
+ * ネイチャーモードの装飾植物。
+ *
+ * 全テーマで常にDOMに出力し、表示は CSS の [data-theme="nature"] で切り替える。
+ * （JSで出し分けるとテーマ切替のたびに描画が遅れて見えるため）
+ *
+ * 図形は defs に1回だけ定義し、各配置は <use> で参照する。
+ * 同じ葉を何枚並べても転送量は増えない。
+ *
+ * 配置は本文カラム（880px）の外側が主。葉の先端だけが文字の背後に
+ * 50〜80px入り込む。入り込ませてよいのは暗い層のみ（global.css 参照）。
+ *
+ * 縦位置はページ高に対する％で、およそ1画面に1枚は入るよう均等に散らす。
+ * 数箇所にまとめると、間に葉が1枚も無い区間ができて森に見えなくなる。
+ */
+
+import { frond, bough, broadleaf, grass } from "./FloraShapes";
+
+type Species = "frond" | "bough" | "broadleaf";
+type Depth = "near" | "mid" | "far";
+type Side = "l" | "r";
+
+// 形状は数式で生成する。手描きのパスだと同じ形の繰り返しになって
+// クリップアートに見えるため（FloraShapes.ts 参照）
+const SHAPES = {
+    frond: frond(),
+    bough: bough(),
+    broadleaf: broadleaf(),
+    grass: grass(),
+} as const;
+
+interface Placement {
+    species: Species;
+    depth: Depth;
+    side: Side;
+    /** ページ上端からの位置（% または px） */
+    top: string;
+    /** 傾き。全部が同じ角度で入ると機械的に見えるので必ず散らす */
+    rot: number;
+    /** 大きさの倍率。1枚ごとに変えて反復感を消す */
+    scale?: number;
+    /** 端からの差し込み量の上書き。群れの中で前後をずらすのに使う */
+    inset?: string;
+    /** 揺らすか。シダのみ揺らす */
+    sway?: boolean;
+}
+
+/**
+ * 構図の方針
+ *  - 等間隔に1枚ずつ置くと「横から生えているだけ」になる。
+ *    2〜3枚を重ねた群れを作り、その群れを不等間隔で配置する。
+ *  - 角から斜めに差し込むと、画面の外にも森が続いて見える。
+ *  - 傾き・大きさ・差し込み量を1枚ずつ変えて、反復に気づかせない。
+ */
+const PLACEMENTS: Placement[] = [
+    // --- ヒーロー左上の群れ。3枚重ねて視界を縁取る ---
+    { species: "frond", depth: "far", side: "l", top: "-70px", rot: 16, scale: 1.15, inset: "-235px", sway: true },
+    { species: "bough", depth: "mid", side: "l", top: "24px", rot: 38, inset: "-170px" },
+    { species: "frond", depth: "near", side: "l", top: "120px", rot: 6, scale: .9, inset: "-130px", sway: true },
+
+    // --- ヒーロー右上。左より軽くして左右で密度差をつける ---
+    { species: "frond", depth: "far", side: "r", top: "-40px", rot: -12, scale: 1.05, inset: "-230px", sway: true },
+    { species: "broadleaf", depth: "near", side: "r", top: "150px", rot: -7, scale: .85, inset: "-70px" },
+
+    // --- 中盤。単体と群れを不等間隔で混ぜる ---
+    { species: "frond", depth: "near", side: "r", top: "16%", rot: -24, scale: .8, sway: true },
+
+    { species: "frond", depth: "far", side: "l", top: "24%", rot: 10, scale: 1.1, sway: true },
+    { species: "bough", depth: "mid", side: "l", top: "27%", rot: 32, scale: .85, inset: "-165px" },
+
+    { species: "broadleaf", depth: "mid", side: "r", top: "37%", rot: -5, scale: .95 },
+    { species: "frond", depth: "near", side: "l", top: "46%", rot: -14, scale: .85, sway: true },
+
+    { species: "frond", depth: "far", side: "r", top: "56%", rot: 22, scale: 1.2, sway: true },
+    { species: "bough", depth: "near", side: "r", top: "60%", rot: -20, scale: .8, inset: "-60px" },
+
+    { species: "frond", depth: "mid", side: "l", top: "69%", rot: 28, scale: .95, sway: true },
+    { species: "frond", depth: "near", side: "r", top: "79%", rot: -9, scale: .9, sway: true },
+
+    // --- 最下部。下草へ繋げるため左右とも低く濃く ---
+    { species: "bough", depth: "far", side: "l", top: "87%", rot: 15, scale: 1.1 },
+    { species: "broadleaf", depth: "near", side: "l", top: "93%", rot: 12, scale: .8, inset: "-60px" },
+];
+
+// viewBox は生成した図形の実寸から取る
+const VIEWBOX: Record<Species, string> = {
+    frond: SHAPES.frond.viewBox,
+    bough: SHAPES.bough.viewBox,
+    broadleaf: SHAPES.broadleaf.viewBox,
+};
+---
+
+<div class="flora" aria-hidden="true">
+    {/* ---- 図形の定義（描画されない）。形状は FloraShapes.ts が生成する ---- */}
+    <svg class="flora-defs" width="0" height="0">
+        <defs>
+            {
+                (["frond", "bough", "broadleaf", "grass"] as const).map((key) => (
+                    <g id={`fl-${key}`}>
+                        {SHAPES[key].parts.map((part) =>
+                            part.mode === "vein" ? (
+                                <path
+                                    d={part.d}
+                                    transform={part.transform}
+                                    fill="none"
+                                    stroke="var(--background)"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    opacity="0.34"
+                                />
+                            ) : (
+                                <path
+                                    d={part.d}
+                                    transform={part.transform}
+                                    fill={part.mode === "cut" ? "var(--background)" : "currentColor"}
+                                    opacity={part.mode === "cut" ? "0.42" : undefined}
+                                />
+                            ),
+                        )}
+                    </g>
+                ))
+            }
+        </defs>
+    </svg>
+
+    {/* ---- 配置。奥（薄い）→ 手前（濃い）で重なりの前後を作る ---- */}
+    {
+        PLACEMENTS.map((p) => (
+            <svg
+                class={`fl fl-${p.species} fl-depth-${p.depth} fl-side-${p.side}`}
+                style={[
+                    `--fl-top:${p.top}`,
+                    `--fl-rot:${p.rot}deg`,
+                    p.scale ? `--fl-scale:${p.scale}` : "",
+                    p.inset ? `--fl-inset:${p.inset}` : "",
+                ]
+                    .filter(Boolean)
+                    .join(";")}
+                viewBox={VIEWBOX[p.species]}
+            >
+                {p.sway ? (
+                    <g class={p.side === "l" ? "fl-sway-l" : "fl-sway"}>
+                        <use href={`#fl-${p.species}`} />
+                    </g>
+                ) : (
+                    <use href={`#fl-${p.species}`} />
+                )}
+            </svg>
+        ))
+    }
+
+    {/* 下辺の下草。ページの終わりを「地面」にする */}
+    <svg class="fl fl-grass-1" viewBox={SHAPES.grass.viewBox}><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-2" viewBox={SHAPES.grass.viewBox}><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-3" viewBox={SHAPES.grass.viewBox}><use href="#fl-grass" /></svg>
+    <svg class="fl fl-grass-4" viewBox={SHAPES.grass.viewBox}><use href="#fl-grass" /></svg>
+</div>

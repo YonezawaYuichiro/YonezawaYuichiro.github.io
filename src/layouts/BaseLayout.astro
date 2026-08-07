@@ -3,6 +3,7 @@ import { SITE, THEME_CONFIG, ANALYTICS, THEMES } from "../config";
 import { ClientRouter } from "astro:transitions";
 import Navbar from "../components/layout/Navbar.astro";
 import Footer from "../components/layout/Footer.astro";
+import Flora from "../components/ui/Flora.astro";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -17,6 +18,8 @@ const themeDarkKey = (THEME_CONFIG.themeDark.startsWith('dark_') ? THEME_CONFIG.
 
 const themeLight = THEMES[themeLightKey] || THEMES.light_default;
 const themeDark = THEMES[themeDarkKey] || THEMES.dark_default;
+const themeNature =
+    THEMES[THEME_CONFIG.themeNature as keyof typeof THEMES] || THEMES.nature_forest;
 
 interface Props {
     title: string;
@@ -74,6 +77,13 @@ const jsonLd = {
                 darkMuted: themeDark.muted,
                 darkBorder: themeDark.border,
                 darkSurface: themeDark.surface,
+
+                natureBg: themeNature.background,
+                natureFg: themeNature.foreground,
+                natureAccent: themeNature.accent,
+                natureMuted: themeNature.muted,
+                natureBorder: themeNature.border,
+                natureSurface: themeNature.surface,
             }}
         >
             :root {
@@ -93,6 +103,15 @@ const jsonLd = {
                 --text-muted: var(--darkMuted);
                 --border: var(--darkBorder);
                 --surface: var(--darkSurface);
+            }
+
+            [data-theme="nature"] {
+                --background: var(--natureBg);
+                --foreground: var(--natureFg);
+                --accent: var(--natureAccent);
+                --text-muted: var(--natureMuted);
+                --border: var(--natureBorder);
+                --surface: var(--natureSurface);
             }
         </style>
 
@@ -171,25 +190,41 @@ const jsonLd = {
             )
         }
         <script is:inline>
+            // 押すたびに light → dark → nature → light と巡る
+            const THEME_ORDER = ["light", "dark", "nature"];
+            const THEME_LABELS = {
+                light: "ライトモード",
+                dark: "ダークモード",
+                nature: "ネイチャーモード",
+            };
+
             function setTheme() {
-                const theme = (() => {
-                    if (
-                        typeof localStorage !== "undefined" &&
-                        localStorage.getItem("theme")
-                    ) {
-                        return localStorage.getItem("theme");
-                    }
-                    if (
-                        window.matchMedia("(prefers-color-scheme: dark)")
-                            .matches
-                    ) {
-                        return "dark";
-                    }
-                    return "light";
-                })();
+                const stored =
+                    typeof localStorage !== "undefined"
+                        ? localStorage.getItem("theme")
+                        : null;
+
+                // 未知の値が入っていた場合はOS設定へ戻す
+                const theme =
+                    stored && THEME_ORDER.includes(stored)
+                        ? stored
+                        : window.matchMedia("(prefers-color-scheme: dark)").matches
+                          ? "dark"
+                          : "light";
 
                 document.documentElement.setAttribute("data-theme", theme);
                 localStorage.setItem("theme", theme);
+                syncToggleLabel(theme);
+            }
+
+            // 次に切り替わるテーマ名を読み上げ用のラベルに入れる
+            function syncToggleLabel(theme) {
+                const toggle = document.getElementById("theme-toggle");
+                if (!toggle) return;
+                const next =
+                    THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length];
+                toggle.setAttribute("aria-label", `${THEME_LABELS[next]}に切り替え`);
+                toggle.setAttribute("title", THEME_LABELS[next]);
             }
 
             setTheme();
@@ -197,18 +232,22 @@ const jsonLd = {
 
             function initToggle() {
                 const toggle = document.getElementById("theme-toggle");
-                if (toggle) {
-                    toggle.addEventListener("click", () => {
-                        const current =
-                            document.documentElement.getAttribute("data-theme");
-                        const next = current === "dark" ? "light" : "dark";
-                        document.documentElement.setAttribute(
-                            "data-theme",
-                            next,
-                        );
-                        localStorage.setItem("theme", next);
-                    });
-                }
+                if (!toggle) return;
+
+                syncToggleLabel(
+                    document.documentElement.getAttribute("data-theme") || "light",
+                );
+
+                toggle.addEventListener("click", () => {
+                    const current =
+                        document.documentElement.getAttribute("data-theme");
+                    const i = THEME_ORDER.indexOf(current);
+                    const next = THEME_ORDER[(i + 1) % THEME_ORDER.length];
+
+                    document.documentElement.setAttribute("data-theme", next);
+                    localStorage.setItem("theme", next);
+                    syncToggleLabel(next);
+                });
             }
 
             document.addEventListener("astro:page-load", initToggle);
@@ -219,6 +258,7 @@ const jsonLd = {
         class="bg-background text-foreground transition-colors duration-300 min-h-screen"
     >
         <div class="page-shell">
+            <Flora />
             <Navbar />
             <main class="page-main">
                 <slot />

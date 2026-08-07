@@ -14,6 +14,7 @@ export const THEME_CONFIG: ThemeConfig = {
     lightAndDark: true,
     themeLight: "light_default",
     themeDark: "dark_default",
+    themeNature: "nature_forest",
 };
 
 const umami: UmamiAnalyticsConfig = {

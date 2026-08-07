@@ -229,6 +229,27 @@ a:hover,
     background: var(--accent-soft);
 }
 
+/* テーマ切替ボタン：3テーマ分のアイコンを重ねて置き、
+   data-theme に一致する1枚だけを表示する */
+.theme-toggle {
+    position: relative;
+}
+
+.theme-icon {
+    display: none;
+}
+
+[data-theme="light"] .theme-icon--light,
+[data-theme="dark"] .theme-icon--dark,
+[data-theme="nature"] .theme-icon--nature {
+    display: block;
+}
+
+/* data-theme が未設定の初期描画ではライト用を出す（ちらつき防止） */
+html:not([data-theme]) .theme-icon--light {
+    display: block;
+}
+
 
 /* Tags/Badges */
 .tag {
@@ -364,6 +385,15 @@ a:hover,
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    /* ネイチャーモードの装飾レイヤーの位置基準になる */
+    position: relative;
+}
+
+/* 本文は装飾レイヤー（z-index:0）より必ず上に置く */
+.page-main,
+.footer {
+    position: relative;
+    z-index: 1;
 }
 
 .page-main {
@@ -1312,6 +1342,189 @@ a:hover,
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
+}
+
+
+/* ===========================================
+   NATURE MODE（3つ目のテーマ）
+
+   このテーマだけの例外として装飾SVGの重ね置きを許可する。
+   他テーマには一切影響しないよう、すべて [data-theme="nature"] で囲む。
+   =========================================== */
+
+/* 葉の3層。手前を暗く、奥を明るくしないと平面に見える */
+[data-theme="nature"] {
+    --leaf-near: #16301f;  /* 手前。文字の背後に入り込めるのはこの色のみ */
+    --leaf-mid: #24512f;   /* 中景。文字帯では不透明度0.5まで */
+    --leaf-far: #2f6b3c;   /* 奥。文字帯には入れない */
+}
+
+/* 見出しだけ明朝体にする。葉の有機的な曲線と相性が良い */
+[data-theme="nature"] h1,
+[data-theme="nature"] h2,
+[data-theme="nature"] h3,
+[data-theme="nature"] .title-xl,
+[data-theme="nature"] .title-lg,
+[data-theme="nature"] .hero-name,
+[data-theme="nature"] .project-dialog-title,
+[data-theme="nature"] .project-card-title {
+    font-family: "游明朝", "Yu Mincho", YuMincho, "Hiragino Mincho ProN",
+        "Hiragino Mincho Pro", "MS PMincho", serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* 明朝は同じサイズでも細く見えるので、ヒーローだけ少し太らせる */
+[data-theme="nature"] .hero-name {
+    font-weight: 700;
+}
+
+/* --- 背景の空気 ---
+   平らな一色だと「暗い緑の板」にしかならない。森の中の見え方は
+   「上から光が落ちて下ほど暗い」「木漏れ日が斑に落ちる」「均質な面がない」の3つ。
+
+   明るさの上限は実測で決めている。木漏れ日が3枚重なった最悪ケースでも
+   補助文7.52 / アクセント7.46 でAAA(7:1)を維持する。 */
+[data-theme="nature"] .page-shell {
+    background:
+        /* 木漏れ日。位置をずらして斑にする */
+        radial-gradient(52% 30% at 12% 4%, rgba(143, 209, 157, 0.04), transparent 70%),
+        radial-gradient(46% 24% at 86% 26%, rgba(143, 209, 157, 0.028), transparent 72%),
+        radial-gradient(58% 26% at 22% 68%, rgba(143, 209, 157, 0.02), transparent 74%),
+        /* 林冠から林床への空気遠近 */
+        linear-gradient(180deg, #0e1712 0%, #0b120e 46%, #080e0b 100%);
+}
+
+/* 粒状のむら。完全に平坦な面が無くなるだけで生々しさが出る */
+[data-theme="nature"] .page-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --- 装飾レイヤー本体 --- */
+.flora {
+    display: none;
+}
+
+[data-theme="nature"] .flora {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    /* クリックを透過させ、はみ出しは切り落とす */
+    pointer-events: none;
+    overflow: clip;
+}
+
+.flora-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+/* 1枚ごとに変わる値（縦位置・傾き・倍率・差し込み量）は
+   Flora.astro からカスタムプロパティで渡す。
+   全部が同じ角度・同じ大きさで入ると「横から生えているだけ」に見える */
+.flora .fl {
+    position: absolute;
+    display: block;
+    top: var(--fl-top, 0);
+    /* rotate を先に書くことで、左右反転しても傾きは画面基準のままになる。
+       原点は中央のまま。端に寄せると scaleX(-1) が自分の幅ぶん平行移動して
+       画面外へ飛ぶ */
+    transform: rotate(var(--fl-rot, 0deg)) scaleX(var(--fl-flip, 1))
+        scale(var(--fl-scale, 1));
+}
+
+/* 左右。右側は反転させて内向きに生やす */
+.flora .fl-side-l { left: var(--fl-inset, -110px); }
+.flora .fl-side-r {
+    right: var(--fl-inset, -110px);
+    --fl-flip: -1;
+}
+
+/* 奥行き3層。手前を暗く、奥を明るくしないと平面に見える */
+.flora .fl-depth-far  { color: var(--leaf-far);  opacity: .26; }
+.flora .fl-depth-mid  { color: var(--leaf-mid);  opacity: .5; }
+.flora .fl-depth-near { color: var(--leaf-near); opacity: 1; }
+
+/* 奥ほど大きく見せると遠近が出る */
+.flora .fl-frond      { width: 400px; }
+.flora .fl-bough      { width: 360px; }
+.flora .fl-broadleaf  { width: 330px; }
+.flora .fl-depth-far  { width: 440px; }
+
+/* 明るい層（中景・奥）は文字帯に入れてはいけない。
+   傾けると外接矩形が実際の絵より広がるので、その分も見込んで逃がす
+   （クラス3つで側面指定に勝たせる） */
+.flora .fl-depth-mid.fl-side-l { left: var(--fl-inset, -160px); }
+.flora .fl-depth-mid.fl-side-r { right: var(--fl-inset, -160px); }
+.flora .fl-depth-far.fl-side-l { left: var(--fl-inset, -215px); }
+.flora .fl-depth-far.fl-side-r { right: var(--fl-inset, -215px); }
+
+/* 下辺の下草 */
+.flora .fl-grass-1 { top: auto; bottom: -34px; left: 2%;   width: 130px; color: var(--leaf-near); opacity: .95; }
+.flora .fl-grass-2 { top: auto; bottom: -42px; left: 11%;  width: 104px; color: var(--leaf-mid);  opacity: .5; }
+.flora .fl-grass-3 { top: auto; bottom: -36px; right: 3%;  width: 140px; color: var(--leaf-near); opacity: .95; }
+.flora .fl-grass-4 { top: auto; bottom: -44px; right: 12%; width: 100px; color: var(--leaf-mid);  opacity: .5; }
+
+/* 風で揺れる。回転の基点を葉の付け根に置くのが要点 */
+@media (prefers-reduced-motion: no-preference) {
+    [data-theme="nature"] .fl-sway {
+        transform-origin: 100% 0%;
+        animation: fl-sway 11s ease-in-out infinite alternate;
+    }
+    [data-theme="nature"] .fl-sway-l {
+        transform-origin: 0% 0%;
+        animation: fl-sway 13s ease-in-out infinite alternate;
+    }
+    @keyframes fl-sway {
+        from { transform: rotate(-1.1deg); }
+        to   { transform: rotate(1.1deg); }
+    }
+}
+
+/* 本文カラム(880px)の左右に260pxずつ余白が取れない幅では、
+   中景・手前・下草が本文に食い込むので奥の2枚だけに絞る */
+/* セレクタは必ず .flora を前置する。
+   基底の `.flora .fl { display: block }` はクラス2つ分の詳細度を持つため、
+   `.fl-mid-l` 単独では display を上書きできない */
+@media (max-width: 1400px) {
+    /* 手前・中景は文字に食い込むので消し、奥の層だけ残す */
+    .flora .fl-depth-near,
+    .flora .fl-depth-mid,
+    .flora .fl-grass-1,
+    .flora .fl-grass-2,
+    .flora .fl-grass-3,
+    .flora .fl-grass-4 { display: none; }
+
+    .flora .fl-depth-far { width: 300px; }
+    .flora .fl-side-l { left: -110px; }
+    .flora .fl-side-r { right: -120px; }
+}
+
+@media (max-width: 720px) {
+    .flora .fl-depth-far { width: 215px; opacity: .18; }
+    .flora .fl-side-l { left: -85px; }
+    .flora .fl-side-r { right: -95px; }
+}
+
+/* セクションの地色が葉を隠さないよう、面を半透明にして葉を透かす */
+[data-theme="nature"] .section-block--tinted {
+    background: color-mix(in srgb, var(--surface-sunken) 82%, transparent);
+}
+
+[data-theme="nature"] .project-card,
+[data-theme="nature"] .profile-facts,
+[data-theme="nature"] .note-box,
+[data-theme="nature"] .contact-row {
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
 }
 
 

@@ -92,7 +92,7 @@ export const PROFILE: ProfileData = {
             detail: "5ヶ月間のインターンでDaily-Briefの開発を担当",
         },
         {
-            label: "Hutzper（大阪／製造業向け検査AIスタートアップ）",
+            label: "Hutzper",
             detail: "2026年8月上旬よりインターン開始予定",
         },
     ],

@@ -106,8 +106,8 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
         items: [
             { name: "Claude Skills", level: "実践的" },
             { name: "Claude Code", level: "使いこなせる" },
-            { name: "OpenAI API (GPT-4o, TTSなど)", level: "使える" },
-            { name: "LLM (プロンプトエンジニアリング)", level: "使える" },
+            { name: "OpenAI API", level: "使える" },
+            { name: "LLM", level: "使える" },
             { name: "Google Workspace API", level: "使い方がわかる" },
             { name: "Google OAuth 2.0", level: "使える" },
         ],
@@ -117,7 +117,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
         items: [
             { name: "Fusion360", level: "使える" },
             { name: "VS Code", level: "使える" },
-            { name: "Unity (WebGL含む)", level: "使ったことがある" },
+            { name: "Unity", level: "使ったことがある" },
             { name: "3Dフォトグラメトリ (COLMAP/OpenMVS)", level: "使ったことがある" },
         ],
     },

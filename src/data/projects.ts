@@ -147,7 +147,7 @@ export const PROJECTS: ProjectData[] = [
         id: "3d-photogrammetry",
         title: "3Dフォトグラメトリ",
         category: "インターン選考課題",
-        org: "Hutzper（大阪／製造業向け検査AIスタートアップ）",
+        org: "Hutzper",
         period: "2026年7月",
         role: "回転台の製作は先方。撮影から3D化までのパイプライン構築を担当",
         summary:

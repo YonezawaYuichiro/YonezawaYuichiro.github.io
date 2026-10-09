@@ -44,9 +44,9 @@ export const PROFILE: ProfileData = {
     tagline: "AI、ソフトウェア、ハードウェアを横断的に学び、実践しています。",
     intro: [
         "フィジカルAI分野でのエンジニアを志望しています。前職で物流倉庫の搬送業務を担当した経験から、自動搬送機のような未普及の最新技術への憧れを感じ、自分もこうした現場を助けるシステムを作って普及させたいと考えています。",
-        "学校ではAIやプログラミングの勉強だけでなく、Raspberry PiやArduino、ESP32などのマイコンを活用した学習も行っています。また、AI時代において信用されるエンジニアになりたいと考え、応用情報技術者やE資格などの難関資格取得へ挑戦しています。",
+        "学校ではAIやプログラミングの勉強だけでなく、Raspberry PiやArduino、ESP32などのマイコンを活用した学習も行っています。また、AI時代において信用されるエンジニアになりたいと考え、応用情報技術者・E資格・第二種電気工事士など、ソフトウェアとハードウェアの両面で資格を取得してきました。",
         "強みは継続力とITへの熱量、課題を論理的に解決する力です。",
-        "2025年1月からITを学び始め、試験日程上最短で応用情報技術者試験に合格しました。その後も資格取得や5ヶ月のインターンも継続し、現在はE資格の取得を目指しています。また、学校の課題研究では、就職活動を課題に設定し、選好学習と生成AIを組み合わせたClaudeSkillsでの価値観抽出手法を提案・実装しています。",
+        "2025年1月からITを学び始め、試験日程上最短で応用情報技術者試験に合格し、2026年8月にはE資格に合格しました。同月からはHutzperのインターンで、協働ロボット（FANUC CRX-20iA/L）を使った外観検査の検証に取り組んでいます。また、学校の課題研究では、就職活動を課題に設定し、選好学習と生成AIを組み合わせたClaude Skillsでの価値観抽出手法を提案・実装しています。",
     ],
     birthDate: "2004年12月14日",
     birthPlace: "香川県高松市",
@@ -56,7 +56,7 @@ export const PROFILE: ProfileData = {
     education: [
         {
             label: "大阪ハイテクノロジー専門学校 人工知能学科",
-            detail: "3年制・現在2年生／2025年4月~2028年3月卒業見込み",
+            detail: "3年制・現在2年生／2025年4月〜2028年3月卒業見込み",
         },
     ],
     // 時系列順（古い→新しい）
@@ -71,8 +71,8 @@ export const PROFILE: ProfileData = {
         { date: "2025.10", label: "Paiza Bランク" },
         { date: "2025.12", label: "3次元CAD利用技術者試験2級" },
         { date: "2026.01", label: "JDLA Deep Learning for GENERAL" },
-        { date: "2026.05", label: "第二種電気工事士（学科試験）" },
-        { date: "2026.06", label: "AVILEN E資格講座" },
+        { date: "2026.07", label: "第二種電気工事士" },
+        { date: "2026.08", label: "JDLA Deep Learning for ENGINEER（E資格）" },
     ],
     workHistory: [
         {
@@ -82,22 +82,25 @@ export const PROFILE: ProfileData = {
     ],
     awards: [
         {
-            label: "テックシーカーハッカソン",
+            label: "テックシーカーハッカソン2026",
             detail: "デナリパム フィジカル ブルー エンジニア賞",
         },
     ],
     internships: [
         {
             label: "信濃ロボティクスイノベーションズ合同会社",
-            detail: "5ヶ月間のインターンでDaily-Briefの開発を担当",
+            detail: "Daily-Briefの開発を担当／2025年10月〜2026年4月",
         },
         {
             label: "Hutzper",
-            detail: "2026年8月上旬よりインターン開始予定",
+            detail: "ロボットアームによるホイール外観検査の検証を担当／2026年8月〜継続中",
         },
     ],
     recentLearning: [
-        { label: "JDLA Deep Learning for ENGINEER（E資格）", detail: "受験予定" },
+        {
+            label: "ロボットアーム（FANUC CRX-20iA/L 等）",
+            detail: "インターンでの研修を通じて、座標系の設定・手動操作・教示の基本を学習",
+        },
     ],
     avatar: "IMG_5257.JPEG",
     contact: {
